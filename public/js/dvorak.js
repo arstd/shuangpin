@@ -6,7 +6,7 @@ keyboard.dvorak = (function() {
     var keys = '~$\t%&\t7[\t5{\t3}\t1(\t9=\t0*\t2)\t4+\t6]\t8!\t`#\tBackspace\n'
       + 'Tab\t:;\t<,\t>,\tP\tY\tF\tG\tC\tR\tL\t?/\t^@\t|\\\n'
       + 'Caps Lock\tA\tO\tE\tU\tI\tD\tH\tT\tN\tS\t_-\tEnter\n'
-      + 'Shift L\t"\'\t@\tJ\tK\tX\tB\tM\tW\tV\tZ\tShift R\n'
+      + 'Shift L\t"\'\tQ\tJ\tK\tX\tB\tM\tW\tV\tZ\tShift R\n'
       + 'Ctrl L\tWin Key L\tAlt L\t\tAlt R\tWin Key R\tMenu\tCtrl R'
       .split('\n');
 
