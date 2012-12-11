@@ -6,11 +6,12 @@
 body {
     text-align: center;
 }
-#keyboard {
-    text-align: left;
+#keyboard, #final {
+    position: relative;
+    text-align: center;
     margin: 30px auto auto auto;
     display: inline-block;
-    min-width: 797px;
+    width: 960px;
 }
 
 #keyboard .keyrow {
@@ -53,3 +54,15 @@ body {
 #keyboard #keyblank { width: 321px; }
 #keyboard #keymenu { width: 50px; }
 
+#final .afinal {
+    display: inline-block;
+    float: left;
+    width: 19%;
+    border: 1px solid #808080;
+    line-height: 25px;
+}
+#final .afinal span {
+    display: inline-block;
+    float: left;
+    width: 50%;
+}

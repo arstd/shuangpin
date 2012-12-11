@@ -74,5 +74,32 @@ $(function() {
             }
         }
     }
+
+    $.ajax({  
+         //url: 'http://127.0.0.1:3000/',   //请求的是3000端口，应该属于跨域调用，因此dataType用jsonp  
+         url: 'finalcount',
+         dataType: "json",  
+         //dateType: "jsonp",
+         //jsonpCallback: "_test",       //可以自定义‘处理’函数，默认是callback  
+         cache: false,  
+         //jsonp:'callback',               //默认的传递处理函数是callback  
+         timeout: 5000,  
+         success: function(data) {  
+             drawFinals(data);  
+         },  
+         error: function(jqXHR, textStatus, errorThrown) {  
+             alert('error ' + textStatus + " " + errorThrown);  
+         }  
+    });
 });
 
+function drawFinals(data) {
+    //var data = $.parseJSON(data);
+    var $finals = $('#final');
+    for (var i = 0; i < data.length; i++) {
+        var $fin = $('<div class="afinal" />')
+            .append($('<span class="final" />').text(data[i]['final']))
+            .append($('<span class="count" />').text(data[i]['count']));
+        $finals.append($fin);
+    }
+}
