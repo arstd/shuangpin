@@ -91,6 +91,13 @@ $(function() {
              alert('error ' + textStatus + " " + errorThrown);  
          }  
     });
+
+    $('#keyblank').on({
+        'dragenter': function(e) {
+            $(this).css('background', 'blue');
+            return false;
+        }
+    });
 });
 
 function drawFinals(data) {
@@ -102,4 +109,9 @@ function drawFinals(data) {
             .append($('<span class="count" />').text(data[i]['count']));
         $finals.append($fin);
     }
+
+    $('#final>.afinal').attr('draggable', 'true').css('cursor', 'move').on('dragstart', function(e) {
+        e.originalEvent.dataTransfer.effectAllowed = 'copy'; // only dropEffect='copy' will be dropable
+        e.originalEvent.dataTransfer.setData('text', this.innerHTML);        
+    });
 }
