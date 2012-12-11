@@ -1,7 +1,7 @@
 var pg = require('pg');
 var url = require('url');
 
-var conString = process.env.DATABASE_URL 
+var conString = process.env.HEROKU_POSTGRESQL_BRONZE_URL 
     || "postgres://postgres:postgres@localhost:5432/postgres";
 var client = new pg.Client(conString);
 client.connect();
