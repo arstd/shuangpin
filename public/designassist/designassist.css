@@ -6,71 +6,136 @@
 
 body {
     text-align: center;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
 }
 
-#keyboard, #final {
+#keyboard, #final_count {
     position: relative;
-    text-align: center;
     margin: 30px auto auto auto;
     display: inline-block;
-    width: 960px;
+    min-width: 942px;
 }
 
-#keyboard .keyrow {
+#keyboard > div {
     clear: both;
-    padding: 1px 0; 
+    padding: 1px 0;
 }
 
-#keyboard .key, #keyboard .corner {
+#keyboard > div > div, #keyboard > div > div > span {
     display: inline-block;
     float: left;
 }
 
-#keyboard .key {
-    width: 50px;
-    height: 50px;
+#keyboard > div > div {
+    width: 60px;
+    height: 60px;
     border: 1px solid #808080;
     margin-right: 1px;
 }
 
-#keyboard .corner {
-    text-align: center;
+#keyboard > div > div > span {
     width: 50%;
-    height: 50%;
+    height: 33%;
 }
 
-#keyboard .keycontrol {
-    line-height: 50px;
+#keyboard #keybackspace, #keyboard #keytab, #keyboard #keycapslock, /**/
+#keyboard #keyenter, #keyboard #keyshiftl, #keyboard #keyshiftr, #keyboard #keyctrll, /**/
+#keyboard #keyctrlr, #keyboard #keywinl, #keyboard #keywinr, #keyboard #keyaltl, /**/
+#keyboard #keyaltr, #keyboard #keyblank, #keyboard #keymenu {
+    line-height: 60px;
 }
 
-#keyboard #keybackspace { width: 105px;}
-#keyboard #keytab { width: 75px; }
-#keyboard #keyslash { width: 80px; }
-#keyboard #keycapslock { width: 90px; }
-#keyboard #keyenter { width: 118px; }
-#keyboard #keyshiftl { width: 115px; }
-#keyboard #keyshiftr { width: 146px; }
-#keyboard #keyctrll, #keyboard #keyctrlr { width: 75px; }
-#keyboard #keywinl, #keyboard #keywinr { width: 48px; }
-#keyboard #keyaltl, #keyboard #keyaltr { width: 78px; }
-#keyboard #keyblank { width: 321px; }
-#keyboard #keymenu { width: 50px; }
-
-#final .afinal {
-    display: inline-block;
-    float: left;
-    width: 17%;
-    border: 1px solid #808080;
-    line-height: 25px;
-}
-#final .afinal span {
-    display: inline-block;
-    float: left;
-    width: 50%;
+#keyboard #keybackspace {
+    width: 120px;
 }
 
-.draggable { cursor: move; }
-.dragover { background: darkTurquoise; }
-.dragged { color: #bbb; }
+#keyboard #keytab {
+    width: 85px;
+}
 
-.data { display: none; }
+#keyboard #keyslash {
+    width: 95px;
+}
+
+#keyboard #keycapslock {
+    width: 105px;
+}
+
+#keyboard #keyenter {
+    width: 138px;
+}
+
+#keyboard #keyshiftl {
+    width: 135px;
+}
+
+#keyboard #keyshiftr {
+    width: 171px;
+}
+
+#keyboard #keyctrll, #keyboard #keyctrlr {
+    width: 88px;
+}
+
+#keyboard #keywinl, #keyboard #keywinr {
+    width: 54px;
+}
+
+#keyboard #keyaltl, #keyboard #keyaltr {
+    width: 100px;
+}
+
+#keyboard #keyblank {
+    width: 374px;
+}
+
+#keyboard #keymenu {
+    width: 60px;
+}
+
+/* keyboard end */
+/* final count style */
+#final_count table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#final_count table th, #final_count table td {
+    height: 35px;
+}
+
+#final_count table th {
+	text-align: left;
+	padding-left: 1%;
+    border-left: 1px solid #808080;
+    border-top: 1px solid #808080;
+    border-bottom: 1px solid #808080;
+}
+
+#final_count table td {
+	text-align: right;
+	padding-right: 1%;
+    border-right: 1px solid #888;
+    border-top: 1px solid #888;
+    border-bottom: 1px solid #888;
+}
+
+.draggable {
+    cursor: move;
+}
+
+.dragover {
+    background: darkTurquoise;
+}
+
+.dragged {
+    color: #bbb;
+}
+.dragging{
+    background: #ddd;
+}
+
+.data {
+    display: none;
+}
