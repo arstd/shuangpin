@@ -68,3 +68,8 @@ body {
     float: left;
     width: 50%;
 }
+
+.draggable { cursor: move; }
+.dragover { background: darkTurquoise; }
+.dragged { color: #bbb; }
+

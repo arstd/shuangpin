@@ -30,7 +30,7 @@ $(function() {
             i = 13;
         }
         for (var j = (!!i); j < 14 - i - (!i); j++) {
-            var key = $('<div class="key" />').attr('id', 'key' + (i * 100 + j));
+            var key = $('<div class="key keymain" />').attr('id', 'key' + (i * 100 + j));
             for (var k = 1; k <= 4; k++) {
                 key.append($('<div class="corner" />').addClass('corner' + k));
             }
@@ -92,9 +92,31 @@ $(function() {
          }  
     });
 
-    $('#keyblank').on({
-        'dragenter': function(e) {
-            $(this).css('background', 'blue');
+    $('#keyboard .keymain').on({
+        'dragenter' : function(ev) {
+            ev.stopPropagation();
+            ev.preventDefault();
+            var dt = ev.originalEvent.dataTransfer;
+            dt.dropEffect = "move";
+            $(this).addClass('dragover');
+            return false;
+        },
+        'dragover' : function(ev) {
+            ev.stopPropagation();
+            ev.preventDefault();
+            $(this).addClass('dragover');
+            return false;
+        },
+        'dragleave' : function(ev) {
+            ev.preventDefault();
+            $(this).removeClass('dragover');
+            return false;
+        },
+        'drop' : function(ev) {
+            ev.preventDefault();
+            $(this).removeClass('dragover');
+            var dt = ev.originalEvent.dataTransfer;
+            $(this).find('.corner:eq(3)').text(dt.getData('Text'));
             return false;
         }
     });
@@ -110,8 +132,23 @@ function drawFinals(data) {
         $finals.append($fin);
     }
 
-    $('#final>.afinal').attr('draggable', 'true').css('cursor', 'move').on('dragstart', function(e) {
-        e.originalEvent.dataTransfer.effectAllowed = 'copy'; // only dropEffect='copy' will be dropable
-        e.originalEvent.dataTransfer.setData('text', this.innerHTML);        
+    $('#final>.afinal').attr('draggable', 'true').addClass('draggable')
+    .bind({
+        'dragstart' : function(ev) {
+            ev.stopPropagation();
+            var dt = ev.originalEvent.dataTransfer;
+            dt.effectAllowed = 'move'; // only dropEffect='copy' will be dropable
+            dt.setData('Text', $(this).find('.final').text());        
+            dt.setDragImage($('<img src="/favicon.ico" />')[0], 10, 10);
+            return true;
+        },
+        'dragend' : function(ev) {
+            var dt = ev.originalEvent.dataTransfer;
+            if (dt.dropEffect != 'move') return false;
+            ev.preventDefault();
+            ev.stopPropagation();
+            $(this).attr('draggable', 'false').removeClass('draggable').addClass('dragged');
+            return false;
+        }
     });
 }
