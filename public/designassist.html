@@ -130,8 +130,7 @@
                 
                 var sorted = new Array();
                 for (var final in finalInitCnt) {
-                    if (final === '*') 
-                        continue;
+                    if (final === '*') continue;
                     sorted.push({
                         'final': final,
                         '*': finalInitCnt[final]['*']
@@ -157,7 +156,7 @@
                 var x = Math.round(x * 10000 / y);
                 if (String(x).length == 1) 
                     return '0.0' + x;
-                else if (String(x).length == 2) 
+                else if (String(x).length == 2)         
                     return '0.' + x;
                 return String(x).replace(/\d\d$/, function(m){
                     return '.' + m;
@@ -570,6 +569,7 @@ zh,un,172918
 zh,uo,64097
         </pre>
         <script type="text/javascript">
+            var effect = 'copy';
             $(function(){
                 $('#final_count table th, #keyboard .keymain span:gt(0)').bind({
                     'dragstart': function(ev){
@@ -578,13 +578,15 @@ zh,uo,64097
                         dt.setData('text', $(this).text());
                         if (this.tagName === 'TH') {
                             dt.effectAllowed = 'copy';
+                            effect = 'copy';
                             $(this).addClass('dragging').next('td').addClass('dragging');
                         }
                         else {
                             dt.effectAllowed = 'move';
+                            effect = 'move';
                             $(this).addClass('dragging');
                         }
-                        //dt.setDragImage($('<img src="/favicon.ico" />')[0], 10, 10);
+                        // dt.setData('text/uri-list', dt.effectAllowed);
                         return true;
                     },
                     'dragend': function(ev){
@@ -601,6 +603,8 @@ zh,uo,64097
                             .addClass('dragged').next('td').addClass('dragged');
                         }
                         else if (dt.dropEffect == 'move') {
+							for(var i = 1; i < 100000; i++) i * 2 * 3 * 7;
+                            calMoveWeight($(this).text(), $(this).parent()[0].id);
                             $(this).text('').removeClass('dragging');
                         }
                         return false;
@@ -611,7 +615,7 @@ zh,uo,64097
                         ev.stopPropagation();
                         ev.preventDefault();
                         var dt = ev.originalEvent.dataTransfer;
-                        dt.dropEffect = "copy";
+                        dt.dropEffect = dt.effectAllowed;
                         $(this).addClass('dragover');
                         return false;
                     },
@@ -654,18 +658,21 @@ zh,uo,64097
                                 /*_*/
                                 .attr('draggable', true).addClass('draggable');
                             }
+                            if (effect == 'copy') {
+                                calWeight(final, this.id);
+                            }
+                            else {
+                                calMoveWeight2(final, this.id);
+                            }
                         }
-                        calWeight(final, this.id);
                         return false;
                     }
                 });
             })
             function calWeight(final, key){
                 for (var init in finalInitCnt[final]) {
-                    if (init == '*' || init == '@') 
+                    if (init == '*' || init == '@' || init == '-') {
                         continue;
-                    if (init == '-') {
-                        //keyPercent[key] += finalInitCnt[final][init];
                     }
                     else {
                         keyPercent[initFinalCnt[init]['@']] += finalInitCnt[final][init];
@@ -674,10 +681,21 @@ zh,uo,64097
                     /*_*/
                     .text(percent(keyPercent[initFinalCnt[init]['@']], finalInitCnt['*']));
                 }
+                calMoveWeight2(final, key);
+            }
+            
+            function calMoveWeight(final, key){
+                keyPercent[key] -= finalInitCnt[final]['*'];
+                $('#' + key + ' span:eq(3)')//
+                /*_*/
+                .text(percent(keyPercent[key], finalInitCnt['*']));
+            }
+            
+            function calMoveWeight2(final, key){
                 keyPercent[key] += finalInitCnt[final]['*'];
                 $('#' + key + ' span:eq(3)')//
                 /*_*/
-                .text(percent(keyPercent[finalInitCnt[init]['@']], finalInitCnt['*']));
+                .text(percent(keyPercent[key], finalInitCnt['*']));
             }
         </script>
     </body>
