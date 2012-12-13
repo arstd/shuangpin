@@ -8,6 +8,7 @@ body {
     text-align: center;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
+    background: #ADD8E6;
 }
 
 #keyboard, #final_count {
@@ -106,16 +107,16 @@ body {
 }
 
 #final_count table th {
-	text-align: left;
-	padding-left: 1%;
+    text-align: left;
+    padding-left: 1%;
     border-left: 1px solid #808080;
     border-top: 1px solid #808080;
     border-bottom: 1px solid #808080;
 }
 
 #final_count table td {
-	text-align: right;
-	padding-right: 1%;
+    text-align: right;
+    padding-right: 1%;
     border-right: 1px solid #888;
     border-top: 1px solid #888;
     border-bottom: 1px solid #888;
@@ -132,7 +133,8 @@ body {
 .dragged {
     color: #bbb;
 }
-.dragging{
+
+.dragging {
     background: #ddd;
 }
 

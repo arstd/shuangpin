@@ -29,7 +29,9 @@
                         rowkeyspans += '<div id="row' + ri + '">';
                         $.each(row, function(ki, key){
                             if (key instanceof Array) {
-                                rowkeyspans += '<div id="key' + (ri * 100 + ki) + '">' +
+                                rowkeyspans += '<div id="key' + (ri * 100 + ki) + '"' +
+                                ((ri >= 1 && ri <= 3 && ki >= 1 && ki <= 10) ? ' class="keymain" ' : '') +
+                                '>' +
                                 '<span>' +
                                 key[0] +
                                 '</span><span></span><span></span><span></span>' +
@@ -72,7 +74,6 @@
                 <tbody>
                     <script type="text/javascript">
                         (function(){
-                        
                             var trthtds = '';
                             for (var i = 0; i < 6; i++) {
                                 trthtds += '<tr>';
