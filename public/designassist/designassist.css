@@ -39,58 +39,58 @@ body {
     height: 33%;
 }
 
-#keyboard #keybackspace, #keyboard #keytab, #keyboard #keycapslock, /**/
-#keyboard #keyenter, #keyboard #keyshiftl, #keyboard #keyshiftr, #keyboard #keyctrll, /**/
-#keyboard #keyctrlr, #keyboard #keywinl, #keyboard #keywinr, #keyboard #keyaltl, /**/
-#keyboard #keyaltr, #keyboard #keyblank, #keyboard #keymenu {
+#keyboard #keyBackspace, #keyboard #keyTab, #keyboard #keyCapsLock, /**/
+#keyboard #keyEnter, #keyboard #keyShiftL, #keyboard #keyShiftR, #keyboard #keyCtrlL, /**/
+#keyboard #keyCtrlR, #keyboard #keyWinL, #keyboard #keyWinR, #keyboard #keyAltL, /**/
+#keyboard #keyAltR, #keyboard #keyBlank, #keyboard #keyMenu {
     line-height: 60px;
 }
 
-#keyboard #keybackspace {
+#keyboard #keyBackspace {
     width: 120px;
 }
 
-#keyboard #keytab {
+#keyboard #keyTab {
     width: 85px;
 }
 
-#keyboard #keyslash {
+#keyboard #key113 {
     width: 95px;
 }
 
-#keyboard #keycapslock {
+#keyboard #keyCapsLock {
     width: 105px;
 }
 
-#keyboard #keyenter {
+#keyboard #keyEnter {
     width: 138px;
 }
 
-#keyboard #keyshiftl {
+#keyboard #keyShiftL {
     width: 135px;
 }
 
-#keyboard #keyshiftr {
+#keyboard #keyShiftR {
     width: 171px;
 }
 
-#keyboard #keyctrll, #keyboard #keyctrlr {
+#keyboard #keyCtrlL, #keyboard #keyCtrlR {
     width: 88px;
 }
 
-#keyboard #keywinl, #keyboard #keywinr {
+#keyboard #keyWinL, #keyboard #keyWinR {
     width: 54px;
 }
 
-#keyboard #keyaltl, #keyboard #keyaltr {
+#keyboard #keyAltL, #keyboard #keyAltR {
     width: 100px;
 }
 
-#keyboard #keyblank {
+#keyboard #keyBlank {
     width: 374px;
 }
 
-#keyboard #keymenu {
+#keyboard #keyMenu {
     width: 60px;
 }
 

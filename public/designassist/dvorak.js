@@ -1,6 +1,4 @@
-if (typeof(keyboard) == 'undefined') {
-    keyboard = {};
-}
+keyboard || (keyboard = {});
 
 keyboard.dvorak = (function() {
     var keys = '~$\t%&\t7[\t5{\t3}\t1(\t9=\t0*\t2)\t4+\t6]\t8!\t`#\tBackspace\n'
