@@ -12,7 +12,7 @@
     <body>
         <div id="keyboard">
             <script type="text/javascript">
-                var keyboard;
+                var keyboard, charPosition = {}, keyPercent = {};
                 (function(){
                     var keyString = '~$\t%&\t7[\t5{\t3}\t1(\t9=\t0*\t2)\t4+\t6]\t8!\t`#\tBackspace\n' +
                     'Tab\t:;\t<,\t>.\tP\tY\tF\tG\tC\tR\tL\t?/\t^@\t|\\\n' +
@@ -29,16 +29,21 @@
                         rowkeyspans += '<div id="row' + ri + '">';
                         $.each(row, function(ki, key){
                             if (key instanceof Array) {
-                                rowkeyspans += '<div id="key' + (ri * 100 + ki) + '"' +
-                                ((ri >= 1 && ri <= 3 && ki >= 1 && ki <= 10) ? ' class="keymain" ' : '') +
-                                '>' +
-                                '<span>' +
+                                var keyId = 'key' + (ri * 100 + ki);
+                                var cls = '';
+                                if (ri >= 1 && ri <= 3 && ki >= 1 && ki <= 10) {
+                                    cls = 'class="keymain" ';
+                                    charPosition[key[0].toLowerCase()] = keyId;
+                                    keyPercent[keyId] = 0;
+                                }
+                                rowkeyspans += '<div id="' + keyId + '" ' +
+                                cls +
+                                '><span>' +
                                 key[0] +
                                 '</span><span></span><span></span><span></span>' +
                                 '<span>' +
                                 (key[1] || '') +
-                                '</span><span></span>' +
-                                '</div>';
+                                '</span><span></span></div>';
                             }
                             else {
                                 rowkeyspans += '<div id="key' + key.replace(/ /g, '') + '">' + (key === 'Blank' ? '' : key) + '</div>';
@@ -112,6 +117,7 @@
                         finalSum += finalInitCnt[final][init];
                     }
                     finalInitCnt[final]['*'] = finalSum;
+                    finalInitCnt[final]['@'] = charPosition[final];
                 }
                 for (var init in initFinalCnt) {
                     var initSum = 0;
@@ -119,6 +125,7 @@
                         initSum += initFinalCnt[init][final];
                     }
                     initFinalCnt[init]['*'] = initSum;
+                    initFinalCnt[init]['@'] = charPosition[init];
                 }
                 
                 var sorted = new Array();
@@ -568,7 +575,7 @@ zh,uo,64097
                     'dragstart': function(ev){
                         ev.stopPropagation();
                         var dt = ev.originalEvent.dataTransfer;
-                        dt.setData('Text', $(this).text());
+                        dt.setData('text', $(this).text());
                         if (this.tagName === 'TH') {
                             dt.effectAllowed = 'copy';
                             $(this).addClass('dragging').next('td').addClass('dragging');
@@ -623,33 +630,55 @@ zh,uo,64097
                         ev.preventDefault();
                         $(this).removeClass('dragover');
                         var dt = ev.originalEvent.dataTransfer;
-                        var text = dt.getData('Text');
-                        if ('zh,ch,sh'.indexOf(text) >= 0) {
-                            $(this).find('span:eq(1)').text(text)//
+                        var final = dt.getData('text');
+                        if ('zh,ch,sh'.indexOf(final) >= 0) {
+                            initFinalCnt[final]['@'] = this.id;
+                            $(this).find('span:eq(1)').text(final)//
                             /*_*/
                             .attr('draggable', true).addClass('draggable');
                         }
                         else {
+                            finalInitCnt[final]['@'] = this.id;
                             if (!$(this).find('span:eq(5)').text()) {
-                                $(this).find('span:eq(5)').text(text)//
+                                $(this).find('span:eq(5)').text(final)//
                                 /*_*/
                                 .attr('draggable', true).addClass('draggable');
                             }
                             else if (!$(this).find('span:eq(4)').text()) {
-                                $(this).find('span:eq(4)').text(text)//
+                                $(this).find('span:eq(4)').text(final)//
                                 /*_*/
                                 .attr('draggable', true).addClass('draggable');
                             }
                             else {
-                                $(this).find('span:eq(2)').text(text)//
+                                $(this).find('span:eq(2)').text(final)//
                                 /*_*/
                                 .attr('draggable', true).addClass('draggable');
                             }
                         }
+                        calWeight(final, this.id);
                         return false;
                     }
                 });
             })
+            function calWeight(final, key){
+                for (var init in finalInitCnt[final]) {
+                    if (init == '*' || init == '@') 
+                        continue;
+                    if (init == '-') {
+                        //keyPercent[key] += finalInitCnt[final][init];
+                    }
+                    else {
+                        keyPercent[initFinalCnt[init]['@']] += finalInitCnt[final][init];
+                    }
+                    $('#' + initFinalCnt[init]['@'] + ' span:eq(3)')//
+                    /*_*/
+                    .text(percent(keyPercent[initFinalCnt[init]['@']], finalInitCnt['*']));
+                }
+                keyPercent[key] += finalInitCnt[final]['*'];
+                $('#' + key + ' span:eq(3)')//
+                /*_*/
+                .text(percent(keyPercent[finalInitCnt[init]['@']], finalInitCnt['*']));
+            }
         </script>
     </body>
 </html>
