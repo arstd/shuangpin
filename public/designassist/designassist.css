@@ -11,7 +11,7 @@ body {
     background: #ADD8E6;
 }
 
-#keyboard, #final_count {
+#keyboard, #final_count, #together {
     position: relative;
     margin: 30px auto auto auto;
     display: inline-block;
@@ -97,16 +97,13 @@ body {
 
 /* keyboard end */
 /* final count style */
-#final_count table {
+#final_count table, #together table {
     border-collapse: collapse;
     width: 100%;
 }
 
-#final_count table th, #final_count table td {
+#final_count table th, #together table th {
     height: 35px;
-}
-
-#final_count table th {
     text-align: left;
     padding-left: 1%;
     border-left: 1px solid #808080;
@@ -114,7 +111,7 @@ body {
     border-bottom: 1px solid #808080;
 }
 
-#final_count table td {
+#final_count table td, #together table td {
     text-align: right;
     padding-right: 1%;
     border-right: 1px solid #888;
@@ -131,7 +128,7 @@ body {
 }
 
 .dragged {
-    color: #bbb;
+    color: #888;
 }
 
 .dragging {
@@ -140,4 +137,8 @@ body {
 
 .data {
     display: none;
+}
+
+.smaller {
+	font-size: 12px;
 }

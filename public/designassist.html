@@ -120,17 +120,25 @@
                     finalInitCnt[final]['@'] = charPosition[final];
                 }
                 for (var init in initFinalCnt) {
+                    if (init == '-' || init == '@' || init == '*') {
+                        continue;
+                    }
                     var initSum = 0;
                     for (var final in initFinalCnt[init]) {
                         initSum += initFinalCnt[init][final];
                     }
                     initFinalCnt[init]['*'] = initSum;
                     initFinalCnt[init]['@'] = charPosition[init];
+                    keyPercent[initFinalCnt[init]['@']] = initFinalCnt[init]['*'];
+                    $('#' + initFinalCnt[init]['@'] + ' span:eq(3)').addClass('smaller')//
+                    /*_*/
+                    .text(percent(keyPercent[initFinalCnt[init]['@']], initFinalCnt['*']));
                 }
                 
                 var sorted = new Array();
                 for (var final in finalInitCnt) {
-                    if (final === '*') continue;
+                    if (final === '*') 
+                        continue;
                     sorted.push({
                         'final': final,
                         '*': finalInitCnt[final]['*']
@@ -142,27 +150,78 @@
                 var ths = $('#final_count table th');
                 var tds = $('#final_count table td');
                 for (var i = 0; i < sorted.length; i++) {
-                    $(ths[i]).attr('draggable', true).addClass('draggable').text(sorted[i].final);
+                    if ($.inArray(sorted[i].final, 'aoeiuv'.split('')) >= 0) {
+                        $(ths[i]).addClass('dragged').text(sorted[i].final).attr('id', 'final' + sorted[i].final);
+                    }
+                    else {
+                        $(ths[i]).attr('draggable', true).addClass('draggable')//
+                        /*_*/
+                        .text(sorted[i].final).attr('id', 'final' + sorted[i].final);
+                    }
                     $(tds[i]).text(percent(sorted[i]['*'], finalInitCnt['*']));
                 }
-                $(ths[tds.length - 3]).text('zh').attr('draggable', true).addClass('draggable');
+                $(ths[tds.length - 3]).text('zh').addClass('dragged').next('td').addClass('dragged');
                 $(tds[tds.length - 3]).text(percent(initFinalCnt['zh']['*'], finalInitCnt['*']));
-                $(ths[tds.length - 2]).text('ch').attr('draggable', true).addClass('draggable');
+                $(ths[tds.length - 2]).text('ch').addClass('dragged').next('td').addClass('dragged');
                 $(tds[tds.length - 2]).text(percent(initFinalCnt['ch']['*'], finalInitCnt['*']));
-                $(ths[tds.length - 1]).text('sh').attr('draggable', true).addClass('draggable');
+                $(ths[tds.length - 1]).text('sh').addClass('dragged').next('td').addClass('dragged');
                 $(tds[tds.length - 1]).text(percent(initFinalCnt['sh']['*'], finalInitCnt['*']));
+                
+                (function(){
+                    var had = [];
+                    for (var final in finalInitCnt) {
+                        had.push(final);
+                        if ($.inArray(final, ['*', '@', '-', 'er']) >= 0) {
+                            continue;
+                        }
+                        var is = new Array();
+                        for (var init in finalInitCnt[final]) {
+                            if ($.inArray(init, ['*', '@', '-']) >= 0) {
+                                continue;
+                            }
+                            is.push(init);
+                        }
+                        var toge = []
+                        label1: for (var f in finalInitCnt) {
+                            if ($.inArray(f, had) >= 0) 
+                                continue;
+                            if ($.inArray(f, ['*', '@', '-', 'er']) >= 0) {
+                                continue;
+                            }
+                            for (var i in finalInitCnt[f]) {
+                                if ($.inArray(i, ['*', '@', '-']) >= 0) {
+                                    continue;
+                                }
+                                if ($.inArray(i, is) >= 0) 
+                                    continue label1;
+                            }
+                            toge.push(f);
+                        }
+                        if (toge.length > 0) {
+                            if ($('#together table tr:last th').length >= 5) {
+                                $('#together table ').append('<tr />');
+                            }
+                            $('#together table tr:last').append('<th>' + final + '</th><td>' + (toge) + '</td>')
+                        }
+                    }
+                })();
             });
             function percent(x, y){
                 var x = Math.round(x * 10000 / y);
                 if (String(x).length == 1) 
                     return '0.0' + x;
-                else if (String(x).length == 2)         
+                else if (String(x).length == 2) 
                     return '0.' + x;
                 return String(x).replace(/\d\d$/, function(m){
                     return '.' + m;
                 });
             }
         </script>
+        <div id="together">
+            <table>
+                <tr></tr>
+            </table>
+        </div>
         <pre id="syllable_count" class="data">
 -,a,201272
 -,ai,334635
@@ -308,7 +367,7 @@ j,iong,6143
 j,iu,1661613
 j,u,1321100
 j,uan,75969
-j,ue,432269
+j,ve,432269
 j,un,558882
 k,a,112440
 k,ai,781762
@@ -350,8 +409,8 @@ l,ou,95210
 l,u,636664
 l,uan,70106
 l,un,406465
-l,ü,470898
-l,üe,80659
+l,v,470898
+l,ve,80659
 m,a,528172
 m,ai,240412
 m,an,267752
@@ -393,8 +452,8 @@ n,ou,47
 n,u,102712
 n,uan,17816
 n,uo,59988
-n,ü,294815
-n,üe,7138
+n,v,294815
+n,ve,7138
 p,a,118314
 p,ai,329952
 p,an,167764
@@ -424,7 +483,7 @@ q,iong,35299
 q,iu,451786
 q,u,1506961
 q,uan,1049687
-q,ue,421625
+q,ve,421625
 q,un,141461
 r,an,615505
 r,ang,191231
@@ -514,7 +573,7 @@ x,iong,124129
 x,iu,221318
 x,u,845164
 x,uan,350471
-x,ue,998419
+x,ve,998419
 x,un,350632
 y,a,493298
 y,an,1278355
@@ -529,7 +588,7 @@ y,ong,935706
 y,ou,4032007
 y,u,2636015
 y,uan,1958432
-y,ue,989176
+y,ve,989176
 y,un,406850
 z,a,103539
 z,ai,3284695
@@ -595,16 +654,13 @@ zh,uo,64097
                             $(this).removeClass('dragging').next('td').removeClass('dragging');
                             return false;
                         }
-                        ev.preventDefault();
-                        ev.stopPropagation();
                         if (dt.dropEffect == 'copy') {
                             $(this).attr('draggable', false).removeClass('draggable') //             
                             /*_*/
                             .addClass('dragged').next('td').addClass('dragged');
                         }
                         else if (dt.dropEffect == 'move') {
-							for(var i = 1; i < 100000; i++) i * 2 * 3 * 7;
-                            calMoveWeight($(this).text(), $(this).parent()[0].id);
+                            calMoveWeight1($(this).text(), $(this).parent()[0].id);
                             $(this).text('').removeClass('dragging');
                         }
                         return false;
@@ -635,13 +691,18 @@ zh,uo,64097
                         $(this).removeClass('dragover');
                         var dt = ev.originalEvent.dataTransfer;
                         var final = dt.getData('text');
+                        
                         if ('zh,ch,sh'.indexOf(final) >= 0) {
                             initFinalCnt[final]['@'] = this.id;
                             $(this).find('span:eq(1)').text(final)//
                             /*_*/
                             .attr('draggable', true).addClass('draggable');
+                            calMoveWeightTo(final, this.id);
                         }
                         else {
+                            if (conflict(final, this)) {
+                                return false;
+                            }
                             finalInitCnt[final]['@'] = this.id;
                             if (!$(this).find('span:eq(5)').text()) {
                                 $(this).find('span:eq(5)').text(final)//
@@ -658,33 +719,29 @@ zh,uo,64097
                                 /*_*/
                                 .attr('draggable', true).addClass('draggable');
                             }
-                            if (effect == 'copy') {
-                                calWeight(final, this.id);
-                            }
-                            else {
-                                calMoveWeight2(final, this.id);
-                            }
+                            calMoveWeight2(final, this.id);
                         }
                         return false;
                     }
                 });
+                initialZhchshAoeiuv();
             })
-            function calWeight(final, key){
-                for (var init in finalInitCnt[final]) {
-                    if (init == '*' || init == '@' || init == '-') {
-                        continue;
-                    }
-                    else {
-                        keyPercent[initFinalCnt[init]['@']] += finalInitCnt[final][init];
-                    }
-                    $('#' + initFinalCnt[init]['@'] + ' span:eq(3)')//
-                    /*_*/
-                    .text(percent(keyPercent[initFinalCnt[init]['@']], finalInitCnt['*']));
-                }
-                calMoveWeight2(final, key);
+            
+            function calMoveWeightFrom(init, key){
+                keyPercent[key] -= initFinalCnt[init]['*'];
+                $('#' + key + ' span:eq(3)')//
+                /*_*/
+                .text(percent(keyPercent[key], initFinalCnt['*']));
             }
             
-            function calMoveWeight(final, key){
+            function calMoveWeightTo(init, key){
+                keyPercent[key] += initFinalCnt[init]['*'];
+                $('#' + key + ' span:eq(3)')//
+                /*_*/
+                .text(percent(keyPercent[key], initFinalCnt['*']));
+            }
+            
+            function calMoveWeight1(final, key){
                 keyPercent[key] -= finalInitCnt[final]['*'];
                 $('#' + key + ' span:eq(3)')//
                 /*_*/
@@ -696,6 +753,107 @@ zh,uo,64097
                 $('#' + key + ' span:eq(3)')//
                 /*_*/
                 .text(percent(keyPercent[key], finalInitCnt['*']));
+            }
+            
+            function initialZhchshAoeiuv(){
+                var init = ['ch', 'zh', 'sh'], pos = ['e', 'o', 'u'];
+                for (var i in init) {
+                    initFinalCnt[init[i]]['@'] = finalInitCnt[pos[i]]['@'];
+                    $('#' + initFinalCnt[init[i]]['@'] + ' span:eq(1)').text(init[i])//
+                    /*_*/
+                    .attr('draggable', true).addClass('draggable');
+                    keyPercent[initFinalCnt[init[i]]['@']] = initFinalCnt[init[i]]['*'];
+                    $('#' + initFinalCnt[init[i]]['@'] + ' span:eq(3)').addClass('smaller')//
+                    /*_*/
+                    .text(percent(keyPercent[initFinalCnt[init[i]]['@']], initFinalCnt['*']));
+                }
+                var design = {
+                    'a': 'a',
+                    'o': 'o',
+                    'e': 'e',
+                    'i': 'i',
+                    'u': 'u',
+                    'v': 'v',
+                    'er': 'e',
+                    'uang': 'p',
+                    'ing': 'p',
+                    'ie': 'y',
+                    'un': 'f',
+                    've': 'g',
+                    'ao': 'c',
+                    'ang': 'r',
+                    'uai': 'l',
+                    'uo': 'o',
+                    'iong': 'd',
+                    'ong': 'd',
+                    'an': 'h',
+                    'ai': 't',
+                    'en': 'n',
+                    'ua': 's',
+                    'ian': 's',
+                    'iang': 'q',
+                    'iao': 'j',
+                    'ou': 'k',
+                    'iu': 'x',
+                    'eng': 'b',
+                    'ia': 'm',
+                    'ei': 'm',
+                    'in': 'w',
+                    'ui': 'v',
+                    'uan': 'z'
+                };
+                for (var final in design) {
+                    finalInitCnt[final]['@'] = charPosition[design[final]];
+                    calMoveWeight2(final, finalInitCnt[final]['@']);
+                    
+                    var $key = $('#' + finalInitCnt[final]['@']);
+                    $key.find('span:eq(3)').addClass('smaller') //
+                    if (!$key.find('span:eq(5)').text()) {
+                        $key.find('span:eq(5)').text(final) //
+                        /*_*/
+                        .attr('draggable', true).addClass('draggable');
+                    }
+                    else if (!$key.find('span:eq(4)').text()) {
+                        $key.find('span:eq(4)').text(final)//
+                        /*_*/
+                        .attr('draggable', true).addClass('draggable');
+                    }
+                    else {
+                        $key.find('span:eq(2)').text(final) //
+                        /*_*/
+                        .attr('draggable', true).addClass('draggable');
+                    }
+                }
+            }
+            
+            function conflict(final, key){
+                var assInits = new Array();
+                for (var init in finalInitCnt[final]) {
+                    if (init == '-') {
+                        continue;
+                    }
+                    assInits.push(init);
+                }
+                for (var p in [5, 4, 2]) {
+                    var has = $(key).find('span:eq(' + [5, 4, 2][p] + ')').text();
+                    if (has) {
+                        for (var init in finalInitCnt[has]) {
+                            if (init == '*' || init == '@' || init == '-') {
+                                continue;
+                            }
+                            if ($.inArray(init, assInits) >= 0) {
+                                alert('conflict : ' + init + final + ' <-> ' + init + has);
+                                $('#final_count #final' + final).removeClass('dragging')//
+                                /*_*/
+                                .removeClass('dragged').addClass('draggable').next('td').removeClass('dragged')//
+                                /*_*/
+                                .removeClass('dragging').end().attr('draggable', true);
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
             }
         </script>
     </body>
