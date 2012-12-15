@@ -36,12 +36,8 @@
                                     charPosition[key[0].toLowerCase()] = keyId;
                                     keyPercent[keyId] = 0;
                                 }
-                                rowkeyspans += '<div id="' + keyId + '" ' +
-                                cls +
-                                '><span>' +
-                                key[0] +
-                                '</span><span></span><span></span><span></span>' +
-                                '<span>' +
+                                rowkeyspans += '<div id="' + keyId + '" ' + cls + '><span>' + key[0] + //
+                                '</span><span></span><span class="smaller ass"></span><span class="smaller userate"></span><span>' +
                                 (key[1] || '') +
                                 '</span><span></span></div>';
                             }
@@ -129,7 +125,7 @@
                     initFinalCnt[init]['*'] = initSum;
                     initFinalCnt[init]['@'] = charPosition[init];
                     keyPercent[initFinalCnt[init]['@']] = initFinalCnt[init]['*'];
-                    $('#' + initFinalCnt[init]['@'] + ' span:eq(3)').addClass('smaller')//
+                    $('#' + initFinalCnt[init]['@'] + ' span:eq(3)')//
                     /*_*/
                     .text(percent(keyPercent[initFinalCnt[init]['@']], initFinalCnt['*']));
                 }
@@ -151,9 +147,7 @@
                     $(ths[i]).text(sorted[i].final).attr('id', 'final' + sorted[i].final)//
                     /*_*/
                     .attr('draggable', true).addClass('draggable');
-                    $(tds[i]).text(percent(sorted[i]['*'], finalInitCnt['*']))//
-                    /*_*/
-                    .attr('draggable', true).addClass('draggable');
+                    $(tds[i]).text(percent(sorted[i]['*'], finalInitCnt['*']));
                 }
                 $(ths[tds.length - 3]).text('zh').attr('id', 'initzh');
                 $(tds[tds.length - 3]).text(percent(initFinalCnt['zh']['*'], finalInitCnt['*']));
@@ -163,10 +157,8 @@
                 $(tds[tds.length - 1]).text(percent(initFinalCnt['sh']['*'], finalInitCnt['*']));
                 
                 (function(){
-                    var had = [];
                     for (var final in finalInitCnt) {
-                        had.push(final);
-                        if ($.inArray(final, ['*', '@', '-', 'er']) >= 0) {
+                        if ($.inArray(final, ['*', '@', '-']) >= 0) {
                             continue;
                         }
                         var is = new Array();
@@ -178,8 +170,7 @@
                         }
                         var toge = []
                         label1: for (var f in finalInitCnt) {
-                            if ($.inArray(f, had) >= 0) continue;
-                            if ($.inArray(f, ['*', '@', '-', 'er']) >= 0) {
+                            if ($.inArray(f, ['*', '@', '-']) >= 0) {
                                 continue;
                             }
                             for (var i in finalInitCnt[f]) {
@@ -190,12 +181,10 @@
                             }
                             toge.push(f);
                         }
-                        if (toge.length > 0) {
-                            if ($('#together table tr:last th').length >= 5) {
-                                $('#together table ').append('<tr />');
-                            }
-                            $('#together table tr:last').append('<th>' + final + '</th><td>' + (toge) + '</td>')
+                        if (toge.length <= 0) {
+                            toge = '\t\t';
                         }
+                        $('#final' + final).next('td').attr('title', String(toge).replace(/,/g, ',  '));
                     }
                 })();
             });
@@ -208,16 +197,48 @@
                 });
             }
         </script>
-        <div id="together">
-            <table>
-                <tr></tr>
-            </table>
-        </div>
-        <div id="idea"></div>
+        <textarea id="idea"></textarea>
         <script type="text/javascript" src="designassist/idea.js"></script>
         <script type="text/javascript">
             var effect = 'copy';
             $(function(){
+                var associate = {
+                    'mouseenter': function(){
+                        var final = this.innerHTML.toLowerCase();
+                        if (!finalInitCnt[final]) return;
+                        var left = (Number(finalInitCnt[final]['@'].substring(3)) % 100 <= 5);
+                        var exchange = {
+                            'false': 0,
+                            'true': 0
+                        };
+                        for (var init in finalInitCnt[final]) {
+                            if (init == '*' || init == '@' || init == '-') {
+                                continue;
+                            }
+                            var perc = percent(initFinalCnt[init][final] * 10, initFinalCnt['*']);
+                            var l = (Number(initFinalCnt[init]['@'].substring(3)) % 100 <= 5);
+                            exchange[l] += Number(perc);
+                            $('#' + initFinalCnt[init]['@'] + ' span:eq(2)').text(perc);
+                        }
+                        exchange['contrib'] = percent(exchange[!left] - exchange[left], 100);
+                        exchange[left] = percent(exchange[left], 100);
+                        exchange[!left] = percent(exchange[!left], 100);
+                        var text = 'contrib:\t' + (exchange['contrib']) + '\nleft:\t\t' + exchange['true'] + '\nright:\t\t' + exchange['false']
+                        $(this).addClass('mouseenter').attr('title', text);
+                    },
+                    'mouseleave': function(){
+                        $(this).removeClass('mouseenter');
+                        var final = this.innerHTML.toLowerCase();
+                        if (!finalInitCnt[final]) return;
+                        for (var init in finalInitCnt[final]) {
+                            if (init == '*' || init == '@' || init == '-') {
+                                continue;
+                            }
+                            $('#' + initFinalCnt[init]['@'] + ' span:eq(2)').text('');
+                        }
+                    }
+                };
+                $('#final_count th').bind(associate);
                 $('#keyboard .keymain').each(function(index, elment){
                     $(elment).find('span:lt(2)').bind({
                         'mouseenter': function(){
@@ -228,7 +249,7 @@
                                 if (final == '*' || final == '@' || final == '-') {
                                     continue;
                                 }
-                                $('#' + finalInitCnt[final]['@'] + ' span:eq(2)').addClass('smaller ass')//
+                                $('#' + finalInitCnt[final]['@'] + ' span:eq(2)')//
                                 /*_*/
                                 .text(percent(finalInitCnt[final][init] * 10, finalInitCnt['*']));
                             }
@@ -241,46 +262,11 @@
                                 if (final == '*' || final == '@' || final == '-') {
                                     continue;
                                 }
-                                $('#' + finalInitCnt[final]['@'] + ' span:eq(2)').removeClass('smaller').text('');
+                                $('#' + finalInitCnt[final]['@'] + ' span:eq(2)').text('');
                             }
                         }
                     });
-                    $(elment).find('span:gt(1)').bind({
-                        'mouseenter': function(){
-                            var final = this.innerHTML.toLowerCase();
-                            if (!finalInitCnt[final]) return;
-                            var left = (Number(finalInitCnt[final]['@'].substring(3)) % 100 <= 5);
-                            var exchange = {
-                                'false': 0,
-                                'true': 0
-                            };
-                            for (var init in finalInitCnt[final]) {
-                                if (init == '*' || init == '@' || init == '-') {
-                                    continue;
-                                }
-                                var perc = percent(initFinalCnt[init][final] * 10, initFinalCnt['*']);
-                                var l = (Number(initFinalCnt[init]['@'].substring(3)) % 100 <= 5);
-                                exchange[l] += Number(perc);
-                                $('#' + initFinalCnt[init]['@'] + ' span:eq(2)').addClass('smaller ass').text(perc);
-                            }
-                            exchange['contrib'] = percent(exchange[!left] - exchange[left], 100);
-                            exchange[left] = percent(exchange[left], 100);
-                            exchange[!left] = percent(exchange[!left], 100);
-                            var text = 'contrib:\t' + (exchange['contrib']) + '\nleft:\t\t' + exchange['true'] + '\nright:\t\t' + exchange['false']
-                            $(this).addClass('mouseenter').attr('title', text);
-                        },
-                        'mouseleave': function(){
-                            $(this).removeClass('mouseenter');
-                            var final = this.innerHTML.toLowerCase();
-                            if (!finalInitCnt[final]) return;
-                            for (var init in finalInitCnt[final]) {
-                                if (init == '*' || init == '@' || init == '-') {
-                                    continue;
-                                }
-                                $('#' + initFinalCnt[init]['@'] + ' span:eq(2)').removeClass('smaller').text('');
-                            }
-                        }
-                    })
+                    $(elment).find('span:gt(1)').bind(associate);
                 });
                 $('#final_count table th, #keyboard .keymain span:gt(0)').bind({
                     'dragstart': function(ev){
@@ -297,7 +283,6 @@
                             effect = 'move';
                             $(this).addClass('dragging');
                         }
-                        // dt.setData('text/uri-list', dt.effectAllowed);
                         return true;
                     },
                     'dragend': function(ev){
@@ -382,7 +367,7 @@
                 
                 initialize(idea);
                 
-                $('#keyCtrlL').bind('click', function(){
+                $('#keyCtrlL').attr('title', 'Click here, try?').toggle(function(){
                     var idea = {
                         'zh': $('#' + initFinalCnt['zh']['@'] + ' span:eq(0)').text().toLowerCase(),
                         'ch': $('#' + initFinalCnt['ch']['@'] + ' span:eq(0)').text().toLowerCase(),
@@ -396,10 +381,14 @@
                             idea[final] = $('#' + finalInitCnt[final]['@'] + ' span:eq(0)').text().toLowerCase();
                         }
                     }
-                    $('#idea').html('var idea = ' +
-                    JSON.stringify(idea).replace('{', '{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;').replace(/,/g, function(m){
-                        return '<br>&nbsp;&nbsp;&nbsp;&nbsp;' + m;
-                    }).replace('}', "<br>};<br>"));
+                    $('#idea').show().text('var idea = ' +
+                    JSON.stringify(idea).replace('{', '{\n     ').replace(/,/g, function(m){
+                        return '\n    ' + m;
+                    }).replace('}', "\n};\n"));
+                    $(this).attr('title', 'Click here, try again?')
+                }, function(){
+                    $('#idea').hide().html('');
+                    $(this).attr('title', 'Click here, try?')
                 });
             })
             
@@ -437,7 +426,7 @@
                         /*_*/
                         .attr('draggable', true).addClass('draggable');
                         keyPercent[initFinalCnt[final]['@']] = initFinalCnt[final]['*'];
-                        $('#' + initFinalCnt[final]['@'] + ' span:eq(3)').addClass('smaller')//
+                        $('#' + initFinalCnt[final]['@'] + ' span:eq(3)')//
                         /*_*/
                         .text(percent(keyPercent[initFinalCnt[final]['@']], initFinalCnt['*']));
                         
@@ -449,7 +438,7 @@
                     calMoveWeight2(final, finalInitCnt[final]['@']);
                     
                     var $key = $('#' + finalInitCnt[final]['@']);
-                    $key.find('span:eq(3)').addClass('smaller') //
+                    $key.find('span:eq(3)') //
                     if (!$key.find('span:eq(5)').text()) {
                         $key.find('span:eq(5)').text(final) //
                         /*_*/
