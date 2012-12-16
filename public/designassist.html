@@ -130,9 +130,10 @@
                     .text(percent(keyPercent[initFinalCnt[init]['@']], initFinalCnt['*']));
                 }
                 
+                
                 var sorted = new Array();
                 for (var final in finalInitCnt) {
-                    if (final === '*') continue;
+                    if ('*,-,@,a,o,e,u,i,v'.indexOf(final) >= 0) continue;
                     sorted.push({
                         'final': final,
                         '*': finalInitCnt[final]['*']
@@ -206,7 +207,6 @@
                     'mouseenter': function(){
                         var final = this.innerHTML.toLowerCase();
                         if (!finalInitCnt[final]) return;
-                        var left = (Number(finalInitCnt[final]['@'].substring(3)) % 100 <= 5);
                         var exchange = {
                             'false': 0,
                             'true': 0
@@ -216,14 +216,21 @@
                                 continue;
                             }
                             var perc = percent(initFinalCnt[init][final] * 10, initFinalCnt['*']);
+                            $('#' + initFinalCnt[init]['@'] + ' span:eq(2)').text(perc);
                             var l = (Number(initFinalCnt[init]['@'].substring(3)) % 100 <= 5);
                             exchange[l] += Number(perc);
-                            $('#' + initFinalCnt[init]['@'] + ' span:eq(2)').text(perc);
                         }
-                        exchange['contrib'] = percent(exchange[!left] - exchange[left], 100);
-                        exchange[left] = percent(exchange[left], 100);
-                        exchange[!left] = percent(exchange[!left], 100);
-                        var text = 'contrib:\t' + (exchange['contrib']) + '\nleft:\t\t' + exchange['true'] + '\nright:\t\t' + exchange['false']
+                        exchange['true'] = percent(exchange['true'], 100);
+                        exchange['false'] = percent(exchange['false'], 100);
+                        var alloc = !!finalInitCnt[final]['@'];
+                        if (alloc) {
+                            var left = (Number(finalInitCnt[final]['@'].substring(3)) % 100 <= 5);
+                            exchange['contrib'] = percent(exchange[!left] - exchange[left], 100);
+                            var text = 'contrib:\t' + (exchange['contrib']) + '\nleft:\t\t' + exchange['true'] + '\nright:\t\t' + exchange['false']
+                        }
+                        else {
+                            var text = 'contrib:\t' + ('') + '\nleft:\t\t' + exchange['true'] + '\nright:\t\t' + exchange['false']
+                        }
                         $(this).addClass('mouseenter').attr('title', text);
                     },
                     'mouseleave': function(){
@@ -368,19 +375,24 @@
                 initialize(idea);
                 
                 $('#keyCtrlL').attr('title', 'Click here, try?').toggle(function(){
-                    var idea = {
-                        'zh': $('#' + initFinalCnt['zh']['@'] + ' span:eq(0)').text().toLowerCase(),
-                        'ch': $('#' + initFinalCnt['ch']['@'] + ' span:eq(0)').text().toLowerCase(),
-                        'sh': $('#' + initFinalCnt['sh']['@'] + ' span:eq(0)').text().toLowerCase()
-                    };
-                    for (var final in finalInitCnt) {
-                        if (final == '*' || final == '@' || final == '-') {
-                            continue;
+                    var idea = {};
+                    $('#keyboard .keymain').each(function(index, element){
+                        if ($(element).find('span:eq(0)').text().match(/[A-Z]/)) {
+                            var init = $(element).find("span:eq(1)").text();
+                            if (init) {
+                                idea[init] = $(element).find('span:eq(0)').text().toLowerCase();
+                            }
+                            var init = $(element).find("span:eq(4)").text();
+                            if (init) {
+                                idea[init] = $(element).find('span:eq(0)').text().toLowerCase();
+                            }
+                            var init = $(element).find("span:eq(5)").text();
+                            if (init) {
+                                idea[init] = $(element).find('span:eq(0)').text().toLowerCase();
+                            }
                         }
-                        if (finalInitCnt[final]['@']) {
-                            idea[final] = $('#' + finalInitCnt[final]['@'] + ' span:eq(0)').text().toLowerCase();
-                        }
-                    }
+                    });
+                    
                     $('#idea').show().text('var idea = ' +
                     JSON.stringify(idea).replace('{', '{\n     ').replace(/,/g, function(m){
                         return '\n    ' + m;
@@ -420,12 +432,12 @@
             
             function initialize(design){
                 for (var final in design) {
-                    if ('zh,ch,sh'.indexOf(final) >= 0) {
-                        initFinalCnt[final]['@'] = finalInitCnt[design[final]]['@'];
+                    if ('zh,ch,sh,y,w,z,l'.indexOf(final) >= 0) {
+                        initFinalCnt[final]['@'] = charPosition[design[final]];
                         $('#' + initFinalCnt[final]['@'] + ' span:eq(1)').text(final)//
                         /*_*/
                         .attr('draggable', true).addClass('draggable');
-                        keyPercent[initFinalCnt[final]['@']] = initFinalCnt[final]['*'];
+                        keyPercent[initFinalCnt[final]['@']] += initFinalCnt[final]['*'];
                         $('#' + initFinalCnt[final]['@'] + ' span:eq(3)')//
                         /*_*/
                         .text(percent(keyPercent[initFinalCnt[final]['@']], initFinalCnt['*']));
