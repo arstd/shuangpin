@@ -4,6 +4,12 @@
     margin: 0;
 }
 
+.cnzz {
+    position: fixed;
+    bottom: 0;
+    left: 5px;
+}
+
 body {
     text-align: center;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -175,7 +181,7 @@ body {
 }
 
 .userate {
-	color: blue;
+    color: blue;
 }
 
 #idea {

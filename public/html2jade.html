@@ -68,13 +68,12 @@
                     if (attrName === "id") {
                         jade.push("#" + attributes[i].value);
                     }
-                    else 
-                        if (attrName === "class") {
-                            jade.push("." + attributes[i].value.split(" ").join("."));
-                        }
-                        else {
-                            attrKeyVals.push(attrName + "=\"" + attributes[i].value + "\"");
-                        }
+                    else if (attrName === "class") {
+                        jade.push("." + attributes[i].value.split(" ").join("."));
+                    }
+                    else {
+                        attrKeyVals.push(attrName + "=\"" + attributes[i].value + "\"");
+                    }
                 }
                 
                 if (attrKeyVals.length > 0) {
@@ -136,5 +135,8 @@
             
             $html.focus();
         </script>
+        <div class="cnzz" style="position: fixed; bottom: 0; left: 5px;">
+            <script src="http://s13.cnzz.com/stat.php?id=4861154&web_id=4861154&show=pic1" type="text/javascript"></script>
+        </div>
     </body>
 </html>
