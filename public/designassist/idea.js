@@ -7,6 +7,48 @@ var idea =  {
 	in   : "s",	uai  : "s",	ai   : "q",	eng  : "j",	en   : "k",	ia   : "k",
 	ui   : "x",	iang : "x",	iao  : "b",	ing  : "m",	ve   : "w",	v    : "v"
 };
+/*** lispathon ***
+[声母] 
+
+# 双拼编码就是它本身的声母不必列出 
+
+ch=V 
+sh=U 
+zh=I 
+
+[韵母] 
+
+# 双拼编码就是它本身的韵母不必列出 
+
+ai=D 
+an=P 
+ang=H 
+ao=K 
+ei=Z 
+en=T 
+eng=G 
+er=R 
+ia=W 
+ian=N 
+iang=L 
+iao=Y 
+ie=X 
+in=M 
+ing=C 
+iong=S 
+iu=Q 
+ng=G 
+ong=S 
+ou=B 
+ua=W 
+uai=C 
+uan=R 
+uang=L 
+ue=F 
+ui=I 
+un=J 
+uo=O
+**************/
 
 /*** four ***
 var idea = {
