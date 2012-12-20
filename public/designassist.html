@@ -404,13 +404,22 @@
                         }
                     });
                     
-                    $('#idea').show().text('var idea = ' +
-                    JSON.stringify(idea).replace('{', '{\n     ').replace(/,/g, function(m){
-                        return '\n    ' + m;
-                    }).replace('}', "\n};\n"));
+                    var ideaTxt = 'var idea =  {\n\t', i = 1;
+                    for (var initFinal in idea) {
+                        ideaTxt += initFinal + '    '.substring(0, 4-initFinal.length) + ' : "' + idea[initFinal] + '",'; 
+                        if ( i++ % 6 == 0 )  {
+                            ideaTxt += '\n\t';
+                        } 
+                        else {
+                            ideaTxt += '\t';
+                        }
+                    }
+                    ideaTxt = ideaTxt.replace(/,\n?\t$/g, '\n};'); 
+
+                    $('#idea').val(ideaTxt).show();
                     $(this).attr('title', 'Click here, try again?')
                 }, function(){
-                    $('#idea').hide().html('');
+                    $('#idea').val('').hide();
                     $(this).attr('title', 'Click here, try?')
                 });
             })

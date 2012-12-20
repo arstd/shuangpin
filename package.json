@@ -1,11 +1,10 @@
 {
-    "name": "shuangpin"
-  , "version": "0.0.1"
+    "name": "shin"
+  , "version": "0.0.2"
   , "private": true
   , "dependencies": {
       "express": "2.5.8"
     , "ejs": ">= 0.0.1"
-    , "pg": "0.6.15"
   }
   , "engines": {
       "node": "0.8.14"

@@ -5,4 +5,4 @@ Tips:
 
 bug must be fixed:
 ------------------
-* syllable count has no 'luo'
+* syllable count has no 'luo' -> replace with head 4000 char pinyin
