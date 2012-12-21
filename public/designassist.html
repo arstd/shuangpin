@@ -406,7 +406,7 @@
                     
                     var ideaTxt = 'var idea =  {\n\t', i = 1;
                     for (var initFinal in idea) {
-                        ideaTxt += initFinal + '    '.substring(0, 4-initFinal.length) + ' : "' + idea[initFinal] + '",'; 
+                        ideaTxt += initFinal + '    '.substring(0, 4-initFinal.length) + ':"' + idea[initFinal] + '",'; 
                         if ( i++ % 6 == 0 )  {
                             ideaTxt += '\n\t';
                         } 
