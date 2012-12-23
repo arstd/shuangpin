@@ -1,11 +1,11 @@
 /*** fifth ***/
 var idea =  {
-	ei: "p",	ang : "y",	iu  : "f",	un : "g",	uan: "c",	ou : "r",
-	ie: "l",	uang: "l",	sh  : "a",	a  : "a",	zh : "o",	o  : "o",
-	uo: "o",	ch  : "e",	e   : "e",	er : "e",	u  : "u",	i  : "i",
-	ao: "d",	an  : "h",	iong: "h",	ian: "t",	ua : "t",	ong: "n",
-	in: "s",	uai : "s",	ai  : "q",	eng: "j",	en : "k",	ia : "k",
-	ui: "x",	iang: "x",	iao : "b",	ing: "m",	ve : "w",	v  : "v"
+	ei  :"p",	ang :"y",	iu  :"f",	un  :"g",	uan :"c",	ou  :"r",
+	ie  :"l",	uang:"l",	sh  :"a",	a   :"a",	zh  :"o",	o   :"o",
+	uo  :"o",	ch  :"e",	e   :"e",	er  :"e",	u   :"u",	i   :"i",
+	ao  :"d",	an  :"h",	ian :"t",	ua  :"t",	ong :"n",	iong:"n",
+	in  :"s",	uai :"s",	ai  :"q",	eng :"j",	en  :"k",	ia  :"k",
+	ui  :"x",	iang:"x",	iao :"b",	ing :"m",	ve  :"w",	v   :"v"
 };
 /**************/
 /*** hongjq ***
