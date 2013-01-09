@@ -1,0 +1,31 @@
+body {
+    background: lightBlue;
+}
+
+#typing {
+    border: 50px solid #084563;
+    margin: 3% 10%;
+    padding: 5px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+
+    text-align: left;
+    font-family: TexGyreCursor-Bold, Courier, Verdana, Arial, Helvetica, sans-serif;
+    font-weight: bolder;
+    font-size: 25px;
+
+    color: #999;
+    line-height: 35px;
+}
+
+.current { color: black; }
+.right { color: green; }
+.error { color: red; }
+
+#text {
+    width: 50%;
+    height: 200px;
+    margin: 0 10%;
+    background: transparent;
+}
