@@ -12,22 +12,84 @@
         <link rel="stylesheet" href="typing/typing.css" />
     </head>
     <body>
+	<input type="text" id="handler" />
         <div id="typing"></div>
-        <textarea id="text"></textarea>
+        <textarea id="text">
+In Perl 5 Essential Training, author Bill Weinman explains the fundamentals of programming in Perl,
+</textarea>
+	<button type="text" id="commit" class="btn btn-primary">Commit</button>
         <script type="text/javascript">
         $(function(){
-            $('#text').on('blur', function(){
-                $('#typing').html(this.value.replace(/[^\n]/g, function(m){
-                    return '<span>' + m + '</span>';
-                }).replace(/\n/g, '<br>').replace(/span/, 'span class="current"'));		
+            $('#commit').on({
+		'click': function(){
+		        $('#typing').html($('#text').val().replace(/[^\n]/g, function(m){
+		            return '<span>' + m + '</span>';
+		        }).replace(/\n/g, '<br>')
+			.replace(/span/, 'span class="current start"'));
+			$('#handler')[0].focus();
+			charCount = $('#text').val().length;
+		}
             });
-            $('body').live('keyup', function(event) {
-                event.preventDefault();
-                $('#typing .current').removeClass('current').addClass('right')
-                    .next().addClass('current');
+	    $('#typing').on({
+		'click': function() {
+			$('#handler')[0].focus();
+		}
+	    });
+
+            $('#handler').on({
+		'keypress': function(event) {
+		        event.preventDefault();
+			switch (event.keyCode) {
+				case 16 : return;
+				case 8: return;
+				default: 
+					this.value = '';
+					var char = String.fromCharCode(event.keyCode);
+					if(!event.shiftKey) char = char.toLowerCase();
+					typing(char);  
+					return;
+			}
+		},
+		'keydown':  function(event) {
+			this.value = '';
+			switch (event.keyCode) {
+				case 16 : event.preventDefault();return;
+				case 8: event.preventDefault();backspace(); return;
+				default:  return;
+			}
+		}
             });
         });
+	
+	var stime = new Date(), charCount;
+	
+	function backspace() {
+		if ($('#typing .current').prev().length > 0) {
+			$('#typing .current').removeClass('current right error').prev().addClass('current');
+		}
+	}
+	function typing(char){
+		//$('#text').val($('#text').val() + char + '(' + event.keyCode + ')');
 
+		if(char == $('#typing .current').text()) {
+			if ($('#typing .current').next().length > 0) {
+	                	$('#typing .current').removeClass('current error')
+					.addClass('right').next().addClass('current');
+			} else {
+				$('#typing .current').removeClass('current').addClass('error');
+				alert('Congratulations: ' + Math.round(charCount / (new Date() - stime) * 60000)  + 'kms');
+				$('#handler').blur();
+			}
+		} else {
+			if ($('#typing .current').next().length > 0) {
+				$('#typing .current').removeClass('current').addClass('error').next().addClass('current');
+			} else {
+				$('#typing .current').removeClass('current').addClass('error');
+				alert('Congratulations: ' + Math.round(charCount / (new Date() - stime) * 60000)  + 'kms');
+				$('#handler').blur();
+			}
+		} 
+	}
         </script>
     </body>
 </html>

@@ -2,6 +2,11 @@ body {
     background: lightBlue;
 }
 
+#handler {
+	position: fixed;
+	top: 1000px;
+}
+
 #typing {
     border: 50px solid #084563;
     margin: 3% 10%;
@@ -19,13 +24,14 @@ body {
     line-height: 35px;
 }
 
-.current { color: black; }
+
+.current { background: black; }
 .right { color: green; }
 .error { color: red; }
 
 #text {
     width: 50%;
-    height: 200px;
+    height: 100px;
     margin: 0 10%;
     background: transparent;
 }
