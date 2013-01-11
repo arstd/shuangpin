@@ -14,20 +14,47 @@
     <body>
 	<input type="text" id="handler" />
         <div id="typing"></div>
-        <textarea id="text">
-In Perl 5 Essential Training, author Bill Weinman explains the fundamentals of programming in Perl,
-</textarea>
+        <textarea id="text">I was always a little in awe of Great-aunt Stephina Roos. Indeed, as children we were all frankly terrified of her. The fact that she did not live with the family, preferring her tiny cottage and solitude to the comfortable but rather noisy household where we were brought up-added to the respectful fear in which she was held.
+
+
+　　We used to take it in turn to carry small delicacies which my mother had made down from the big house to the little cottage where Aunt Stephia and an old colored maid spent their days. Old Tnate Sanna would open the door to the rather frightened little messenger and would usher him-or her - into the dark voor-kamer, where the shutters were always closed to keep out the heat and the flies. There we would wait, in trembling but not altogether unpleasant.
+
+　　She was a tiny little woman to inspire so much veneration. She was always dressed in black, and her dark clothes melted into the shadows of the voor-kamer and made her look smaller than ever. But you felt. The moment she entered. That something vital and strong and somehow indestructible had come in with her, although she moved slowly, and her voice was sweet and soft.</textarea>
 	<button type="text" id="commit" class="btn btn-primary">Commit</button>
+	<div id="stat">
+		CharCount:<span id="charCount">-</span>,
+		Current:<span id="currentCount">-</span>,
+		RightCount:<span id="rightCount">-</span>,
+		ErrorCount:<span id="errorCount">-</span>,
+		BackCount:<span id="backspaceCount">-</span>,
+		UsedTime:<span id="usedTime">-</span>s,
+		Speed:<span id="speed">-</span>kpm
+	</div>
         <script type="text/javascript">
+	
+	var typ = {
+		stat: {
+			charCount: $('#charCount'),
+			currentCount: $('#currentCount'),
+			rightCount: $('#rightCount'),
+			errorCount: $('#errorCount'),
+			backspaceCount: $('#backspaceCount'),			
+			usedTime: $('#usedTime'),
+			speed: $('#speed')
+		}	
+	};
+
         $(function(){
             $('#commit').on({
 		'click': function(){
 		        $('#typing').html($('#text').val().replace(/[^\n]/g, function(m){
 		            return '<span>' + m + '</span>';
 		        }).replace(/\n/g, '<br>')
-			.replace(/span/, 'span class="current start"'));
+			.replace(/span/, 'span class="current"'));
 			$('#handler')[0].focus();
-			charCount = $('#text').val().length;
+			typ.charCount = $('#text').val().length;
+			typ.current = null;
+			clearInterval(typ.timing);
 		}
             });
 	    $('#typing').on({
@@ -40,14 +67,14 @@ In Perl 5 Essential Training, author Bill Weinman explains the fundamentals of p
 		'keypress': function(event) {
 		        event.preventDefault();
 			switch (event.keyCode) {
-				case 16 : return;
-				case 8: return;
-				default: 
-					this.value = '';
-					var char = String.fromCharCode(event.keyCode);
-					if(!event.shiftKey) char = char.toLowerCase();
-					typing(char);  
-					return;
+			case 16 : return;
+			case 8: return;
+			default: 
+				this.value = '';
+				var char = String.fromCharCode(event.keyCode);
+				if(!event.shiftKey) char = char.toLowerCase();
+				typing(char);  
+				return;
 			}
 		},
 		'keydown':  function(event) {
@@ -61,34 +88,69 @@ In Perl 5 Essential Training, author Bill Weinman explains the fundamentals of p
             });
         });
 	
-	var stime = new Date(), charCount;
-	
 	function backspace() {
-		if ($('#typing .current').prev().length > 0) {
-			$('#typing .current').removeClass('current right error').prev().addClass('current');
+		if (typ.currentCount != 0) {
+			typ.current.removeClass('current right error');
+			typ.current = typ.current.prev().addClass('current');
+
+			typ.backspaceCount++;
+			typ.currentCount--;
 		}
 	}
-	function typing(char){
+
+	function typing(char){	
+		if (typ.current == null) {
+			startTyping();
+		}	
+		typ.currentCount++;
 		//$('#text').val($('#text').val() + char + '(' + event.keyCode + ')');
 
-		if(char == $('#typing .current').text()) {
-			if ($('#typing .current').next().length > 0) {
-	                	$('#typing .current').removeClass('current error')
-					.addClass('right').next().addClass('current');
-			} else {
-				$('#typing .current').removeClass('current').addClass('error');
-				alert('Congratulations: ' + Math.round(charCount / (new Date() - stime) * 60000)  + 'kms');
-				$('#handler').blur();
-			}
+		typ.current.removeClass('current right error');
+
+		if (char == typ.current.text()) {
+			typ.current.addClass('right');
+			typ.rightCount++;
 		} else {
-			if ($('#typing .current').next().length > 0) {
-				$('#typing .current').removeClass('current').addClass('error').next().addClass('current');
-			} else {
-				$('#typing .current').removeClass('current').addClass('error');
-				alert('Congratulations: ' + Math.round(charCount / (new Date() - stime) * 60000)  + 'kms');
-				$('#handler').blur();
-			}
-		} 
+			typ.current.addClass('error');
+			typ.errorCount++;
+		}
+		
+		typ.current = typ.current.next().addClass('current');
+		if (typ.currentCount == typ.charCount) {
+			finishTyping();
+		}
+	}
+	
+	function startTyping() {
+		typ = {
+			charCount: typ.charCount,
+			stat: typ.stat,
+			stime: new Date(),
+			rightCount: 0,
+			errorCount: 0,
+			backspaceCount: 0,
+			currentCount: 0,
+			current: $('#typing .current')
+		}
+		typ.timing = setInterval(fillTime, 500);
+	}
+	function fillTime() {
+		typ.stat.charCount.text(typ.charCount),
+		typ.stat.usedTime.text((new Date() - typ.stime)/1000),
+		typ.stat.rightCount.text(typ.rightCount),
+		typ.stat.errorCount.text(typ.errorCount),
+		typ.stat.backspaceCount.text(typ.backspaceCount),
+		typ.stat.currentCount.text(typ.currentCount);
+		typ.stat.speed.text(Math.round(typ.currentCount/(new Date() - typ.stime)*60000));
+		if (typ.current.offset().top - $(document).scrollTop() > $(window).height() * 0.8) {
+			$(document).scrollTop(window.innerHeight * 0.7 + $(document).scrollTop());
+		}
+	}
+	function finishTyping() {
+		clearInterval(typ.timing);
+		fillTime();
+		$('#handler').blur();
+		alert('Congratulations: ' + Math.round(typ.currentCount / (new Date() - typ.stime) * 60000)  + 'kms');
 	}
         </script>
     </body>

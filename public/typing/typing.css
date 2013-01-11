@@ -4,8 +4,24 @@ body {
 
 #handler {
 	position: fixed;
-	top: 1000px;
+	top: 0;  
+	left: -1000px;
 }
+
+#stat {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	text-align: center;
+	background: #E8E5E3;
+}
+
+#stat span {
+	color: blue;
+	margin: auto 5px;
+}
+
 
 #typing {
     border: 50px solid #084563;
