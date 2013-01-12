@@ -1,3 +1,14 @@
+@font-face
+{
+    font-family: "texgyrecursor-bold";
+    /*    
+    src: url('http://www.speedtypingonline.com/fonts/texgyrecursorbold.eot');
+    src: local(texgyrecursor-bold), url('http://www.speedtypingonline.com/fonts/texgyrecursor-bold.otf') format('opentype');
+    */  
+    src: url('/fonts/texgyrecursorbold.eot');
+    src: local(texgyrecursor-bold), url('/fonts/texgyrecursor-bold.otf') format('opentype');
+}
+
 body {
     background: lightBlue;
 }
@@ -33,7 +44,7 @@ body {
 
     text-align: left;
     font-family: TexGyreCursor-Bold, Courier, Verdana, Arial, Helvetica, sans-serif;
-    font-weight: bolder;
+    font-weight: bold;
     font-size: 25px;
 
     color: #999;
