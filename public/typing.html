@@ -91,7 +91,7 @@ I only wish to face the sea, with spring blossoms.
 			.replace(/[^\x00-\xff]/g, '')
 			.replace(/[^\n]/g, function(m){
 		            return '<span>' + m + '</span>';
-		        }).replace(/\n+/g, '<br>')
+		        }).replace(/\n\n+/g, '<br><br>').replace(/\n/g, '<br>')
 			.replace(/span/, 'span class="current"'));
 			$('#handler')[0].focus();
 			typ.charCount = $('#text').val().length;
