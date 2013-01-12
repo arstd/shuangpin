@@ -14,12 +14,52 @@
     <body>
 	<input type="text" id="handler" />
         <div id="typing"></div>
-        <textarea id="text">I was always a little in awe of Great-aunt Stephina Roos. Indeed, as children we were all frankly terrified of her. The fact that she did not live with the family, preferring her tiny cottage and solitude to the comfortable but rather noisy household where we were brought up-added to the respectful fear in which she was held.
+        <textarea id="text">
+Facing the Sea With Spring Blossoms - HaiZi
+面朝大海，春暖花开—海子
 
+From tomorrow on, I will be a happy man.
+从明天起，做一个幸福的人
 
-　　We used to take it in turn to carry small delicacies which my mother had made down from the big house to the little cottage where Aunt Stephia and an old colored maid spent their days. Old Tnate Sanna would open the door to the rather frightened little messenger and would usher him-or her - into the dark voor-kamer, where the shutters were always closed to keep out the heat and the flies. There we would wait, in trembling but not altogether unpleasant.
+Grooming, chopping and traveling all over the world.
+喂马，劈柴，周游世界
 
-　　She was a tiny little woman to inspire so much veneration. She was always dressed in black, and her dark clothes melted into the shadows of the voor-kamer and made her look smaller than ever. But you felt. The moment she entered. That something vital and strong and somehow indestructible had come in with her, although she moved slowly, and her voice was sweet and soft.</textarea>
+From tomorrow on, I will care foodstuff and vegetable.
+从明天起，关心粮食和蔬菜
+
+Living in a house towards the sea, with spring blossoms.
+我有一所房子，面朝大海，春暖花开
+
+From tomorrow on,write to each of my dear ones.
+从明天起，和每一个人通信
+
+Telling them of my happiness.
+告诉他们我的幸福
+
+What the lightening of happiness has told me.
+那幸福的闪电告诉我的
+
+I will spread it to each of them.
+我将告诉每一个人
+
+Give a warm name for every river and every mountain.
+给每一条河每一座山取一个温暖的名字
+
+Strangers, I will also wish you happy.
+陌生人，我也为你祝福
+
+May you have a brilliant future!
+愿你有一个灿烂的前程
+
+May you lovers eventually become spouses!
+愿有情人终成眷属
+
+May you enjoy happiness in this earthly world!
+愿你们在尘世获得幸福
+
+I only wish to face the sea, with spring blossoms.
+我只愿面朝大海，春暖花开
+	</textarea>
 	<button type="text" id="commit" class="btn btn-primary">Commit</button>
 	<div id="stat">
 		CharCount:<span id="charCount">-</span>,
@@ -47,9 +87,11 @@
         $(function(){
             $('#commit').on({
 		'click': function(){
-		        $('#typing').html($('#text').val().replace(/[^\n]/g, function(m){
+		        $('#typing').html($('#text').val()
+			.replace(/[^\x00-\xff]/g, '')
+			.replace(/[^\n]/g, function(m){
 		            return '<span>' + m + '</span>';
-		        }).replace(/\n/g, '<br>')
+		        }).replace(/\n+/g, '<br>')
 			.replace(/span/, 'span class="current"'));
 			$('#handler')[0].focus();
 			typ.charCount = $('#text').val().length;
@@ -71,9 +113,7 @@
 			case 8: return;
 			default: 
 				this.value = '';
-				var char = String.fromCharCode(event.keyCode);
-				if(!event.shiftKey) char = char.toLowerCase();
-				typing(char);  
+				typing(event.keyCode);  
 				return;
 			}
 		},
@@ -89,7 +129,7 @@
         });
 	
 	function backspace() {
-		if (typ.currentCount != 0) {
+		if (typ.currentCount) {
 			typ.current.removeClass('current right error');
 			typ.current = typ.current.prev().addClass('current');
 
@@ -98,16 +138,20 @@
 		}
 	}
 
-	function typing(char){	
+	function typing(keyCode){
 		if (typ.current == null) {
 			startTyping();
 		}	
 		typ.currentCount++;
-		//$('#text').val($('#text').val() + char + '(' + event.keyCode + ')');
 
 		typ.current.removeClass('current right error');
 
-		if (char == typ.current.text()) {
+
+		var char = String.fromCharCode(keyCode);
+		if(!event.shiftKey) char = char.toLowerCase();
+		var requreChar = (typ.current[0].tagName == 'BR' ? ' ' : typ.current.text());
+
+		if (char == requreChar) {
 			typ.current.addClass('right');
 			typ.rightCount++;
 		} else {
@@ -116,7 +160,7 @@
 		}
 		
 		typ.current = typ.current.next().addClass('current');
-		if (typ.currentCount == typ.charCount) {
+		if (!typ.current.length) {
 			finishTyping();
 		}
 	}
@@ -142,7 +186,7 @@
 		typ.stat.backspaceCount.text(typ.backspaceCount),
 		typ.stat.currentCount.text(typ.currentCount);
 		typ.stat.speed.text(Math.round(typ.currentCount/(new Date() - typ.stime)*60000));
-		if (typ.current.offset().top - $(document).scrollTop() > $(window).height() * 0.8) {
+		if (typ.current.length && typ.current.offset().top - $(document).scrollTop() > $(window).height() * 0.8) {
 			$(document).scrollTop(window.innerHeight * 0.7 + $(document).scrollTop());
 		}
 	}
