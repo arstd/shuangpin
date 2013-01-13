@@ -22,6 +22,7 @@ body {
 	width: 100%;
 	text-align: center;
 	background: #E8E5E3;
+	font-family: TexGyreCursor-Bold, Courier, Verdana, Arial, Helvetica, sans-serif;
 }
 
 #stat span {

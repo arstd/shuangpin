@@ -1,17 +1,32 @@
 var typ = {
+	rightSounds: (function() {
+		var sounds = [];
+		for (var i = 0; i < 25; i++) {
+			var audio = new Audio("/sound/type.wav");
+			audio.volume = 0.5;
+			sounds.push(audio);
+		}
+		return sounds;
+	})(),	
+	wrongSounds: (function() {
+		var sounds = [];
+		for (var i = 0; i < 25; i++) {
+			var audio = new Audio("/sound/error.wav");
+			audio.volume = 0.5;
+			sounds.push(audio);
+		}
+		return sounds;
+	})(),
 	play: function(sound) {
+		var index = Math.floor(new Date().getMilliseconds()%250/10);
 		switch(sound) {
-		case 'wrong-sound': 
-			var es = new Audio("/sound/error.wav");
-			es.volume = 0.5;
-			es.play(); 
+		case 'wrong-sound':
+			this.wrongSounds[index].play(); 
 			break;
-		case 'right-sound': 
-			var ts = new Audio("/sound/type.wav")
-			ts.volume = 0.5;
-			ts.play();
+		case 'right-sound':
+			this.rightSounds[index].play();
 			break;
-		default: 
+		default:
 			break;
 		}
 	},
