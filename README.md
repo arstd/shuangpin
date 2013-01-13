@@ -4,5 +4,9 @@ Tips:
 2. not prefect
 
 bug must be fixed:
-------------------
-* syllable count has no 'luo' -> replace with head 4000 char pinyin
+-----------------
+1. 
+
+better:
+----------------
+1. 打字声音效果

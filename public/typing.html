@@ -5,7 +5,6 @@
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <meta name="keywords" content="Dvorak,QWERTY,键盘,布局,打字,双拼" />
         <meta name="author" content="毛毛雨(shangxuejin@gmail.com)" />
-        <script type="text/javascript" src="scripts/jquery.min.js"></script>
         <link rel="shortcut icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon" />
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
         <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css" />
@@ -57,133 +56,8 @@ I only wish to face the sea, with spring blossoms.
 		UsedTime:<span id="usedTime">-</span>s,
 		Speed:<span id="speed">-</span>kpm
 	</div>
-        <script type="text/javascript">
-	
-	var typ = {
-		stat: {
-			charCount: $('#charCount'),
-			currentCount: $('#currentCount'),
-			rightCount: $('#rightCount'),
-			errorCount: $('#errorCount'),
-			backspaceCount: $('#backspaceCount'),			
-			usedTime: $('#usedTime'),
-			speed: $('#speed')
-		}	
-	};
-
-        $(function(){
-            $('#commit').on({
-		'click': function(){
-		        $('#typing').html($('#text').val()
-			.replace(/[^\x00-\xff]+\n?/g, '')
-			.replace(/[^\n]/g, function(m){
-		            return '<span>' + m + '</span>';
-		        }).replace(/ *\n*$/,'').replace(/\n\n+/g, '<br><br>').replace(/\n/g, '<br>')
-			.replace(/span/, 'span class="current"'));
-			$('#handler')[0].focus();
-			typ.charCount = $('#typing span, #typing br').length;
-			typ.current = null;
-			clearInterval(typ.timing);
-		}
-            });
-	    $('#typing').on({
-		'click': function() {
-			$('#handler')[0].focus();
-		}
-	    });
-
-            $('#handler').on({
-		'keypress': function(event) {
-		        event.preventDefault();
-			switch (event.keyCode) {
-			case 16 : return;
-			case 8: return;
-			default: 
-				this.value = '';
-				typing(event.keyCode);  
-				return;
-			}
-		},
-		'keydown':  function(event) {
-			this.value = '';
-			switch (event.keyCode) {
-				case 16 : event.preventDefault();return;
-				case 8: event.preventDefault();backspace(); return;
-				default:  return;
-			}
-		}
-            });
-        });
-	
-	function backspace() {
-		if (typ.currentCount) {
-			typ.current.removeClass('current right error');
-			typ.current = typ.current.prev().addClass('current');
-
-			typ.backspaceCount++;
-			typ.currentCount--;
-		}
-	}
-
-	function typing(keyCode){
-		if (typ.current == null) {
-			startTyping();
-		}	
-		typ.currentCount++;
-
-		typ.current.removeClass('current right error');
-
-
-		var char = String.fromCharCode(keyCode);
-		if(!event.shiftKey) char = char.toLowerCase();
-		var requreChar = (typ.current[0].tagName == 'BR' ? ' ' : typ.current.text());
-
-		if (char == requreChar) {
-			typ.current.addClass('right');
-			typ.rightCount++;
-		} else {
-			typ.current.addClass('error');
-			typ.errorCount++;
-		}
-		
-		typ.current = typ.current.next().addClass('current');
-		if (!typ.current.length) {
-			finishTyping();
-		}
-	}
-	
-	function startTyping() {
-		typ = {
-			charCount: typ.charCount,
-			stat: typ.stat,
-			stime: new Date(),
-			rightCount: 0,
-			errorCount: 0,
-			backspaceCount: 0,
-			currentCount: 0,
-			current: $('#typing .current')
-		}
-		typ.timing = setInterval(fillTime, 500);
-	}
-	function fillTime() {
-		typ.stat.charCount.text(typ.charCount),
-		typ.stat.usedTime.text((new Date() - typ.stime)/1000),
-		typ.stat.rightCount.text(typ.rightCount),
-		typ.stat.errorCount.text(typ.errorCount),
-		typ.stat.backspaceCount.text(typ.backspaceCount),
-		typ.stat.currentCount.text(typ.currentCount);
-		typ.stat.speed.text(Math.round(typ.currentCount/(new Date() - typ.stime)*60000));
-		if (typ.current.length && typ.current.offset().top - $(document).scrollTop() > $(window).height() * 0.8) {
-			$(document).scrollTop(window.innerHeight * 0.7 + $(document).scrollTop());
-		}
-	}
-	function finishTyping() {
-		clearInterval(typ.timing);
-		fillTime();
-		$('#handler').blur();
-		alert('Congratulations: ' + Math.round(typ.currentCount / (new Date() - typ.stime) * 60000)  + 'kms');
-	}
-        </script>
+        <script type="text/javascript" src="scripts/jquery.min.js"></script>
+        <script type="text/javascript" src="typing/typing.js"></script>
     </body>
 </html>
 
