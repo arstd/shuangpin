@@ -4,6 +4,11 @@
     src: url('/fonts/texgyrecursorbold.eot');
     src: local(texgyrecursor-bold), url('/fonts/texgyrecursor-bold.otf') format('opentype');
 }
+.cnzz {
+    position: fixed;
+    bottom: 0;
+    left: 5px;
+}
 
 body {
     background: lightBlue;
