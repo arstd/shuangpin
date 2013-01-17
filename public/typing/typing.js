@@ -44,12 +44,33 @@ var typ = {
 $(function(){
     $('#commit').on({
 	'click': function(){
-	        $('#typing').html($('#text').val()
+	        $('#typing').html($('#text').val().replace(/\s*\n*$/,'')
 			.replace(/[^\x00-\xff]+\n?/g, '')
 			.replace(/[^\n]/g, function(m){
 			    return '<span>' + m + '</span>';
-			}).replace(/ *\n*$/,'').replace(/\n\n+/g, '<br><br>')
+			}).replace(/\n\n+/g, '<br><br>')
 			.replace(/\n/g, '<br>')
+			.replace(/span/, 'span class="current"'));
+		$('#handler')[0].focus();
+		typ.charCount = $('#typing span').length;
+		typ.current = null;
+		clearInterval(typ.timing);
+	}
+    });
+
+    $('#random').on({
+	'click': function(){
+		var chars = ";,.pyaoeui'qjkxfgcrldhtnsbmwvz".split('');
+		var text = '';
+		for (var i = Math.floor(500 / 2); i > 0; i--) {
+			text += chars[Math.floor(15*Math.random())];
+			text += chars[Math.floor(15*Math.random())+15];
+			text += ' ';
+		}
+	        $('#typing').html(text.replace(/\s*\n*$/,'')
+			.replace(/./g, function(m){
+			    return '<span>' + m + '</span>';
+			}).replace('<span> </span>', '<span>&nbsp;</span>')
 			.replace(/span/, 'span class="current"'));
 		$('#handler')[0].focus();
 		typ.charCount = $('#typing span').length;
