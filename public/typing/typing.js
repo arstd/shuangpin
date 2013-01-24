@@ -59,24 +59,23 @@ $(function(){
     });
 
     $('#random').on({
-	'click': function(){
-		var chars = ";,.pyaoeui'qjkxfgcrldhtnsbmwvz".split('');
-		var text = '';
-		for (var i = Math.floor(500 / 2); i > 0; i--) {
-			text += chars[Math.floor(15*Math.random())];
-			text += chars[Math.floor(15*Math.random())+15];
-			text += ' ';
-		}
-	        $('#typing').html(text.replace(/\s*\n*$/,'')
-			.replace(/./g, function(m){
-			    return '<span>' + m + '</span>';
-			}).replace('<span> </span>', '<span>&nbsp;</span>')
-			.replace(/span/, 'span class="current"'));
-		$('#handler')[0].focus();
-		typ.charCount = $('#typing span').length;
-		typ.current = null;
-		clearInterval(typ.timing);
-	}
+        'click': function(){
+            var chars = "qwfpgarstdzxcvbjluy;hneiokm,./".split('');
+            var text = '';
+            for (var i = Math.floor(500 / 2); i > 0; i--) {
+                text += chars[Math.floor(15*Math.random())];
+                text += chars[Math.floor(15*Math.random())+15];
+                text += ' ';
+            }
+                $('#typing').html(text.replace(/\s*\n*$/,'')
+                .replace(/./g, function(m){
+                    return '<span>' + m + '</span>';
+                }).replace(/span/, 'span class="current"'));
+            $('#handler')[0].focus();
+            typ.charCount = $('#typing span').length;
+            typ.current = null;
+            clearInterval(typ.timing);
+        }
     });
 
     $('#handler').on({

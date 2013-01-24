@@ -39,6 +39,13 @@ body {
     height: 60px;
     border: 1px solid #808080;
     margin-right: 1px;
+	-moz-box-shadow: 0 0 3px 2px #06C;
+	-webkit-box-shadow: 0 0 3px 2px #06C;
+	box-shadow: 0 0 3px 2px #06C;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+
 }
 
 #keyboard > div > div > span {
@@ -55,15 +62,15 @@ body {
 }
 
 #keyboard #keyBackspace {
-    width: 120px;
+    width: 119px;
 }
 
 #keyboard #keyTab {
-    width: 85px;
+    width: 97px;
 }
 
 #keyboard #key113 {
-    width: 95px;
+    width: 82px;
 }
 
 #keyboard #keyCapsLock {
@@ -71,7 +78,7 @@ body {
 }
 
 #keyboard #keyEnter {
-    width: 138px;
+    width: 123px;
 }
 
 #keyboard #keyShiftL {

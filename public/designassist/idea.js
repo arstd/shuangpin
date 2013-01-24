@@ -1,4 +1,24 @@
-/*** fifth ***/
+var idea =  {
+	iu  :"q",	ve  :"w",	ei  :"f",	in  :"p",	ing :"g",	eng :"j",
+	ang :"l",	zh  :"u",	u   :"u",	uan :"y",	a   :"a",	ao  :"r",
+	ai  :"s",	iang:"t",	uang:"t",	ou  :"d",	ong :"h",	iong:"h",
+	ian :"n",	uai :"n",	e   :"e",	er  :"e",	ch  :"i",	i   :"i",
+	o   :"o",	uo  :"o",	ie  :"z",	un  :"x",	ia  :"c",	ua  :"c",
+	sh  :"v",	v   :"v",	ui  :"v",	iao :"b",	an  :"k",	en  :"m"
+};
+
+/*** colemak 1rt ***
+var idea =  {
+	ia  :"q",	ua  :"q",	un  :"w",	uan :"f",	iao :"p",	iu  :"g",
+	eng :"j",	ong :"l",	iong:"l",	u   :"u",	ao  :"y",	zh  :"a",
+	a   :"a",	ang :"r",	ou  :"s",	ei  :"t",	ian :"d",	uai :"d",
+	ai  :"h",	ing :"n",	ch  :"e",	e   :"e",	er  :"e",	i   :"i",
+	o   :"o",	uo  :"o",	ve  :"z",	iang:"x",	uang:"x",	in  :"c",
+	sh  :"v",	v   :"v",	ui  :"v",	ie  :"b",	an  :"k",	en  :"m"
+};
+**************/
+
+/*** fifth ***
 var idea =  {
 	ei  :"p",	ang :"y",	iu  :"f",	un  :"g",	uan :"c",	ou  :"r",
 	ie  :"l",	uang:"l",	sh  :"a",	a   :"a",	zh  :"o",	o   :"o",
@@ -7,7 +27,7 @@ var idea =  {
 	in  :"s",	uai :"s",	ai  :"q",	eng :"j",	en  :"k",	ia  :"k",
 	ui  :"x",	iang:"x",	iao :"b",	ing :"m",	ve  :"w",	v   :"v"
 };
-/**************/
+**************/
 /*** hongjq ***
 var idea = {
     a   :"a",   o   :"o",   e   :"e",   i   :"i",   u   :"u",   v   :"k",
