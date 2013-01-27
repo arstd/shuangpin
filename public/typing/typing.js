@@ -44,7 +44,9 @@ var typ = {
 $(function(){
     $('#commit').on({
 	'click': function(){
-	        $('#typing').html($('#text').val().replace(/\s*\n*$/,'')
+	        $('#typing').html($('#text').val()
+			.replace(/\n(\s*\n)+$/,'\n')
+			.replace(/  +$/,' ')
 			.replace(/[^\x00-\xff]+\n?/g, '')
 			.replace(/[^\n]/g, function(m){
 			    return '<span>' + m + '</span>';
@@ -60,11 +62,11 @@ $(function(){
 
     $('#random').on({
         'click': function(){
-            var chars = "qwfpgarstdzxcvbjluy;hneiokm,./".split('');
+            var chars = "arstdhneio".split('');
             var text = '';
             for (var i = Math.floor(500 / 2); i > 0; i--) {
-                text += chars[Math.floor(15*Math.random())];
-                text += chars[Math.floor(15*Math.random())+15];
+                text += chars[Math.floor(chars.length / 2 * Math.random())];
+                text += chars[Math.floor(chars.length / 2 * Math.random()) + chars.length / 2];
                 text += ' ';
             }
                 $('#typing').html(text.replace(/\s*\n*$/,'')
@@ -97,7 +99,8 @@ $(function(){
 	'keypress': function(event) {
 	        event.preventDefault();
 		switch (event.keyCode) {
-		case 16 : return;
+		case 7:
+		case 16: return;
 		case 8: return;
 		default: 
 			this.value = '';
@@ -108,9 +111,10 @@ $(function(){
 	'keydown':  function(event) {
 		this.value = '';
 		switch (event.keyCode) {
-			case 16 : event.preventDefault();return;
-			case 8: event.preventDefault();backspace(); return;
-			default:  return;
+		case 7:
+		case 16: event.preventDefault();return;
+		case 8: event.preventDefault();backspace(); return;
+		default:  return;
 		}
 	}
     });

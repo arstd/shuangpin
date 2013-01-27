@@ -1,3 +1,4 @@
+/*** colemak 1rt ***/
 var idea =  {
 	iu  :"q",	ve  :"w",	ei  :"f",	in  :"p",	ing :"g",	eng :"j",
 	ang :"l",	zh  :"u",	u   :"u",	uan :"y",	a   :"a",	ao  :"r",
@@ -6,6 +7,7 @@ var idea =  {
 	o   :"o",	uo  :"o",	ie  :"z",	un  :"x",	ia  :"c",	ua  :"c",
 	sh  :"v",	v   :"v",	ui  :"v",	iao :"b",	an  :"k",	en  :"m"
 };
+/**************/
 
 /*** colemak 1rt ***
 var idea =  {
