@@ -1,20 +1,43 @@
-/*** colemak 1rt ***/
+/*** colemak 3rd ***/
+var idea =  {
+	iu  :"q",	ei  :"f",	un  :"p",	ie  :"g",	iang:"j",	uang:"j",
+	uan :"l",	zh  :"u",	u   :"u",	ang :"y",	a   :"a",	eng :"r",
+	ai  :"s",	ing :"t",	ian :"d",	ao  :"h",	an  :"n",	e   :"e",
+	ch  :"i",	i   :"i",	o   :"o",	uo  :"o",	ia  :"z",	in  :"x",
+	ou  :"c",	sh  :"v",	v   :"v",	ui  :"v",	iao :"b",	en  :"k",
+	ong :"m",	iong:"m"
+};
+/**************/
+
+/*** qwerty xiaohe ***
+
+var idea =  {
+	iu  :"q",	ei  :"w",	e   :"e",	uan :"r",	ve  :"t",
+	un  :"y",	sh  :"u",	u   :"u",	ch  :"i",	i   :"i",	o   :"o",
+	uo  :"o",	ie  :"p",	a   :"a",	ong :"s",	iong:"s",	ai  :"d",
+	en  :"f",	eng :"g",	ang :"h",	an  :"j",	uai :"k",	ing :"k",
+	iang:"l",	uang:"l",	ou  :"z",	ia  :"x",	ua  :"x",	ao  :"c",
+	zh  :"v",	v   :"v",	ui  :"v",	in  :"b",	iao :"n",	ian :"m"
+};
+**************/
+
+/*** colemak 2nd ***
 var idea =  {
 	iu  :"q",	ve  :"w",	ei  :"f",	in  :"p",	ing :"g",	eng :"j",
 	ang :"l",	zh  :"u",	u   :"u",	uan :"y",	a   :"a",	ao  :"r",
 	ai  :"s",	iang:"t",	uang:"t",	ou  :"d",	ong :"h",	iong:"h",
-	ian :"n",	uai :"n",	e   :"e",	er  :"e",	ch  :"i",	i   :"i",
+	ian :"n",	uai :"n",	e   :"e",	ch  :"i",	i   :"i",
 	o   :"o",	uo  :"o",	ie  :"z",	un  :"x",	ia  :"c",	ua  :"c",
 	sh  :"v",	v   :"v",	ui  :"v",	iao :"b",	an  :"k",	en  :"m"
 };
-/**************/
+**************/
 
 /*** colemak 1rt ***
 var idea =  {
 	ia  :"q",	ua  :"q",	un  :"w",	uan :"f",	iao :"p",	iu  :"g",
 	eng :"j",	ong :"l",	iong:"l",	u   :"u",	ao  :"y",	zh  :"a",
 	a   :"a",	ang :"r",	ou  :"s",	ei  :"t",	ian :"d",	uai :"d",
-	ai  :"h",	ing :"n",	ch  :"e",	e   :"e",	er  :"e",	i   :"i",
+	ai  :"h",	ing :"n",	ch  :"e",	e   :"e",	i   :"i",
 	o   :"o",	uo  :"o",	ve  :"z",	iang:"x",	uang:"x",	in  :"c",
 	sh  :"v",	v   :"v",	ui  :"v",	ie  :"b",	an  :"k",	en  :"m"
 };
@@ -24,7 +47,7 @@ var idea =  {
 var idea =  {
 	ei  :"p",	ang :"y",	iu  :"f",	un  :"g",	uan :"c",	ou  :"r",
 	ie  :"l",	uang:"l",	sh  :"a",	a   :"a",	zh  :"o",	o   :"o",
-	uo  :"o",	ch  :"e",	e   :"e",	er  :"e",	u   :"u",	i   :"i",
+	uo  :"o",	ch  :"e",	e   :"e",	u   :"u",	i   :"i",
 	ao  :"d",	an  :"h",	ian :"t",	ua  :"t",	ong :"n",	iong:"n",
 	in  :"s",	uai :"s",	ai  :"q",	eng :"j",	en  :"k",	ia  :"k",
 	ui  :"x",	iang:"x",	iao :"b",	ing :"m",	ve  :"w",	v   :"v"
