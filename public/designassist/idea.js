@@ -1,11 +1,11 @@
 /*** colemak 3rd ***/
 var idea =  {
-	iu  :"q",	ei  :"f",	un  :"p",	ie  :"g",	iang:"j",	uang:"j",
-	uan :"l",	zh  :"u",	u   :"u",	ang :"y",	a   :"a",	eng :"r",
-	ai  :"s",	ing :"t",	ian :"d",	ao  :"h",	an  :"n",	e   :"e",
-	ch  :"i",	i   :"i",	o   :"o",	uo  :"o",	ia  :"z",	in  :"x",
-	ou  :"c",	sh  :"v",	v   :"v",	ui  :"v",	iao :"b",	en  :"k",
-	ong :"m",	iong:"m"
+	iu  :"q",	ui  :"w",	ia  :"w",	ei  :"f",	un  :"p",	ie  :"g",
+	ua  :"g",	iang:"j",	uang:"j",	uan :"l",	zh  :"u",	u   :"u",
+	ang :"y",	a   :"a",	eng :"r",	ai  :"s",	ing :"t",	ian :"d",
+	ao  :"h",	an  :"n",	e   :"e",	ch  :"i",	i   :"i",	o   :"o",
+	uo  :"o",	ve  :"z",	in  :"x",	ou  :"c",	sh  :"v",	v   :"v",
+	uai :"v",	iao :"b",	en  :"k",	ong :"m",	iong:"m"
 };
 /**************/
 
