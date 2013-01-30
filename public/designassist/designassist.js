@@ -40,7 +40,7 @@ var initFinalCnt = {}, finalInitCnt = {};
                 
                 var sorted = new Array();
                 for (var final in finalInitCnt) {
-                    if ('*,-,@,a,o,e,u,i,v'.indexOf(final) >= 0) 
+                    if ('*,-,@,a,o,e,u,i,v,er'.indexOf(final) >= 0) 
                         continue;
                     sorted.push({
                         'final': final,
