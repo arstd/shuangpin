@@ -44,14 +44,14 @@ var typ = {
 $(function(){
     $('#commit').on({
 	'click': function(){
-	        $('#typing').html($('#text').val()
-			.replace(/\n(\s*\n)+$/,'\n')
-			.replace(/  +$/,' ')
-			.replace(/[^\x00-\xff]+\n?/g, '')
+        $('#typing').html($('#text').val()
+			.replace(/[^\x00-\xff]+/g, '')
+			.replace(/\n$/,'')
+			.replace(/  +/g,' ')
 			.replace(/[^\n]/g, function(m){
 			    return '<span>' + m + '</span>';
-			}).replace(/\n\n+/g, '<br><br>')
-			.replace(/\n/g, '<br>')
+			}).replace(/\n\n\n+/g, '<br><br>')
+			.replace(/\n\n?/g, '<br>')
 			.replace(/span/, 'span class="current"'));
 		$('#handler')[0].focus();
 		typ.charCount = $('#typing span').length;
@@ -62,17 +62,27 @@ $(function(){
 
     $('#random').on({
         'click': function(){
-            var chars = "arstdhneio".split('');
-            var text = '';
-            for (var i = Math.floor(500 / 2); i > 0; i--) {
-                text += chars[Math.floor(chars.length / 2 * Math.random())];
-                text += chars[Math.floor(chars.length / 2 * Math.random()) + chars.length / 2];
-                text += ' ';
-            }
-                $('#typing').html(text.replace(/\s*\n*$/,'')
-                .replace(/./g, function(m){
-                    return '<span>' + m + '</span>';
-                }).replace(/span/, 'span class="current"'));
+		var chars = "qwfpgarstdzxcvbjluy;hneiokm,./".split('');
+		var text = '';
+		/*
+		for (var i = Math.floor(500 / 2); i > 0; i--) {
+			text += chars[Math.floor(chars.length / 2 * Math.random())];
+			text += chars[Math.floor(chars.length / 2 * Math.random()) + chars.length / 2];
+			text += ' ';
+		}*/
+		var cnt = 500, len;
+		while (cnt > 0) {
+			len = Math.ceil(4 * Math.random());
+			while (len-- && cnt--) {
+				text += chars[Math.floor(chars.length * Math.random())];
+			}
+			text += ' ';
+		}
+		
+		$('#typing').html(text.replace(/\s*\n*$/,'')
+		.replace(/./g, function(m){
+		    return '<span>' + m + '</span>';
+		}).replace(/span/, 'span class="current"'));
             $('#handler')[0].focus();
             typ.charCount = $('#typing span').length;
             typ.current = null;
