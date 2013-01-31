@@ -16,6 +16,7 @@ var typ = {
 			sounds.push(audio);
 		}
 		return sounds;
+		return sounds;
 	})(),
 	play: function(sound) {
 		var index = Math.floor(new Date().getMilliseconds()%250/10);
@@ -64,12 +65,20 @@ $(function(){
         'click': function(){
 		var chars = "qwfpgarstdzxcvbjluy;hneiokm,./".split('');
 		var text = '';
-		/*
-		for (var i = Math.floor(500 / 2); i > 0; i--) {
+		
+		for (var i = Math.floor(500 / 4); i > 0; i--) {
 			text += chars[Math.floor(chars.length / 2 * Math.random())];
 			text += chars[Math.floor(chars.length / 2 * Math.random()) + chars.length / 2];
+			//text += chars[Math.floor(chars.length / 2 * Math.random())];
+			//text += chars[Math.floor(chars.length / 2 * Math.random()) + chars.length / 2];
 			text += ' ';
-		}*/
+			text += chars[Math.floor(chars.length / 2 * Math.random()) + chars.length / 2];
+			text += chars[Math.floor(chars.length / 2 * Math.random())];
+			//text += chars[Math.floor(chars.length / 2 * Math.random()) + chars.length / 2];
+			//text += chars[Math.floor(chars.length / 2 * Math.random())];
+			text += ' ';
+		}
+        /*
 		var cnt = 500, len;
 		while (cnt > 0) {
 			len = Math.ceil(4 * Math.random());
@@ -78,6 +87,7 @@ $(function(){
 			}
 			text += ' ';
 		}
+        */
 		
 		$('#typing').html(text.replace(/\s*\n*$/,'')
 		.replace(/./g, function(m){
@@ -109,7 +119,6 @@ $(function(){
 	'keypress': function(event) {
 	        event.preventDefault();
 		switch (event.keyCode) {
-		case 7:
 		case 16: return;
 		case 8: return;
 		default: 
@@ -121,7 +130,7 @@ $(function(){
 	'keydown':  function(event) {
 		this.value = '';
 		switch (event.keyCode) {
-		case 7:
+		case 9:
 		case 16: event.preventDefault();return;
 		case 8: event.preventDefault();backspace(); return;
 		default:  return;
