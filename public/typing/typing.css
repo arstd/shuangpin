@@ -38,7 +38,7 @@ body {
 
 #typing-area {
     border: 30px solid #084563;
-    margin: 50px;
+    margin: 30px 50px 0;
 
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
@@ -73,9 +73,14 @@ body {
 .right { color: green; }
 .wrong { color: red; }
 
-#text {
-    width: 50%;
-    height: 100px;
-    margin: 0 10%;
+#text, #select-area {
+    margin: 30px 50px 0;
     background: transparent;
+}
+
+#select {
+    margin-bottom: 0;
+}
+#text {
+    width: auto;
 }

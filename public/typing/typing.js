@@ -43,12 +43,30 @@ var typ = {
 };
 
 $(function(){
+    $('#select').on({
+        'change': function() {
+            var textFile = this.value;
+            if (textFile == '------') {
+                return;
+            }
+            $.ajax({
+                url: '/text/' + textFile,
+                type: 'get',
+                dateType: 'text',
+                success: function(data) {
+                    $('#text').val(data);
+                }
+            });
+        }
+    });
+
     $('#commit').on({
 	'click': function(){
         $('#typing').html($('#text').val()
 			.replace(/[^\x00-\xff]+/g, '')
-			.replace(/\n$/,'')
 			.replace(/  +/g,' ')
+            .replace(/ (?=\n)/g, '')
+			.replace(/^\s+|\s+$/,'')
 			.replace(/[^\n]/g, function(m){
 			    return '<span>' + m + '</span>';
 			}).replace(/\n\n\n+/g, '<br><br>')
@@ -66,16 +84,16 @@ $(function(){
 		var chars = "qwfpgarstdzxcvbjluy;hneiokm,./".split('');
 		var text = '';
 		
-		for (var i = Math.floor(500 / 4); i > 0; i--) {
+		for (var i = Math.floor(500 / 8); i > 0; i--) {
 			text += chars[Math.floor(chars.length / 2 * Math.random())];
 			text += chars[Math.floor(chars.length / 2 * Math.random()) + chars.length / 2];
-			//text += chars[Math.floor(chars.length / 2 * Math.random())];
-			//text += chars[Math.floor(chars.length / 2 * Math.random()) + chars.length / 2];
+			text += chars[Math.floor(chars.length / 2 * Math.random())];
+			text += chars[Math.floor(chars.length / 2 * Math.random()) + chars.length / 2];
 			text += ' ';
 			text += chars[Math.floor(chars.length / 2 * Math.random()) + chars.length / 2];
 			text += chars[Math.floor(chars.length / 2 * Math.random())];
-			//text += chars[Math.floor(chars.length / 2 * Math.random()) + chars.length / 2];
-			//text += chars[Math.floor(chars.length / 2 * Math.random())];
+			text += chars[Math.floor(chars.length / 2 * Math.random()) + chars.length / 2];
+			text += chars[Math.floor(chars.length / 2 * Math.random())];
 			text += ' ';
 		}
         /*
