@@ -1,3 +1,5 @@
 # ignore vi/vim swap file
 *.swp
 *~
+# ignore WebStore file
+.idea/*
