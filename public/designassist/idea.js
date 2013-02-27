@@ -1,13 +1,4 @@
-var idea =  {
-    iu  :"g",	ui  :"v",	ve  :"j",	ei  :"y",	un  :"c",	ie  :"p",
-    ua  :"m",	iang:"q",	uang:"k",	uan :"l",	zh  :"u",	u   :"u",
-    ang :"h",	a   :"a",	eng :"w",	ai  :"t",	ing :"k",	ian :"m",
-    ao  :"d",	an  :"s",	e   :"e",	ch  :"i",	i   :"i",	o   :"o",
-    uo  :"o",	ia  :"r",	in  :"z",	ou  :"f",	sh  :"v",	v   :"v",
-    uai :"z",	iao :"x",	en  :"r",	ong :"n",	iong:"s"
-};
-
-/*** colemak 3rd ***
+/*** colemak 3rd ***/
 var idea =  {
 	iu  :"q",	ui  :"w",	ve  :"w",	ei  :"f",	un  :"p",	ie  :"g",
 	ua  :"g",	iang:"j",	uang:"j",	uan :"l",	zh  :"u",	u   :"u",
@@ -16,7 +7,7 @@ var idea =  {
 	uo  :"o",	ia  :"z",	in  :"x",	ou  :"c",	sh  :"v",	v   :"v",
 	uai :"v",	iao :"b",	en  :"k",	ong :"m",	iong:"m"
 };
-******http://shin.herokuapp.com/designassist.html            shangxuejin@gmail.com********/
+/******http://shin.herokuapp.com/designassist.html            shangxuejin@gmail.com********/
 
 /*** qwerty xiaohe ***
 
