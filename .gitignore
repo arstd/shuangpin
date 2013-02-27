@@ -2,4 +2,6 @@
 *.swp
 *~
 # ignore WebStore file
-.idea/*
+.c9revisions/
+.settings
+

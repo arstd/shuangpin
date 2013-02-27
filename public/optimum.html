@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>shuangpin</title>
+    <script type="text/javascript" src="scripts/jquery.min.js"></script>
+    <link rel="shortcut icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon" />
+    <script type="text/javascript">
+        $(function(){
+            var syllables = [], fins = {}, 
+                finsFeq = [], // 韵母频率
+                consFin = {}, // 相容的韵母
+                initsPos = {zh: 'u', ch: 'i', sh: 'v'}, 
+                finsPos = {a: 'a', o: 'o', e: 'e', i: 'i', u: 'u', v:'v'},
+                keysEquiv = {},
+                poses = "sentrioavmkdhufwyzklqxpcgj".split(''), 
+                basket = {};
+              
+            $.get('optimum/frequency.txt', gotFequency, 'text');            
+            function gotFequency(data, textStatus, jqXHR) {
+                //console.log(data);
+                var rows = data.replace(/^\s+|\s+$/, '').split(/\n/);
+                // 韵母字典
+                for (var i = 1; i < rows.length; i++) {
+                    var r = rows[i].split(/\s+/);
+                    syllables.push(r);
+                    
+                    var init = r[2], fin = r[3];
+                    !fins[fin] && (fins[fin]={});
+                    fins[fin][init] = +r[4];
+                    
+                    !initsPos[init] && (initsPos[init] = init);
+                    !finsPos [fin]  && (finsPos [fin]  = (fin.length===1 ? fin : null));
+                }
+                console.log(fins);
+                console.log(initsPos);
+                console.log(finsPos);
+                
+                // 韵母频率
+                for (var fin1 in fins) {
+                    if (finsPos[fin1]) continue;
+                    var tmp = {fin: fin1, feq: 0};
+                    for (var init1 in fins[fin1]) {
+                        tmp.feq += fins[fin1][init1];
+                    }
+                    finsFeq.push(tmp);
+                }                
+                finsFeq.sort(function(a,b){return b.feq-a.feq});                
+                console.log(finsFeq);
+                
+                 // 可相容的韵母
+                for (var k = 0; k < finsFeq.length; k++) {
+                    var one = finsFeq[k].fin;
+                    anotherLabel:
+                    for (var m = 0; m < finsFeq.length; m++) {
+                        if (m === k) continue;
+                        var another = finsFeq[m].fin;
+                        for (var initInOne in fins[one]) {
+                            for (var initInAnother in fins[another]) {
+                                // 如果可以和相同的声母组合，就是不相容的
+                                // 跳过这个another韵母，取下一个
+                                if(initInOne == initInAnother)  continue anotherLabel;
+                            }
+                        }
+                        // another里的声母和one里的都不相同，可相容
+                        consFin[one] || (consFin[one] = {});
+                        consFin[one][another] = true;
+                    }
+                }
+                console.log(consFin);
+                
+                $.get('optimum/equivalent.txt', gotEquivalent, 'text'); 
+            }
+            
+            
+            function gotEquivalent(data, textStatus, jqXHR) {
+                var rows = data.replace(/^\s+|\s+$/, '').split(/\n/);
+                //console.log(rows);
+                
+                // 击键当量
+                var keys2nd = rows[0].split(/\s+/);
+                for (var i = 1; i < rows.length; i++) {
+                    var cols = rows[i].split(/\s+/);
+                    keysEquiv[cols[0]] = {};
+                    for (var j = 1; j < cols.length; j++) {
+                        keysEquiv[cols[0]][keys2nd[j]] = +cols[j];
+                    }
+                }
+                console.log(keysEquiv);
+                
+                initialize();
+                // arrange(0, 0);
+                $('start').on('click', function(){arrange(0, 0);});
+            }
+            
+            function initialize() {
+                // 位置和篮子
+                for (var p in poses) {
+                    basket[poses[p]] = [];
+                }
+                basket['a'].push('a');
+                basket['o'].push('o');
+                basket['e'].push('e');
+                basket['i'].push('i');
+                basket['u'].push('u');
+                basket['v'].push('v');
+            }
+
+            function arrange(ifin, ipos) {
+                    display();
+                if (ifin >= finsFeq.length) {
+                    return false;
+                }
+                if (ipos >= poses.length) {
+                 //   alert('error');
+                 //   display();
+                    return false;
+                }
+
+                var fin = finFeq[ifin], pos = poses[ipos], canPut = true;
+                // 判断是否可以放在这里
+                bfin:
+                for (var i = 0; i < basket[pos].length; i++) {
+                    var f = basket[pos][i]; // 篮子里的韵母
+                    canPut = false; // 先假设当前要安排的韵母和篮子里的韵母不相容
+                    var cons = consistent[f]; // 和篮子里的韵母相容的韵母
+                    for (var j = 0; j < cons.length; j++) {
+                        var fc = cons[j]; // 和篮子里的韵母相容的韵母
+                        if (fc == fin) { // 如果当前要安排的韵母和篮子里的韵母相容，再看篮子里下一个韵母
+                            canPut = true;
+                            continue bfin;
+                        }
+                    }
+                    // 当前要安排的韵母和篮子里的韵母不相容
+                    return arrange(ifin, ipos + 1);
+                }
+
+                // 如果可以放在这里
+                if(canPut) {
+                    finPos[fin] = pos;  // 放完这个韵母
+                    basket[pos].push(fin);
+                    var succ = arrange(ifin + 1, 0); // 接下来放下一个韵母
+                    if(succ) { // 下一个放置成功
+                        return true;
+                    } else { // 下一个没地方放了
+                        finPos[fin] = null; // 撤回，不放这里，试着放到下一个位置
+                        return arrange(ifin, ipos + 1);
+                    }
+                }
+                // 如果不可以放在这里
+                else {
+                    return arrange(ifin, ipos + 1); // 试着放到下一个位置
+                }
+            }
+
+            function display() {
+//              var idea =  {
+//                  iu  :"q",	ui  :"w",	ve  :"w",	ei  :"f",	un  :"p",	ie  :"g",
+//                  ua  :"g",	iang:"j",	uang:"j",	uan :"l",	zh  :"u",	u   :"u",
+//                  ang :"y",	a   :"a",	eng :"r",	ai  :"s",	ing :"t",	ian :"d",
+//                  ao  :"h",	an  :"n",	e   :"e",	ch  :"i",	i   :"i",	o   :"o",
+//                  uo  :"o",	ia  :"z",	in  :"x",	ou  :"c",	sh  :"v",	v   :"v",
+//                  uai :"v",	iao :"b",	en  :"k",	ong :"m",	iong:"m"
+//              };
+//              var ideaTxt = 'var idea =  {\n\t', i = 1;
+//              for (var d in idea) {
+//                  var pos = finsPos[d] || initPos[d];
+//                  ideaTxt += d + '    '.substring(0, 4-d.length) + ':"' + pos + '",';
+//                  if ( i++ % 6 == 0 )  {
+//                      ideaTxt += '\n\t';
+//                  }
+//                  else {
+//                      ideaTxt += '\t';
+//                  }
+//              }
+//              ideaTxt = ideaTxt.replace(/,\n?\t$/g, '\n};');
+
+              $('#display').val($('#display').val() + JSON.stringify(finsPos) + "\n");
+              //alert(ideaTxt);
+            }
+			
+  		});
+  	</script>
+  </head>
+  <body>
+    <button id="start">Start</button>
+    <textarea id="display" rows="20" cols="100"></textarea>
+  </body>
+</html>
+
