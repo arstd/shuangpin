@@ -1,7 +1,9 @@
 # ignore vi/vim swap file
 *.swp
 *~
-# ignore WebStore file
-.c9revisions/
+# ignore cloud9 file
+.c9revisions/*
 .settings
 
+# ignore output directory
+output/*

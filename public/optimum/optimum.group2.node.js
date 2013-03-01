@@ -70,8 +70,8 @@ function output() {
     console.log(txt);
 }
 
-// 把第ifin个韵母放到第ibasket个几经有韵母的篮子里，目前已经用了count个篮子
-function group(ifin, ibasket, count) {
+// 把第ifin个韵母依次放到第0~count个篮子里，目前已经用了count个篮子
+function group2(ifin, count) {
     if(count > 26) return;
     
     if (ifin >= finsArray.length) {
@@ -79,36 +79,32 @@ function group(ifin, ibasket, count) {
         return;
     }
     
-    /*
-    baskets[ibasket] || (baskets[ibasket] = []);
-    baskets[ibasket].push(finsArray[ifin]);
-    output();
-    baskets[ibasket].splice(baskets[ibasket].length - 1, 1);
-    baskets[ibasket].length === 0 && (baskets.splice(ibasket, 1));
-    */
-    
-    // 放到新篮子里
-    if (ibasket >= count) {
-        baskets[ibasket] = [finsArray[ifin]];
-        
-        group(ifin + 1, 0, count + 1);
-        
-        // 回溯
-        baskets.splice(ibasket, 1);
-    }
-    // 相容
-    else {
+    for (var ibasket = 0; ibasket < count; ibasket++) {
+        /*
+        baskets[ibasket] || (baskets[ibasket] = []);
+        baskets[ibasket].push(finsArray[ifin]);
+        output();
+        baskets[ibasket].splice(baskets[ibasket].length - 1, 1);
+        baskets[ibasket].length === 0 && (baskets.splice(ibasket, 1));
+        */
+        // 相容
         if (consistent(ifin, ibasket)) {
             baskets[ibasket].push(finsArray[ifin]);
             
-            group(ifin + 1, 0, count)
+            group2(ifin + 1, count);
             
             // 回溯
             baskets[ibasket].splice(baskets[ibasket].length - 1);
         }
-        group(ifin, ibasket + 1, count)
     }
+    // 放到新篮子里
+    baskets[count] = [finsArray[ifin]];
+    
+    group2(ifin + 1, count + 1);
+    
+    // 回溯
+    baskets.splice(count, 1)
 }
 
 // 开始计算
-group(0, 0, 0);
+group2(0, 0);
