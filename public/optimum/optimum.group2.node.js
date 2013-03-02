@@ -123,5 +123,10 @@ function group2(ifin, count) {
     delete finsBas[fin];
 }
 
+var txt = 'index gnum'
+for (var i = 0; i < 26; i++) {
+    txt += ' ' + i;
+}
+console.log(txt);
 // 开始计算
 group2(0, 0);
