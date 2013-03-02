@@ -3,11 +3,11 @@
  */
 
 var fs = require('fs');
-
 var frequencyData = fs.readFileSync('public/optimum/frequency.txt','utf8');
 //console.log(frequencyData);
 
 var fins = {};
+var togethers = { iong: 'ong' };
 var rows = frequencyData.replace(/^\s+|\s+$/, '').split(/\n/);
 // 韵母字典
 for (var i = 1; i < rows.length; i++) {
@@ -17,7 +17,9 @@ for (var i = 1; i < rows.length; i++) {
     
     //console.log(init + fin + ','+("a,o,e,',-".indexOf(init)));
     // 如果是单韵母，略过
-    if ("a,o,e,',-".indexOf(init) > -1) continue;    
+    if ("a,o,e,',-".indexOf(init) > -1) continue;  
+    
+    if (togethers[fin]) continue;
     
     !fins[fin] && (fins[fin]={});
     fins[fin][init] = +r[4];
@@ -44,19 +46,20 @@ for (var one in fins) {
 //console.log(consFin);
 
 var baskets = [];
+var finsBas = {};
 var finsArray = [];
 for (var fin in fins) {
     finsArray.push(fin);
 }
 //console.log(finsArray);
 
-function consistent(ifin, ibasket) {
-    if (!consFin[finsArray[ifin]]) return false;
+function consistent(fin, ibasket) {
+    if (!consFin[fin]) return false;
     
     // 是否和这个篮子里的韵母相容
     for (var k = 0; k < baskets[ibasket].length; k++) {
         // 不相容
-        if (!consFin[finsArray[ifin]][baskets[ibasket][k]]) {
+        if (!consFin[fin][baskets[ibasket][k]]) {
             return false;
         }
     }
@@ -65,9 +68,15 @@ function consistent(ifin, ibasket) {
 
 var counter = 0;
 function output() {
+    for (var toge in togethers) {
+        baskets[finsBas[togethers[toge]]].push(toge);
+    }
     var txt = (++counter) + ' ' + baskets.length + ' '
         + JSON.stringify(baskets).replace(/","/g, '-').replace(/"\],\["/g, ' ').replace(/\[\["|"\]\]/g, '');
     console.log(txt);
+    for (var tog in togethers) {
+        baskets[finsBas[togethers[tog]]].splice(baskets[finsBas[togethers[tog]]].length - 1);
+    }
 }
 
 // 把第ifin个韵母依次放到第0~count个篮子里，目前已经用了count个篮子
@@ -79,7 +88,11 @@ function group2(ifin, count) {
         return;
     }
     
-    for (var ibasket = 0; ibasket < count; ibasket++) {
+    var fin = finsArray[ifin];
+    for (var cfin in consFin[fin]) {
+        var ibasket = finsBas[cfin];
+        if (ibasket === undefined) continue;
+        
         /*
         baskets[ibasket] || (baskets[ibasket] = []);
         baskets[ibasket].push(finsArray[ifin]);
@@ -88,22 +101,26 @@ function group2(ifin, count) {
         baskets[ibasket].length === 0 && (baskets.splice(ibasket, 1));
         */
         // 相容
-        if (consistent(ifin, ibasket)) {
-            baskets[ibasket].push(finsArray[ifin]);
+        if (consistent(fin, ibasket)) {
+            var ilen = baskets[ibasket].push(fin);
+            finsBas[fin] = ibasket;
             
             group2(ifin + 1, count);
             
             // 回溯
-            baskets[ibasket].splice(baskets[ibasket].length - 1);
+            baskets[ibasket].splice(ilen - 1);
+            delete finsBas[fin];
         }
     }
     // 放到新篮子里
-    baskets[count] = [finsArray[ifin]];
+    baskets[count] = [fin];
+    finsBas[fin] = count;
     
     group2(ifin + 1, count + 1);
     
     // 回溯
-    baskets.splice(count, 1)
+    baskets.splice(count, 1);
+    delete finsBas[fin];
 }
 
 // 开始计算
