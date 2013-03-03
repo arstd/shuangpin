@@ -47,14 +47,17 @@ function gotEquivs() {
     return equivs;
 }
 
-function gotMatrix(fins, combin, equivs) {
+function gotMatrix(fins, combin, equivs, assigned) {
     var X = 1e10;
     var poses = 'bcdfghjklmnpqrstwxyz';
     var matrix = [[combin[0], 'b','c','d','f','g','h','j','k','l','m','n','p','q','r','s','t','w','x','y','z']];
     var initsPos = { zh: 'u', ch: 'i', sh: 'v'};
     for (var i = 2, idx = 1; i < combin.length; i++) {
         // 如果是aoeiuv不安排
-        if (combin[i].match(/[aoeiuv]-/) || combin[i].match(/-[aoeiuv]/)) {
+        var matched = combin[i].match(/^[aoeiuv]$|^[aoeiuv]-|-[aoeiuv]-|-[aoeiuv]$/)
+        if (matched) {
+            // console.log(matched);
+            assigned[combin[i]] = matched[0].replace(/-/g, '');
             continue;
         }
         matrix[idx] = [combin[i], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -82,89 +85,83 @@ function gotMatrix(fins, combin, equivs) {
     return matrix;
 }
 
-function go() {
-    for (var i = 0; i < combins.length && i < 1; i++) {
-        var matrix = gotMatrix(fins, combins[i], equivs);
-        // console.log(matrix);
-        for (var n = 0; n < matrix.length; n++) {
-            var txt = matrix[n][0];
-            for (var p = 1; p < matrix[n].length; p++) {
-                txt += ' ' + (!n ? matrix[n][p] : matrix[n][p].toFixed(1));
-            }
-            console.log(txt);
-        }
-        
-    }
-}
-
-var fins = gotFins();
-//console.log(fins);
-var combins = gotCombins();
-//console.log(groups[0]);
-var equivs = gotEquivs();
-//console.log(equivs);
-
 
 function assign(matrix) {
-    var rows = {}, cols = {};
+    var optimal = {}, linedCols = {};
     for (var n = 1; n < matrix.length; n++) {
-        var maxOfMins = 0, row = 0, col = 0;
-        for (var c = 1; c < matrix[1].length; c++) {
-            if (cols[c]) continue;
-            var min = 1e10;
-            var row2 = 0;
-            for (var r = 1; r < matrix.length; r++) {
-                if (rows[r]) continue;
+        var maxOfMins = -1, row1 = 0, col1 = 0;
+        for (var r = 1; r < matrix.length; r++) {
+            if (optimal[r]) continue;
+            var min = 1e10, col2 = 0;
+            for (var c = 1; c < matrix[r].length; c++) {
+                if (linedCols[c]) continue;
                 if (matrix[r][c] < min) {
-                    min = matrix[r][c];
-                    row2 = r;
+                    min = matrix[r][c], col2 = c;
                 }
             }
+            // console.log(r + '-' + c + ':' + r + '-' + col2 + ' ' + min);
             if (min > maxOfMins) {
-                maxOfMins = min;
-                row = row2;
-                col = c;
+                maxOfMins = min, row1 = r, col1 = col2;
             }
         }
-        rows[row] = col;
-        cols[col] = row;
-        //console.log(row + ' ' + col + ' ' + maxOfMins);
+        optimal[row1] = col1, linedCols[col1] = true;
+        // console.log(n + ': ' + row1 + ' ' + col1 + ' ' + maxOfMins);
     }
     
     var max = 0, mrow = 0, mcol = 0;
-    for (var row3 in rows) {
-        if (matrix[row3][rows[row3]] > max) {
-            max = matrix[row3][rows[row3]];
-            mrow = row3, mcol = rows[row3];
+    for (var row3 in optimal) {
+        if (matrix[row3][optimal[row3]] > max) {
+            max = matrix[row3][optimal[row3]];
+            mrow = row3, mcol = optimal[row3];
         }
     }
     
-    validate(matrix, rows, mrow, mcol, max);
+    validateLabel:
+    while(true) {
+        for (var row in optimal) {
+            if (row === mrow) continue;
+            var col = optimal[row];
+            
+            if (max > matrix[row][mcol] && max > matrix[mrow][col]) {
+                optimal[row] = mcol;
+                optimal[mrow] = col;
+                
+                if (matrix[row][mcol] >= matrix[mrow][col]) {
+                    max = matrix[row][mcol];
+                    mrow = row;
+                } else {
+                    max = matrix[mrow][col];
+                    mcol = col;
+                }
+                continue validateLabel;
+            }
+        }
+        break validateLabel;
+    }
     
-    return rows;
+    return optimal;
 }
 
-function validate(matrix, rows, mrow, mcol, max) {
-    for (var row in rows) {
-        if (row === mrow) continue;
-        var col = rows[row];
+
+function go() {
         
-        if (max > matrix[row][mcol] && max > matrix[mrow][col]) {
-            rows[row] = mcol;
-            rows[mrow] = col;
-            
-            if (matrix[row][mcol] >= matrix[mrow][col]) {
-                max = matrix[row][mcol];
-                mrow = row;
-            } else {
-                max = matrix[mrow][col];
-                mcol = col;
-            }
-            
-            validate(matrix, rows, mrow, mcol, max);
-        }
+    var fins = gotFins();
+    //console.log(fins);
+    var combins = gotCombins();
+    //console.log(groups[0]);
+    var equivs = gotEquivs();
+    //console.log(equivs);
+    
+    var txt = 'index';
+    for (var k = 1; k <= 26; k++) {
+        txt += ' ' + k;
     }
-}
+    console.log(txt + 'equivalent');
+    
+    for (var i = 0; i < combins.length; i++) {
+        // console.log(combins[i]);
+        var assigned = {};
+        var matrix = gotMatrix(fins, combins[i], equivs, assigned);
 /*
 var matrix = [
     [0,  0,  0,  0,  0],
@@ -181,7 +178,6 @@ var matrix = [
     [0, 15, 14, 6, 6, 10],
     [0, 4, 10, 7, 10, 9]
 ];
-*/
 var matrix = [
     [0,  0,  0,  0,  0],
     [0, 15, 18, 21, 24],
@@ -189,6 +185,7 @@ var matrix = [
     [0, 26, 17, 16, 19],
     [0, 19, 21, 23, 17]
 ];
+*/
 /*
 var matrix = [
     [0,  0,  0,  0,  0],
@@ -198,17 +195,46 @@ var matrix = [
     [0,  4, 15, 13,  9]
 ];
 */
-
-
-var rows = assign(matrix);
-for (var row in rows) {
-    matrix[row][rows[row]] = -matrix[row][rows[row]];
+        
+        // console.log(matrix);
+        /*
+        for (var n = 0; n < matrix.length; n++) {
+            var txt = matrix[n][0];
+            for (var p = 1; p < matrix[n].length; p++) {
+                txt += ' ' + (!n ? matrix[n][p] : Math.round(matrix[n][p]));
+            }
+            console.log(txt);
+        }
+        */
+        
+        var optimal = assign(matrix);
+        /*  
+        console.log(optimal);
+        
+        console.log(JSON.stringify(matrix[0]).replace(/\["|"\]/g, '').replace(/","/g, ' '));
+        for (var n = 1; n < matrix.length; n++) {
+            var txt = matrix[n][0];
+            for (var p = 1; p < matrix[n].length; p++) {
+                txt +=  (optimal[n] === p) ? ' -' : ' ';
+                txt += Math.round(matrix[n][p]);
+            }
+            console.log(txt);
+        }
+        */
+        // console.log(assigned);
+        var equiv = 0;
+        for (var row in optimal) {
+            assigned[matrix[row][0]] = matrix[0][optimal[row]];
+            equiv += matrix[row][optimal[row]];
+        }
+        console.log(matrix[0][0] 
+            + JSON.stringify(assigned).replace(/"/g, '').replace(/[{,}]/g, ' ').replace(/:/g,'=') 
+            + equiv.toFixed(1));
+    }
 }
-console.log(matrix);
 
-
-
-
+// 开始计算
+go();
 
 
 
