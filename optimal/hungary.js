@@ -1,44 +1,69 @@
+Array.prototype.clone = function(){
+    return this.concat();
+}
+
 var printf = require('printf');
 var sleep = require('sleep');
 
 function hungary(matrix) {
     
-    var order = matrix.length, r, marks = new Array(order + 2);
-    marks[order] = [], marks[order + 1] = [];
-    for (r = 0; r < order; r++) {
-        marks[r] = [];
-        marks[r][order] = marks[order][r] = -1;
-    }
-    marks[order][order] = 0;
-    marks[order][order + 1] = marks[order + 1][order] = '';
-    
     transform(matrix);
     
+    var order = matrix.length, r, marks = new Array(order + 2);
+    marks[order] = [], marks[order + 1] = [];
     while(true) {
         for (r = 0; r < order; r++) {
+            marks[r] = [];
+            marks[r][order] = marks[order][r] = -1;
             marks[r][order + 1] = marks[order + 1][r] = 0;
         }
-        marks[order + 1][order + 1] = 0;
-print(matrix, marks);
+        marks[order][order] = marks[order + 1][order + 1] = 0;
+        marks[order][order + 1] = marks[order + 1][order] = '';
+print(matrix, marks, '初始化标记矩阵：');
         
-        while(mark(matrix, marks));
+        mark(matrix, marks);
         
-//        console.log(marks[order][order] + ' ' + order);
-        if (marks[order][order] === order) return marks;
-        
+print(matrix, marks, '独立0元素的个数：' + marks[order][order]);
+        if (marks[order][order] === order) {
+            return solve(matrix);
+        }
         lining(matrix, marks);
         
+print(matrix, marks, '覆盖0元素的最少直线数：' + marks[order + 1][order + 1]);
         if (marks[order + 1][order + 1] === order) {
-            return marks;
+            return solve(matrix);
         } else if (marks[order + 1][order + 1] < order) {
             adjust(matrix, marks);
         }
     }
 }
 
+function solve(matrix) {
+    var solutions = [], solut = new Array(matrix.length);
+    solve0(matrix, 0, solutions, solut);
+    return solutions;
+}
+
+function solve0(matrix, col, solutions, solut) {
+    var order = matrix.length, row;
+    if (col >= order) {
+        solutions.push(solut.clone());
+    }
+    
+    for (row = 0; row < order; row++) {
+        if (solut[row] !== undefined) continue;
+        if (matrix[row][col] === 0) {
+            solut[row] = col;
+            solve0(matrix, col + 1, solutions, solut);
+            solut[row] = undefined;
+        }
+    }    
+}
+
 function adjust(matrix, marks) {
     var order = matrix.length, r, c, min = 9e18;
     
+    // 未划线的元素的最小值
     for (r = 0; r < order; r++) {
         if (marks[r][order + 1] === 3) continue;
         for (c = 0; c < order; c++) {
@@ -48,13 +73,15 @@ function adjust(matrix, marks) {
             }
         }
     }
+print(matrix, marks, '未划线(!3)的元素的最小值：' + min);
+
     for (r = 0; r < order; r++) {
         if (marks[r][order + 1] !== 2) continue;
         for (c = 0; c < order; c++) {
             matrix[r][c] -= min;
         }
     }
-print(matrix, marks);
+print(matrix, marks, '未打对号(3)的行减去最小值：' + min);
 
     for (c = 0; c < order; c++) {
         if (marks[order + 1][c] !== 3) continue;
@@ -62,7 +89,7 @@ print(matrix, marks);
             matrix[r][c] += min;
         }
     }
-print(matrix, marks);
+print(matrix, marks, '已打对号(3)的列加上最小值：' + min);
 }
 
 function lining(matrix, marks) {
@@ -71,7 +98,7 @@ function lining(matrix, marks) {
         if (marks[r][order] > -1) continue;
         marks[r][order + 1] = 1;
     }
-print(matrix, marks);
+print(matrix, marks, '未标记()的行打对号(1)：');
 
     while(lined) {
         lined = false;
@@ -90,7 +117,7 @@ print(matrix, marks);
             }
             marks[r][order + 1] = 2;
             lined = true;
-print(matrix, marks);
+print(matrix, marks, '已打对号(1->2)的行的0元素所在的列打对号(1)\n同时打对号的列(1)上标记()的行打对号(1)：');
         }
     }
     
@@ -100,17 +127,18 @@ print(matrix, marks);
             marks[order + 1][order + 1]++;
         }
     }
+print(matrix, marks, '未打对号的行(!2)划线(3):');
     for (c = 0; c < order; c++) {
         if (marks[order + 1][c] === 1) {
             marks[order + 1][c] = 3;
             marks[order + 1][order + 1]++;
         }
     }
-print(matrix, marks);
+print(matrix, marks, '打对号的列(1)划线(3):');
 }
 
 function mark(matrix, marks) {
-    var order = matrix.length, r, c, k, minzero;
+    var order = matrix.length, r, c, k, nzero;
     // 统计各行各列0元素的个数
     for (r = 0; r < order; r++) {
         if (marks[r][order] > -1) continue;
@@ -122,82 +150,88 @@ function mark(matrix, marks) {
             }
         }
     }
-print(matrix, marks);
-    
-    // 最少0元素的个数
-    minzero = order + 1;
-    for (r = 0; r < order; r++) {
-        if (marks[r][order + 1] === 0) continue;
-        if (minzero > marks[r][order + 1]) {
-            minzero = marks[r][order + 1];
-        }
-    }
-    for (c = 0; c < order; c++) {
-        if (marks[order + 1][c] === 0) continue;
-        if (minzero > marks[order + 1][c]) {
-            minzero = marks[order + 1][c];
-        }
-    }
+print(matrix, marks, '统计各行各列0元素的个数：');
 
-//console.log(minzero);
-    // 没有可以标记的了
-    if (minzero === order + 1) return false;
+    while(true) {
+        // 最少0元素的个数
+        nzero = order + 1;
+        for (r = 0; r < order; r++) {
+            if (marks[r][order + 1] === 0) continue;
+            if (nzero > marks[r][order + 1]) {
+                nzero = marks[r][order + 1];
+            }
+        }
+        for (c = 0; c < order; c++) {
+            if (marks[order + 1][c] === 0) continue;
+            if (nzero > marks[order + 1][c]) {
+                nzero = marks[order + 1][c];
+            }
+        }
+        nzero %= order + 1;
+print(matrix, marks, '最少0元素的个数：' + nzero);
     
-    for (r = 0; r < order; r++) {
-        if (marks[r][order] > -1) continue;
-        if (minzero === marks[r][order + 1]) {
-            for (c = 0; c < order; c++) {
-                if (marks[order][c] > -1) continue;  // 已标记()
-                if (matrix[r][c] === 0) {
-                    marks[r][c] = '()';
-                    marks[order][order]++;
-                    marks[r][order] = c, marks[order][c] = r;
-                    marks[r][order + 1] = marks[order + 1][c] = 0;
-                    for (k = 0; k < order; k++) {
-                        if (k !== r && matrix[k][c] === 0 && marks[k][c] !== '*') {
-                            marks[k][c] = '*';
-                            marks[k][order + 1]--;
+        // 没有可以标记的了
+        if (nzero === 0) return;
+        
+        for (r = 0; r < order; r++) {
+            if (marks[r][order] > -1) continue;
+            if (nzero === marks[r][order + 1]) {
+                for (c = 0; c < order; c++) {
+                    if (marks[order][c] > -1) continue;  // 已标记()
+                    if (matrix[r][c] === 0 && marks[r][c] === undefined) {
+                        marks[r][c] = '()';
+                        marks[order][order]++;
+                        marks[r][order] = c, marks[order][c] = r;
+                        marks[r][order + 1] = marks[order + 1][c] = 0;
+                        for (k = 0; k < order; k++) {
+                            if (k !== r && matrix[k][c] === 0 && marks[k][c] === undefined) {
+                                marks[k][c] = '*';
+                                marks[k][order + 1]--;
+                            }
                         }
-                    }
-                    for (k = 0; k < order; k++) {
-                        if (k !== c && matrix[r][k] === 0 && marks[r][k] !== '*') {
-                            marks[r][k] = '*';
-                            marks[order + 1][k]--;
-                        }
-                    }
-                }
-            }
-        }
-    }
-print(matrix, marks);
-    for (c = 0; c < order; c++) {
-        if (marks[order][c] > -1) continue;
-        if (minzero === marks[order + 1][c]) {
-            for (r = 0; r < order; r++) {
-                if (marks[r][order] > -1) continue;  // 已标记()
-                if (matrix[r][c] === 0) {
-                    marks[r][c] = '()';
-                    marks[order][order]++;
-                    marks[r][order] = c, marks[order][c] = r;
-                    marks[r][order + 1] = marks[order + 1][c] = 0;
-                    for (k = 0; k < order; k++) {
-                        if (k !== r && matrix[k][c] === 0 && marks[k][c] !== '*') {
-                            marks[k][c] = '*';
-                            marks[k][order + 1]--;
-                        }
-                    }
-                    for (k = 0; k < order; k++) {
-                        if (k !== c && matrix[r][k] === 0 && marks[r][k] !== '*') {
-                            marks[r][k] = '*';
-                            marks[order + 1][k]--;
+                        // 如果该行只有一个0，不再扫描
+                        if (nzero === 1) continue;
+                        for (k = 0; k < order; k++) {
+                            if (k !== c && matrix[r][k] === 0 && marks[r][k] === undefined) {
+                                marks[r][k] = '*';
+                                marks[order + 1][k]--;
+                            }
                         }
                     }
                 }
             }
         }
+print(matrix, marks, '标记0元素最少的行：');
+        for (c = 0; c < order; c++) {
+            if (marks[order][c] > -1) continue;
+            if (nzero === marks[order + 1][c]) {
+                for (r = 0; r < order; r++) {
+                    if (marks[r][order] > -1) continue;  // 已标记()
+                    if (matrix[r][c] === 0 && marks[r][c] === undefined) {
+                        marks[r][c] = '()';
+                        marks[order][order]++;
+                        marks[r][order] = c, marks[order][c] = r;
+                        marks[r][order + 1] = marks[order + 1][c] = 0;
+                        for (k = 0; k < order; k++) {
+                            if (k !== c && matrix[r][k] === 0 && marks[r][k] === undefined) {
+                                marks[r][k] = '*';
+                                marks[order + 1][k]--;
+                            }
+                        }
+                        // 如果该列只有一个0，不再扫描
+                        if (nzero === 1) continue;
+                        for (k = 0; k < order; k++) {
+                            if (k !== r && matrix[k][c] === 0 && marks[k][c] === undefined) {
+                                marks[k][c] = '*';
+                                marks[k][order + 1]--;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+print(matrix, marks, '标记0元素最少的列：');
     }
-print(matrix, marks);
-    return true;
 }
 
 function transform(matrix) {
@@ -217,7 +251,7 @@ function transform(matrix) {
             matrix[r][c] -= min;
         }
     }
-print(matrix);
+print(matrix, '各行减去它们的最小值：');
 
     columnScanLabel:
     for (c = 0; c < order; c++) {
@@ -230,11 +264,12 @@ print(matrix);
                 min = matrix[r][c];
             }
         }
+        if (min === 0) continue;
         for (r = 0; r < order; r++) {
             matrix[r][c] -= min;
         }
     }
-print(matrix);
+print(matrix, '各列减去它们的最小值：');
 }
 
 function testHungary() {
@@ -255,24 +290,43 @@ function testHungary() {
 */
     print(matrix, '原矩阵：');
     
-    Array.prototype.clone = function(){
-     return this.concat();
-    }
-    
     var cmatrix = [];
     for (var r = 0; r < matrix.length; r++) {
         cmatrix[r] = matrix[r].clone();
     }
-    var marks = hungary(cmatrix);
-    print(matrix, marks, '最优解：', false);
+    var solutions = hungary(cmatrix);
+    printOptimal(matrix, solutions);
+}
+
+function printOptimal(matrix, solutions) {
+    console.log('最优解：');
+    var order = matrix.length, n, r, c, txt;
+    for (n = 0; n < solutions.length; n++) {
+        console.log('-----------------------------------');
+        for  (r = 0; r < order; r++) {
+            txt = '';
+            for (c = 0; c < order; c++) {
+                if (solutions[n][r] === c) {
+                    txt += printf(' %4s)', '(' + matrix[r][c]);
+                } else {
+                    txt += printf(' %4s ', matrix[r][c]);
+                }
+            }
+            console.log(txt);
+        }
+        console.log('-----------------------------------');
+    }
 }
 
 function print(matrix, marks, message, debug) {
+    return;
+    
     if (debug === undefined) debug = true;
     if (typeof marks === 'string') {
         console.log(marks);
         marks = undefined;
     }
+    if (message) console.log(message);
     console.log('----------------------------------------');
     var order = matrix.length, r, c, txt;
     if (!marks) {
@@ -301,7 +355,7 @@ function print(matrix, marks, message, debug) {
         }
     }
     console.log();
-    //sleep.sleep(2);
+    // sleep.sleep(1);
 }
 
 testHungary();

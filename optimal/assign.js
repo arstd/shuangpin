@@ -79,68 +79,96 @@ function gotMatrix(fins, equivs, combin, initsPos, poses) {
 
 function hungaryAlgorithm(matrix) {
     print(matrix);
-    var optimal = {};
+    var optimal = {}, order = matrix.length;
     
     transform(matrix);
     print(matrix);
     
-    var brackets = {row: {}, col: {}}, stars = {row: {}, col: {}};
-    for (var i = 0; i < matrix.length; i++) {
-        brackets.row[i] = {};
-        brackets.col[i] = {};
-        stars.row[i] = {};
-        stars.col[i] = {};
+    var marks = [], i;
+    for (i = 0; i < order + 2; i++) {
+        marks[i] = [];
+        marks[i][order] = -1;
+        marks[i][order + 1] = 0;
     }
-    mark(matrix, brackets, stars);
+    for (i = 0; i < order; i++) {
+        marks[order][i] = -1;
+        marks[order + 1][i] = 0;
+    }
+    marks[order][order] = 0;
+    
+    while(mark(matrix, marks));
+    
+    if (marks[order][order] === order) return marks;
+    else {
+        
+    }
     
     return optimal;
 }
 
-function mark(matrix, brackets, stars) {
-    var marked = false, r, c, t, n, mrow, mcol;
-    for (r = 0; r < matrix.length; r++) {
-        for (c = 0, n = 0; c < matrix[r].length; c++) {
-            if (brackets.col[c][r] === 1) continue;
-            if (stars.col[c][r] === 1) continue;
+
+
+function mark(matrix, marks) {
+    var order = matrix.length, marked = false, r, c, t, n, mrow, mcol;
+    
+    // 逐行扫描，把单个0标记()，同列的其他0标*
+    for (r = 0; r < order; r++) {
+        if (marks[r][order] > -1) continue;
+        for (c = 0, n = 0; c < order; c++) {
+            if (marks[r][c] === '*') continue;
             if (matrix[r][c] === 0) {
                 n++, mcol = c;
             }
         }
         if (n !== 1) continue;
+        
+        // 这行只有一个0，标记()
         marked = true;
-        brackets.row[r][mcol] = 1;
-        brackets.col[mcol][r] = 1;
-        for (t = 0; t < matrix.length; t++) {
+        marks[r][mcol] = '()';
+        marks[r][order] = mcol;
+        marks[order][mcol] = r;
+        marks[order][order]++;
+        // 和它同列的0标*
+        for (t = 0; t < order; t++) {
             if (t === r) continue;
             if (matrix[t][mcol] === 0) {
-                stars.row[t][mcol] = 1;
-                stars.col[mcol][t] = 1;
+                marks[t][mcol] = '*';
+                marks[t][order + 1]++;
+                marks[order + 1][mcol]++;
+                marks[order + 1][order + 1]++;
             }
         }
     }
-    print(matrix, brackets.row, stars.row);
+    marked && print(matrix, marks);
     
-    for (c = 0; c < matrix[0].length; c++) {
-        n = 0;
-        for (r = 0, n = 0; r < matrix.length; r++) {
-            if (brackets.col[c][r] === 1) continue;
-            if (stars.col[c][r] === 1) continue;
+    // 逐列扫描， 同上
+    for (c = 0; c < order; c++) {
+        if (marks[order][c] > -1) continue;
+        for (r = 0, n = 0; r < order; r++) {
+            if (marks[r][c] === '*') continue;            
             if (matrix[r][c] === 0) {
                 n++, mrow = r;
             }
         }
         if (n !== 1) continue;
         marked = true;
-        brackets.row[mrow][c] = 1;
-        brackets.col[c][mrow] = 1;
-        for (t = 0; t < matrix[0].length; t++) {
+        marks[mrow][c] = '()';
+        marks[mrow][order] = c;
+        marks[order][c] = mrow;
+        marks[order][order]++;
+        for (t = 0; t < order; t++) {
             if (t === c) continue;
             if (matrix[mrow][t] === 0) {
-                stars.row[mrow][t] = 1;
-                stars.col[t][mrow] = 1;
+                marks[mrow][t] = '*';
+                marks[order + 1][t]++;
+                marks[mrow][order + 1]++;
+                marks[order + 1][order + 1]++;;
             }
         }
     }
+    marked && print(matrix, marks);
+    
+    return marked;
 }
 
 function transform(matrix) {
@@ -293,27 +321,41 @@ function testAssign() {
         [ 4, 15, 13,  9]
     ];
     */
-    var optimal = hungaryAlgorithm(matrix);
+    hungaryAlgorithm(matrix);
     
 }
     
-function print(matrix, brackets, stars) {
+function print(matrix, marks) {
+    var order = matrix.length, n, p, txt;
     console.log('-------------------------');
-    for (var n = 0; n < matrix.length; n++) {
-        var txt = '';
-        for (var p = 0; p < matrix[n].length; p++) {
-            if (brackets && brackets[n][p] === 1) {
-                txt += printf("%4s)", '(' + matrix[n][p]);
-            }
-            else if (stars && stars[n][p] === 1) {
-                txt += printf("%4s*", matrix[n][p]);
-            }
-            else {
+    if(!marks) {
+        for (n = 0; n < order; n++) {
+            txt = '';
+            for (p = 0; p < order; p++) {
                 txt += printf("%4d ", matrix[n][p]);
             }
+            console.log(txt);
         }
-        console.log(txt);
+    }
+    else {
+        for (n = 0; n < order + 2; n++) {
+            txt = '';
+            for (p = 0; p < order + 2; p++) {
+                if (marks[n][p] === '()') {
+                    txt += printf("%4s)", '(' + matrix[n][p]);
+                }
+                else if (marks[n][p] === '*') {
+                    txt += printf("%4s*", matrix[n][p]);
+                }
+                else if (n >= order || p >= order) {
+                    txt += printf("%4d ", marks[n][p]);
+                }
+                else {
+                    txt += printf("%4d ", matrix[n][p]);
+                }
+            }
+            console.log(txt);
+        }
     }
     console.log('-------------------------');
-
 }
