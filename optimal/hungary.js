@@ -1,4 +1,4 @@
-/******************************************************××************************
+/*******************************************************************************
  * @date: 2013-03-07      @author: shangxuejin@gmail.com
  * 
  * 指派问题匈牙利解法的主要步骤：
@@ -22,7 +22,7 @@
  * 第四步：调整，以添加0元素
  *  在没有被直线覆盖的部分元素中找出最小元素，没有画直线的行的各元素都减去这最
  *  小元素，已画直线的列的各元素都加上这最小元素，得到的新的矩阵，转第二步。
- *************************************************×××××××××××××××××××××××*******/
+ *******************************************************************************/
 
 // 扩展javascript对象Array，添加多维数组深拷贝的方法
 Array.prototype.clone = function(){
@@ -41,55 +41,58 @@ var sleep = require('sleep');
 
 function hungary(matrix) {
     // 在指派过程中，矩阵会被转换和调整，所以这几里赋值一个矩阵，不改变原来的矩阵
-    var cmatrix = matrix.clone();
-    
-    var order, r, c, nrow = matrix.length, ncol = matrix[0].length, marks;
-    
+    matrix = matrix.clone();
+    var order, nrow = matrix.length, ncol = matrix[0].length;
+        
     // 指派问题的匈牙利解法只适用于方阵
+    complete(matrix);
+    order = matrix.length;
+    
+    // 转换
+    transform(matrix, nrow, ncol);
+    
+    while(true) {
+        // 试指派
+        var marks = mark(matrix);
+        
+        print(matrix, marks, '独立0元素的个数：' + marks[order][order]);
+        // 如果独立0元素等于方阵的阶数，问题解决
+        if (marks[order][order] === order) {
+            return solve(matrix, nrow, ncol);
+        }
+        
+        // 划覆盖0元素的最少直线
+        lining(matrix, marks);
+        
+        print(matrix, marks, '覆盖0元素的最少直线数：' + marks[order + 1][order + 1]);
+        // 如果覆盖0元素的最少直线数等于方阵的阶数，问题解决
+        if (marks[order + 1][order + 1] === order) {
+            return solve(matrix, nrow, ncol);
+        } else if (marks[order + 1][order + 1] < order) {
+            // 调整
+            adjust(matrix, marks);
+        }
+    }
+}
+
+function complete(matrix) {
+    var r, c, nrow = matrix.length, ncol = matrix[0].length;
+    
     // 如果行数小于列数，补行成方阵
     for (r = nrow; r < ncol; r++) {
-        cmatrix[r] = [];
+        matrix[r] = [];
         for (c = 0;  c < ncol; c++) {
-            cmatrix[r][c] = 0;
+            matrix[r][c] = 0;
         }
     }
     // 如果列数小于行数，补列成方阵
     for (c = ncol; c < nrow; c++) {
         for (r = 0; r < nrow; r++) {
-            cmatrix[r][c] = 0;
+            matrix[r][c] = 0;
         }
     }
-    print(cmatrix, marks, '补成方阵：');
+    print(matrix, '补成方阵：');
     
-    transform(cmatrix);
-    
-    order = cmatrix.length, marks = new Array(order + 2)
-    marks[order] = [], marks[order + 1] = [];
-    while(true) {
-        for (r = 0; r < order; r++) {
-            marks[r] = [];
-            marks[r][order] = marks[order][r] = -1;
-            marks[r][order + 1] = marks[order + 1][r] = 0;
-        }
-        marks[order][order] = marks[order + 1][order + 1] = 0;
-        marks[order][order + 1] = marks[order + 1][order] = '';
-        print(cmatrix, marks, '初始化标记矩阵：');
-        
-        mark(cmatrix, marks);
-        
-        print(cmatrix, marks, '独立0元素的个数：' + marks[order][order]);
-        if (marks[order][order] === order) {
-            return solve(cmatrix, nrow, ncol); // 原来的矩阵
-        }
-        lining(cmatrix, marks);
-        
-        print(cmatrix, marks, '覆盖0元素的最少直线数：' + marks[order + 1][order + 1]);
-        if (marks[order + 1][order + 1] === order) {
-            return solve(cmatrix, nrow, ncol); // 原来的矩阵
-        } else if (marks[order + 1][order + 1] < order) {
-            adjust(cmatrix, marks);
-        }
-    }
 }
 
 // 这些0元素中一定存在最优解，对这些0元素递归试指派（可能存在多个解）
@@ -213,8 +216,19 @@ function lining(matrix, marks) {
 }
 
 // 标记，试指派
-function mark(matrix, marks) {
+function mark(matrix) {
     var order = matrix.length, r, c, k, nzero;
+    var marks = new Array(order + 2);
+    marks[order] = [], marks[order + 1] = [];
+    for (r = 0; r < order; r++) {
+        marks[r] = [];
+        marks[r][order] = marks[order][r] = -1;
+        marks[r][order + 1] = marks[order + 1][r] = 0;
+    }
+    marks[order][order] = marks[order + 1][order + 1] = 0;
+    marks[order][order + 1] = marks[order + 1][order] = '';
+    print(matrix, marks, '初始化标记矩阵：');
+    
     // 统计各行各列0元素的个数
     for (r = 0; r < order; r++) {
         if (marks[r][order] > -1) continue;
@@ -243,11 +257,11 @@ function mark(matrix, marks) {
                 nzero = marks[order + 1][c];
             }
         }
-        nzero %= order + 1;
+        if (nzero === order + 1) nzero = 0;
         print(matrix, marks, '最少0元素的个数：' + nzero);
     
         // 没有可以标记的了
-        if (nzero === 0) return;
+        if (nzero === 0) break;
         
         for (r = 0; r < order; r++) {
             if (marks[r][order] > -1) continue;
@@ -308,57 +322,66 @@ function mark(matrix, marks) {
         }
         print(matrix, marks, '标记0元素最少的列：');
     }
+    return marks;
 }
 
 // 变换矩阵
-function transform(matrix) {
-    var order = matrix.length, r, c, min;
-    lineScanLabel:
-    for (r = 0; r < order; r++) {
-        min = 9e18;
-        for (c = 0; c < order; c++) {
-            if (matrix[r][c] === 0) {
-                continue lineScanLabel;
+function transform(matrix, nrow, ncol) {
+    var r, c, min;
+    // 如果列不足，那么每行必是补充了0，所以每行最小值必为0，无需变换；否则变换
+    if (ncol >= nrow) { 
+        lineScanLabel:
+        for (r = 0; r < nrow; r++) {
+            min = 9e18;
+            for (c = 0; c < ncol; c++) {
+                if (matrix[r][c] === 0) {
+                    continue lineScanLabel;
+                }
+                if (min > matrix[r][c]) {
+                    min = matrix[r][c];
+                }
             }
-            if (min > matrix[r][c]) {
-                min = matrix[r][c];
+            for (c = 0; c < ncol; c++) {
+                matrix[r][c] -= min;
             }
         }
-        for (c = 0; c < order; c++) {
-            matrix[r][c] -= min;
-        }
+        print(matrix, '各行减去它们的最小值：');
     }
-    print(matrix, '各行减去它们的最小值：');
-
-    columnScanLabel:
-    for (c = 0; c < order; c++) {
-        min = 9e18;
-        for (r = 0; r < order; r++) {
-            if (matrix[r][c] === 0) {
-                continue columnScanLabel;
+    // 如果行不足，那么每列必是补充了0，所以每列最小值必为0，无需变换；否则变换
+    if (nrow >= ncol) {
+        columnScanLabel:
+        for (c = 0; c < ncol; c++) {
+            min = 9e18;
+            for (r = 0; r < nrow; r++) {
+                if (matrix[r][c] === 0) {
+                    continue columnScanLabel;
+                }
+                if (min > matrix[r][c]) {
+                    min = matrix[r][c];
+                }
             }
-            if (min > matrix[r][c]) {
-                min = matrix[r][c];
+            if (min === 0) continue;
+            for (r = 0; r < nrow; r++) {
+                matrix[r][c] -= min;
             }
         }
-        if (min === 0) continue;
-        for (r = 0; r < order; r++) {
-            matrix[r][c] -= min;
-        }
+        print(matrix, '各列减去它们的最小值：');
     }
-    print(matrix, '各列减去它们的最小值：');
 }
 
 // 输出最优解
 function printOptimal(matrix, solutions) {
     console.log('最优解：');
-    var n, r, c, txt;
+    var n, r, c, txt, ttxt, total;
     for (n = 0; n < solutions.length; n++) {
+        ttxt = '  ', total = 0;
         console.log('-----------------------------------');
         for  (r = 0; r < matrix.length; r++) {
             txt = '';
             for (c = 0; c < matrix[0].length; c++) {
                 if (solutions[n][r] === c) {
+                    total += matrix[r][c];
+                    ttxt += printf('%d(%d:%d) + ', matrix[r][c], r + 1, c + 1);
                     txt += printf('%6s)', '(' + matrix[r][c]);
                 } else {
                     txt += printf('%6s ', matrix[r][c]);
@@ -366,6 +389,7 @@ function printOptimal(matrix, solutions) {
             }
             console.log(txt);
         }
+        console.log(ttxt.substring(0, ttxt.length - 3) + ' = ' + total);
         console.log('-----------------------------------');
     }
 }
@@ -501,7 +525,7 @@ function testHungary() {
         ]
     ];
     
-    for (var i = 0; i < matrixes.length; i++) {
+    for (var i = 0; i < 14 && matrixes.length; i++) {
         print(matrixes[i], '原矩阵：');
         
         var solutions = hungary(matrixes[i]);
