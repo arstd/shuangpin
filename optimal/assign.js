@@ -49,8 +49,8 @@ function gotEquivs() {
 }
 
 function gotMatrix(fins, equivs, combin, initsPos, poses) {
-    var X = 1e10;
-    var matrix = [poses];
+    var X = 9e18;
+    var matrix = [poses.split('')];
     for (var i = 0; i < combin.length; i++) {
         matrix[i] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         // 可能有多个韵母
@@ -66,139 +66,13 @@ function gotMatrix(fins, equivs, combin, initsPos, poses) {
                     var key1st = initsPos[init] || init;
                     equiv += equivs[key1st][key2nd] * fins[fin][init];
                 }
-                matrix[i][k + 1] += equiv;
+                matrix[i][k] += equiv;
             }
         }
-    }
-    if (combin.length === 20) {
-        matrix.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     }
     return matrix;
 }
 
-
-function hungaryAlgorithm(matrix) {
-    print(matrix);
-    var optimal = {}, order = matrix.length;
-    
-    transform(matrix);
-    print(matrix);
-    
-    var marks = [], i;
-    for (i = 0; i < order + 2; i++) {
-        marks[i] = [];
-        marks[i][order] = -1;
-        marks[i][order + 1] = 0;
-    }
-    for (i = 0; i < order; i++) {
-        marks[order][i] = -1;
-        marks[order + 1][i] = 0;
-    }
-    marks[order][order] = 0;
-    
-    while(mark(matrix, marks));
-    
-    if (marks[order][order] === order) return marks;
-    else {
-        
-    }
-    
-    return optimal;
-}
-
-
-
-function mark(matrix, marks) {
-    var order = matrix.length, marked = false, r, c, t, n, mrow, mcol;
-    
-    // 逐行扫描，把单个0标记()，同列的其他0标*
-    for (r = 0; r < order; r++) {
-        if (marks[r][order] > -1) continue;
-        for (c = 0, n = 0; c < order; c++) {
-            if (marks[r][c] === '*') continue;
-            if (matrix[r][c] === 0) {
-                n++, mcol = c;
-            }
-        }
-        if (n !== 1) continue;
-        
-        // 这行只有一个0，标记()
-        marked = true;
-        marks[r][mcol] = '()';
-        marks[r][order] = mcol;
-        marks[order][mcol] = r;
-        marks[order][order]++;
-        // 和它同列的0标*
-        for (t = 0; t < order; t++) {
-            if (t === r) continue;
-            if (matrix[t][mcol] === 0) {
-                marks[t][mcol] = '*';
-                marks[t][order + 1]++;
-                marks[order + 1][mcol]++;
-                marks[order + 1][order + 1]++;
-            }
-        }
-    }
-    marked && print(matrix, marks);
-    
-    // 逐列扫描， 同上
-    for (c = 0; c < order; c++) {
-        if (marks[order][c] > -1) continue;
-        for (r = 0, n = 0; r < order; r++) {
-            if (marks[r][c] === '*') continue;            
-            if (matrix[r][c] === 0) {
-                n++, mrow = r;
-            }
-        }
-        if (n !== 1) continue;
-        marked = true;
-        marks[mrow][c] = '()';
-        marks[mrow][order] = c;
-        marks[order][c] = mrow;
-        marks[order][order]++;
-        for (t = 0; t < order; t++) {
-            if (t === c) continue;
-            if (matrix[mrow][t] === 0) {
-                marks[mrow][t] = '*';
-                marks[order + 1][t]++;
-                marks[mrow][order + 1]++;
-                marks[order + 1][order + 1]++;;
-            }
-        }
-    }
-    marked && print(matrix, marks);
-    
-    return marked;
-}
-
-function transform(matrix) {
-    var min, r, c;
-    for (r = 0 ; r < matrix.length; r++) {
-        min = matrix[r][0];
-        for (c = 1; c < matrix[r].length; c++) {
-            if (min > matrix[r][c]) {
-                min = matrix[r][c];
-            }
-        }
-        for (c = 0; c < matrix[r].length; c++) {
-            matrix[r][c] -= min;
-        }
-    }
-    
-    // printMatrix(matrix);
-
-    for (c = 0 ; c < matrix[0].length; c++) {
-        min = matrix[0][c];
-        for (r = 1; r < matrix.length; r++) {
-            if (min > matrix[r][c]) {
-                min = matrix[r][c];
-            }
-        }
-        for (r = 0; r < matrix.length; r++) {
-            matrix[r][c] -= min;
-        }
-    }
-}
 
 function go() {
         
@@ -216,7 +90,7 @@ function go() {
     console.log(txt + ' equivalent');
     
     var initsPos = { zh: 'u', ch: 'i', sh: 'v'};
-    var poses = 'bcdfghjklmnpqrstwxyz'.split('');
+    var poses = 'bcdfghjklmnpqrstwxyz';
 
     var initialEquiv = 0;
     for (var sfin in fins) {
@@ -228,8 +102,8 @@ function go() {
     }
     
     for (var i = 0; i < 1 && combins.length; i++) {
+        
         var combin = combins[i];
-        var icombin = combin[0], ngroup = combin[1];
         combin.splice(0, 2);
         var assigned = [], equiv = initialEquiv;
         for (var j = 0; j < combin.length; j++) {
@@ -239,7 +113,7 @@ function go() {
                 // console.log(matched);
                 assigned.push({group: [combin[j]], pos: matched[0].replace(/-/g, '')});
                 var gfins = combin[j].replace(matched[0]).split(/-/g);
-                combin.splice(j);
+                combin.splice(j--, 1);
                 if (!gfins) continue;
                 for (var gfin in gfins) {
                     for (var ginit in fins[gfin]) {
@@ -250,22 +124,20 @@ function go() {
             }
         }
         
-        // console.log(combins[i]);
         var matrix = gotMatrix(fins, equivs, combin, initsPos, poses);
         
 
-        // console.log(matrix);
-        /*
         for (var n = 0; n < matrix.length; n++) {
-            var txt = matrix[n][0];
-            for (var p = 1; p < matrix[n].length; p++) {
-                txt += ' ' + (!n ? matrix[n][p] : Math.round(matrix[n][p]));
+            txt = '['
+            for (var p = 0; p < matrix[n].length; p++) {
+                matrix[n][p] = Math.round(matrix[n][p] / 1e4);
+                txt += printf('%5d,', matrix[n][p]);
             }
-            console.log(txt);
+            console.log(txt + '],');
         }
-        */
+        /*
         
-        var optimal = hungaryAlgorithm(matrix);
+        var optimal;
        
         // console.log(assigned);
         for (var row in optimal) {
@@ -276,14 +148,14 @@ function go() {
         console.log(icombin
             + JSON.stringify(assigned).replace(/"/g, '').replace(/[{,}]/g, ' ').replace(/:/g,'=') 
             + equiv.toFixed(1));
+        */
     }
     function outputOrder(a, b) { return a.group < b.group;}
 }
 
 // 开始计算
-//go();
+go();
 
-testAssign();
 
 function testAssign() {
     /*
@@ -321,7 +193,6 @@ function testAssign() {
         [ 4, 15, 13,  9]
     ];
     */
-    hungaryAlgorithm(matrix);
     
 }
     
