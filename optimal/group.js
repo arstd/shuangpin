@@ -1,7 +1,3 @@
-/**
- * group 35 finals to 26 keys 
- */
-
 var togethers = { 
     iong: 'ong' // 固定 iong 和 ong 在一起
 }; 
@@ -79,7 +75,7 @@ function consistent(fin, ibasket) {
 
 
 // 把第ifin个韵母依次放到第0~count个篮子里，目前已经用了count个篮子(也是第一个空篮子的索引)
-function group2(ifin, count) {
+function group(ifin, count) {
     if(count > 26) return;
     
     if (ifin >= finsArray.length) {
@@ -91,19 +87,12 @@ function group2(ifin, count) {
     for (var cfin in consFin[fin]) {
         var ibasket = finsBas[cfin];
         
-        /*
-        baskets[ibasket] || (baskets[ibasket] = []);
-        baskets[ibasket].push(finsArray[ifin]);
-        output();
-        baskets[ibasket].splice(baskets[ibasket].length - 1, 1);
-        baskets[ibasket].length === 0 && (baskets.splice(ibasket, 1));
-        */
         // 相容
         if (consistent(fin, ibasket)) {
             var ilen = baskets[ibasket].push(fin);
             finsBas[fin] = ibasket;
             
-            group2(ifin + 1, count);
+            group(ifin + 1, count);
             
             // 回溯
             baskets[ibasket].splice(ilen - 1);
@@ -114,7 +103,7 @@ function group2(ifin, count) {
     baskets[count] = [fin];
     finsBas[fin] = count;
     
-    group2(ifin + 1, count + 1);
+    group(ifin + 1, count + 1);
     
     // 回溯
     baskets.splice(count, 1);
@@ -134,19 +123,19 @@ function output() {
 }
 
 function go() {
-    var txt = 'index gnum'
-    for (var i = 0; i < 26; i++) {
+    var txt = 'index ngroup';
+    for (var i = 1; i <= 26; i++) {
         txt += ' ' + i;
     }
     console.log(txt);
     
-    group2(0, 0);
+    group(0, 0);
 }
 
 var fins = gotFins();
 //console.log(fins);
 var finsArray = gotFinsArray();
-console.log(JSON.stringify(finsArray).replace(/"/g, ''));
+//console.log(JSON.stringify(finsArray).replace(/"/g, ''));
 var consFin = gotConsFin();
 //console.log('>>> consFin ' + JSON.stringify(consFin).replace(/"|:true/g, ''));
 //console.log(consFin);

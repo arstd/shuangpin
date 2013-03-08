@@ -537,4 +537,8 @@ function testHungary() {
 // warn-不打印指派过程，不休眠; info-只打印指派过程; debug-打印指派过程并休眠
 var level = 'warn';
 // 开始测试
-testHungary();
+// testHungary();
+
+exports.hungary = hungary;
+
+1;
