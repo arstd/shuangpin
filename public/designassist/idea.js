@@ -1,4 +1,31 @@
-/*** colemak 3rd ***/
+/*** init           ***
+var idea = {
+    "zh":"u",   "ch":"i",   "sh":"v", 
+    a   :"a",   o   :"o",   e   :"e",   i   :"i",   u   :"u",   v   :"v",
+};
+************************/
+
+/*** stat frequency ***/
+var idea =  {
+    iu  :"q",	eng :"w",	ei  :"f",	uan :"p",	uang:"g",	iang:"j",
+	iao :"l",	zh  :"u",	u   :"u",	ui  :"y",	ve  :"y",	a   :"a",
+	ou  :"r",	ong :"s",	iong:"s",	en  :"t",	ia  :"t",	ing :"d",
+	ai  :"h",	an  :"n",	e   :"e",	ch  :"i",	i   :"i",	o   :"o",
+	uo  :"o",	ie  :"z",	ua  :"z",	in  :"x",	ian :"c",	sh  :"v",
+	v   :"v",	uai :"v",	un  :"b",	ao  :"k",	ang :"m"
+};
+/***********************/
+/*** stat optimal  ***
+var idea = {
+    "zh":"u","ch":"i","sh":"v","a":"a","ai":"h","an":"n","ang":"k",
+    "ao":"y","e":"e","ei":"f","en":"t","eng":"w","i":"i","ia":"t",
+    "ian":"m","iang":"x","iao":"l","ie":"z","in":"c","ing":"d",
+    "iong":"s","iu":"q","o":"o","ong":"s","ou":"r","u":"u","ua":"z",
+    "uai":"d","uan":"p","uang":"m","ui":"v","un":"b","uo":"o","v":"v",
+    "ve":"j"};
+*********************/
+
+/*** colemak 3rd ***
 var idea =  {
 	iu  :"q",	ui  :"w",	ve  :"w",	ei  :"f",	un  :"p",	ie  :"g",
 	ua  :"g",	iang:"j",	uang:"j",	uan :"l",	zh  :"u",	u   :"u",
@@ -7,7 +34,7 @@ var idea =  {
 	uo  :"o",	ia  :"z",	in  :"x",	ou  :"c",	sh  :"v",	v   :"v",
 	uai :"v",	iao :"b",	en  :"k",	ong :"m",	iong:"m"
 };
-/******http://shin.herokuapp.com/designassist.html            shangxuejin@gmail.com********/
+******http://shin.herokuapp.com/designassist.html            shangxuejin@gmail.com********/
 
 /*** qwerty xiaohe ***
 
