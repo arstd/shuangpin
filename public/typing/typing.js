@@ -16,7 +16,6 @@ var typ = {
 			sounds.push(audio);
 		}
 		return sounds;
-		return sounds;
 	})(),
 	play: function(sound) {
 		var index = Math.floor(new Date().getMilliseconds()%250/10);
@@ -64,11 +63,11 @@ $(function(){
 	'click': function(){
         $('#typing').html($('#text').val()
 			.replace(/[^\x00-\xff]+/g, '')
-			.replace(/  +/g,' ')
+			.replace(/ {2,}/g,' ')
             .replace(/ (?=\n)/g, '')
 			.replace(/^\s+|\s+$/,'')
 			.replace(/[^\n]/g, function(m){
-			    return '<span>' + m + '</span>';
+                return '<span>' + m + '</span>';
 			}).replace(/\n\n\n+/g, '<br><br>')
 			.replace(/\n\n?/g, '<br>')
 			.replace(/span/, 'span class="current"'));
@@ -109,7 +108,7 @@ $(function(){
 		
 		$('#typing').html(text.replace(/\s*\n*$/,'')
 		.replace(/./g, function(m){
-		    return '<span>' + m + '</span>';
+            return '<span>' + m + '</span>';
 		}).replace(/span/, 'span class="current"'));
             $('#handler')[0].focus();
             typ.charCount = $('#typing span').length;
@@ -135,7 +134,7 @@ $(function(){
 
     $('#handler').on({
 	'keypress': function(event) {
-	        event.preventDefault();
+        event.preventDefault();
 		switch (event.keyCode) {
 		case 16: return;
 		case 8: return;
@@ -182,7 +181,7 @@ function backspace() {
 }
 
 function typing(keyCode){
-	if (typ.current == null) {
+	if (typ.current === null) {
 		startTyping();
 	}	
 	typ.currentCount++;
@@ -193,7 +192,6 @@ function typing(keyCode){
 	var char = String.fromCharCode(keyCode);
 	if(!event.shiftKey) char = char.toLowerCase();
 	
-
 	var requreChar = (typ.current[0].tagName == 'BR' ? ' ' : typ.current.text());
 
 	if (char == requreChar) {
