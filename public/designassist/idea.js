@@ -5,7 +5,46 @@ var idea = {
 };
 ************************/
 
-/*** stat frequency ***/
+/*** colemak 5th ***/
+var idea =  {
+    iu  :"q",	eng :"w",	ei  :"f",	uan :"p",	uang:"g",	iao :"j",
+	ong :"l",	iong:"l",	zh  :"u",	u   :"u",	ian :"y",	a   :"a",
+	ou  :"r",	ing :"s",	ua  :"s",	en  :"t",	ia  :"t",	ui  :"d",
+	iang:"d",	ai  :"h",	an  :"n",	e   :"e",	ch  :"i",	i   :"i",
+	o   :"o",	uo  :"o",	in  :"z",	ie  :"x",	ve  :"c",	sh  :"v",
+	v   :"v",	uai :"v",	un  :"b",	ao  :"k",	ang :"m"
+};
+/************************/
+
+/*** stat frequency 2 ***
+var idea =  {
+    ie  :"q",	uan :"w",	ei  :"f",	ve  :"p",	iu  :"g",	ua  :"g",
+	iao :"j",	ong :"l",	iong:"l",	zh  :"u",	u   :"u",	ian :"y",
+	a   :"a",	ou  :"r",	ing :"s",	uai :"s",	en  :"t",	ia  :"t",
+	ai  :"h",	an  :"n",	e   :"e",	ch  :"i",	i   :"i",	o   :"o",
+	uo  :"o",	in  :"z",	un  :"x",	eng :"c",	sh  :"v",	v   :"v",
+	ui  :"v",	iang:"b",	uang:"b",	ao  :"k",	ang :"m"
+};
+***********************/
+
+/*** stat optimal 3 ***
+var idea = {
+"zh":"u","ch":"i","sh":"v","a":"a","ai":"k","an":"n","ang":"m","ao":"h","e":"e",
+"ei":"f","en":"t","eng":"c","i":"i","ia":"t","ian":"y","iang":"d","iao":"j",
+"ie":"q","in":"z","ing":"s","iong":"l","iu":"p","o":"o","ong":"l","ou":"r",
+"u":"u","ua":"d","uai":"q","uan":"w","uang":"s","ui":"z","un":"x","uo":"o",
+"v":"v","ve":"b"
+};
+*********************/
+/*** stat optimal 2 ***
+var idea = {
+"zh":"u","ch":"i","sh":"v","a":"a","ai":"k","an":"n","ang":"m","ao":"y",
+"e":"e","ei":"p","en":"t","eng":"f","i":"i","ia":"t","ian":"r","iang":"b","iao":"j",
+"ie":"x","in":"c","ing":"d","iong":"s","iu":"w","o":"o","ong":"s",
+"ou":"z","u":"u","ua":"d","uai":"v","uan":"l","uang":"r","ui":"h","un":"q","uo":"o","v":"v","ve":"h"
+};
+*********************/
+/*** stat frequency ***
 var idea =  {
     iu  :"q",	eng :"w",	ei  :"f",	uan :"p",	uang:"g",	iang:"j",
 	iao :"l",	zh  :"u",	u   :"u",	ui  :"y",	ve  :"y",	a   :"a",
@@ -14,8 +53,8 @@ var idea =  {
 	uo  :"o",	ie  :"z",	ua  :"z",	in  :"x",	ian :"c",	sh  :"v",
 	v   :"v",	uai :"v",	un  :"b",	ao  :"k",	ang :"m"
 };
-/***********************/
-/*** stat optimal  ***
+***********************/
+/*** stat optimal 1 ***
 var idea = {
     "zh":"u","ch":"i","sh":"v","a":"a","ai":"h","an":"n","ang":"k",
     "ao":"y","e":"e","ei":"f","en":"t","eng":"w","i":"i","ia":"t",
