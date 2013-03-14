@@ -49,7 +49,7 @@ body {
     font-weight: bold;
     font-size: 25px;
 
-    color: #999;
+    color: green;
     line-height: 35px;
 }
 
@@ -70,7 +70,7 @@ body {
 }
 
 .current { background: black; }
-.right { color: green; }
+.right { color: #999; }
 .wrong { color: red; }
 
 #text, #select-area {
