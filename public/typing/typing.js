@@ -1,35 +1,27 @@
+function gotPlayFunction() {
+    var sounds = {right: [], wrong: [], 'right-prev': 0, 'wrong-prev': 0};
+    var raudio = new Audio("/sound/type.wav"), waudio = new Audio("/sound/error.wav");
+	raudio.volume = 0.5,  waudio.volume = 0.5;
+    raudio.play(), waudio.play();
+	sounds.right.push(raudio), sounds.wrong.push(waudio);
+    return function(sound) {
+        sounds[sound + '-prev'] = (sounds[sound + '-prev'] + 1) % sounds[sound].length;
+        if (sounds[sound][sounds[sound + '-prev']].ended) {
+            console.log(sounds[sound + '-prev'] + '\t' + sounds[sound].length);
+            sounds[sound][sounds[sound + '-prev']].play(); 
+        } else {
+            var audio = new Audio(sound === 'right' ? "/sound/type.wav" : "/sound/error.wav");
+            audio.volume = 0.5;
+            audio.play();
+            var sound2 = sounds[sound].slice(0, sounds[sound + '-prev']);
+            sound2.push(audio);
+            sounds[sound] = sound2.concat(sounds[sound].slice(sounds[sound + '-prev'], sounds[sound].length));
+        }
+    };
+}
+
 var typ = {
-	rightSounds: (function() {
-		var sounds = [];
-		for (var i = 0; i < 25; i++) {
-			var audio = new Audio("/sound/type.wav");
-			audio.volume = 0.5;
-			sounds.push(audio);
-		}
-		return sounds;
-	})(),	
-	wrongSounds: (function() {
-		var sounds = [];
-		for (var i = 0; i < 25; i++) {
-			var audio = new Audio("/sound/error.wav");
-			audio.volume = 0.5;
-			sounds.push(audio);
-		}
-		return sounds;
-	})(),
-	play: function(sound) {
-		var index = Math.floor(new Date().getMilliseconds()%250/10);
-		switch(sound) {
-		case 'wrong-sound':
-			this.wrongSounds[index].play(); 
-			break;
-		case 'right-sound':
-			this.rightSounds[index].play();
-			break;
-		default:
-			break;
-		}
-	},
+	play: gotPlayFunction(),
 	stat: {
 		charCount: $('#charCount'),
 		currentCount: $('#currentCount'),
@@ -196,11 +188,11 @@ function typing(keyCode){
 
 	if (char == requreChar) {
 		typ.current.addClass('right');
-		typ.play('right-sound');
+		typ.play('right');
 		typ.rightCount++;
 	} else {
 		typ.current.addClass('wrong');
-		typ.play('wrong-sound');
+		typ.play('wrong');
 		typ.wrongCount++;
 	}
 	
