@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Typing</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <meta name="keywords" content="Dvorak,QWERTY,Colemak,Shin,ColemakShin,键盘,布局,打字,双拼,毛毛雨,shangxuejin" />
+        <meta name="author" content="毛毛雨(shangxuejin@gmail.com)" />
+        <link rel="shortcut icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon" />
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css" />
+        <link rel="stylesheet" href="collect/collect.css" />
+    </head>
+    <body>
+	<button id="handler" ></button>
+        <div id="typing-area"><div id="typing"></div></div>
+        <div id="select-area">
+            <button id="random" class="btn">Random</button>
+            <button id="collect" class="btn">Collect</button>
+        </div>
+        <textarea id="text" rows="10" cols="100" placeholder="Please select text..."></textarea>
+        <div id="stat">
+            CharCount:<span id="charCount">-</span>,
+            Current:<span id="currentCount">-</span>,
+            RightCount:<span id="rightCount">-</span>,
+            WrongCount:<span id="wrongCount">-</span>,
+            BackCount:<span id="backspaceCount">-</span>,
+            UsedTime:<span id="usedTime">-</span>s,
+            Speed:<span id="speed">-</span>kpm
+        </div>        
+        <div class="cnzz">
+            <script src="http://s13.cnzz.com/stat.php?id=4861154&web_id=4861154&show=pic1" type="text/javascript"></script>
+        </div>
+        <script type="text/javascript" src="scripts/jquery.min.js"></script>
+        <script type="text/javascript" src="collect/collect.js"></script>
+    </body>
+</html>
+

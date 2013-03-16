@@ -5,7 +5,7 @@ var idea = {
 };
 ************************/
 
-/*** colemak 5th ***/
+/*** Flexible Double Spelling Input Method  自由双拼输入法(ColemakShin 5th) ***/
 var idea =  {
     iu  :"q",	eng :"w",	ei  :"f",	uan :"p",	uang:"g",	iao :"j",
 	ong :"l",	iong:"l",	zh  :"u",	u   :"u",	ian :"y",	a   :"a",
