@@ -46,12 +46,15 @@ var typ = {
 };
 
 var chars = "qwfpgarstdzxcvbjluy;hneiokm,./ ".split('');
-for (var i = 0; i < chars.length; i++) {
-    typ.collect[chars[i]] = {};
-    for (var j = 0; j < chars.length; j++) {
-        typ.collect[chars[i]][chars[j]] = [];
+function initCollect() {
+    for (var i = 0; i < chars.length; i++) {
+        typ.collect[chars[i]] = {};
+        for (var j = 0; j < chars.length; j++) {
+            typ.collect[chars[i]][chars[j]] = [];
+        }
     }
 }
+initCollect();
 
 $(function(){
 
@@ -59,7 +62,7 @@ $(function(){
         'click': function(){
 		var text = '';
         var chars = "qwfpgarstdzxcvbjluy;hneiokm,./".split('');
-		for (var i = Math.floor(1000 / 2); i > 0; i--) {
+		for (var i = Math.floor(100 / 2); i > 0; i--) {
 			text += chars[Math.floor(chars.length * Math.random())];
 			text += chars[Math.floor(chars.length * Math.random())];
 			text += ' ';
@@ -78,14 +81,30 @@ $(function(){
     
     $('#collect').on({
        'click': function() {
-           var txt = '';
-           for (var first in typ.collect) {
-               for (var second in typ.collect[first]) {
-                   txt += first + second + ':' + JSON.stringify(typ.collect[first][second]) + '\n';
-               }
-           }
-           
+            var txt = JSON.stringify(typ.collect)
+                .replace(/"/g,'')//
+                .replace(/[a-z ;,.\/]:\[\],/g, '')
+                .replace(/([a-z ;,.\/]):\[/g, '\n\t\t"$1": [')//
+                .replace(/([a-z ;,.\/]):\{/g, '\n\t"$1": {')
+                .replace(/\]\}/g, ']\n\t}')
+                .replace(/\}\}/, '}\n}');
+                
            $('#text').val(txt);
+       }
+    }); 
+    $('#commit').on({
+       'click': function() {
+            $.ajax({
+                url: 'collectCommit',
+                data: typ.collect,
+                type: 'post',
+                dataType: 'json',
+                success: function(data) {
+                    alert(JSON.stringify(data));
+                }
+            });
+        
+            initCollect();
        }
     });
 
@@ -114,7 +133,7 @@ $(function(){
             var delta = curTime - typ.prevTime;
             if (delta < 1000) { 
                 typ.collect[typ.prevChar][char].push(delta);
-                console.log(typ.prevChar + '-' + char + '\t' + delta);
+                // console.log(typ.prevChar + '-' + char + '\t' + delta);
             }
         }
         typ.prevChar = char;
