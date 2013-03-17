@@ -198,3 +198,20 @@ body {
     background: transparent;
     min-height: 150px;
 }
+
+/*******************************/
+#row0, #row4, #keyboard #keyTab, #keyboard #keyBackspace, #keyboard #keyEnter, /**/
+#keyboard #keyShiftL, #keyboard #keyShiftR, #keyboard > div > div#key111, /**/
+#keyboard > div > div#key112, #keyboard > div > div#key113, #keyboard > div > div#key211 {
+    display: none;
+}
+
+#keyboard #key201 {
+    margin-left: 30px;   
+} 
+#keyboard #key301 {
+    margin-left: 50px;   
+}
+#keyboard, #final_count, #together, #idea {
+    min-width: 682px;
+}

@@ -131,8 +131,6 @@ $(function(){
 		}
 	},
 	'keydown':  function(event) {
-        
-        
 		this.value = '';
 		switch (event.keyCode) {
 		case 9:
