@@ -42,10 +42,10 @@ var typ = {
     collect: {},
     prevKeyCode: null,
     prevChar: '~',
-    prevTime: null,
+    prevTime: null
 };
 
-var chars = "qwfpgarstdzxcvbjluy;hneiokm,./ ".split('');
+var chars = "abcdefghijklmnopqrstuvwxyz;,./".split('');
 function initCollect() {
     for (var i = 0; i < chars.length; i++) {
         typ.collect[chars[i]] = {};
@@ -61,8 +61,7 @@ $(function(){
     $('#random').on({
         'click': function(){
 		var text = '';
-        var chars = "qwfpgarstdzxcvbjluy;hneiokm,./".split('');
-		for (var i = Math.floor(100 / 2); i > 0; i--) {
+		for (var i = 450; i > 0; i--) {
 			text += chars[Math.floor(chars.length * Math.random())];
 			text += chars[Math.floor(chars.length * Math.random())];
 			text += ' ';
@@ -81,13 +80,18 @@ $(function(){
     
     $('#collect').on({
        'click': function() {
-            var txt = JSON.stringify(typ.collect)
-                .replace(/"/g,'')//
-                .replace(/[a-z ;,.\/]:\[\],/g, '')
-                .replace(/([a-z ;,.\/]):\[/g, '\n\t\t"$1": [')//
-                .replace(/([a-z ;,.\/]):\{/g, '\n\t"$1": {')
-                .replace(/\]\}/g, ']\n\t}')
-                .replace(/\}\}/, '}\n}');
+            var txt = '';
+            for (var key1 in typ.collect) {
+                for (var key2 in typ.collect[key1]) {
+                    var ts = typ.collect[key1][key2];
+                    if (ts.length === 0) continue;
+                    txt += "'" + key1 + key2 + "'" + ': ';
+                    for (var i = 0; i < ts.length; i++) {
+                        txt += ts[i] + ' ';
+                    }
+                    txt += '\n';
+                }
+            }
                 
            $('#text').val(txt);
        }
@@ -100,7 +104,11 @@ $(function(){
                 type: 'post',
                 dataType: 'json',
                 success: function(data) {
-                    alert(JSON.stringify(data));
+                    $('#text').val('');
+                    alert(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                    alert('error ' + textStatus + " " + errorThrown);  
                 }
             });
         
@@ -125,13 +133,13 @@ $(function(){
 
     $('#handler').on({
 	'keypress': function(event) {
-         // ---------collect ------------
-         var char = String.fromCharCode(event.keyCode);
+        // ---------collect ------------
+        var char = String.fromCharCode(event.keyCode);
 
         var curTime = new Date();
         if (chars.contains(typ.prevChar) && chars.contains(char)) {
             var delta = curTime - typ.prevTime;
-            if (delta < 1000) { 
+            if (50 < delta && delta < 500) {
                 typ.collect[typ.prevChar][char].push(delta);
                 // console.log(typ.prevChar + '-' + char + '\t' + delta);
             }

@@ -7,3 +7,4 @@
 
 # ignore output directory
 output/*
+public/collect/collect_*.json

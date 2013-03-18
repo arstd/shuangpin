@@ -18,7 +18,7 @@ exports.index = function(req, res) {
 //};
 var fs = require('fs');
 var path = require('path');
-var file = 'output/collect.json';
+var file = 'public/collect/collect_1.json';
 
 exports.collectCommit = function(req, res) {
 
@@ -51,9 +51,9 @@ exports.collectCommit = function(req, res) {
             
         fs.writeFile(file, txt, function(err) {
             if (err) throw err;
-            console.log('It\'s saved!');
+            console.log("Saved! \t" + txt.length);
         });
     });
     
-    res.send(1);
-}
+    res.json('committed and saving...');
+};
