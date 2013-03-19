@@ -45,7 +45,7 @@ var typ = {
     prevTime: null
 };
 
-var chars = "abcdefghijklmnopqrstuvwxyz;,./".split('');
+var chars = "abcdefghijklmnopqrstuvwxyz".split('');
 function initCollect() {
     for (var i = 0; i < chars.length; i++) {
         typ.collect[chars[i]] = {};
@@ -61,7 +61,7 @@ $(function(){
     $('#random').on({
         'click': function(){
 		var text = '';
-		for (var i = 450; i > 0; i--) {
+		for (var i = 676; i > 0; i--) {
 			text += chars[Math.floor(chars.length * Math.random())];
 			text += chars[Math.floor(chars.length * Math.random())];
 			text += ' ';

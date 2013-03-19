@@ -8,6 +8,7 @@ Please Select:
     3) node optimal/hungary.js
     4) node optimal/assign.js > output/assigns.txt
     5) node optimal/stat.js
+    6) node public/collect/statequiv.js
 ELERT
 
 read -p 'Select (0):' -t 5 opt
@@ -38,6 +39,9 @@ case "$opt" in
         echo 'Assigns saved in file output/assigns.txt.'
         ;;
     '5') node optimal/stat.js;;
+    '6') node optimal/statequiv.js
+        echo 'Statequiv saved in file output/statequiv.txt.'
+        ;;
 esac
 
 exit 0

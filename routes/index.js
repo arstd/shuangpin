@@ -18,7 +18,7 @@ exports.index = function(req, res) {
 //};
 var fs = require('fs');
 var path = require('path');
-var file = __dirname + '/../public/collect/collect_1.json';
+var file = __dirname + '/../public/collect/collect.json';
 
 exports.collectCommit = function(req, res) {
 
@@ -56,14 +56,4 @@ exports.collectCommit = function(req, res) {
     });
     
     res.json('committed and saving...');
-};
-
-exports.collectView = function(req, res) {
-
-    var dataString = fs.readFileSync(file, 'utf8');
-    //data = JSON.parse(dataString);
-
-    
-    res.write(dataString);
-    res.end();
 };

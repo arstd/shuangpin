@@ -1,0 +1,56 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        google.load("visualization", "1", {packages:["corechart"]});
+        google.setOnLoadCallback(drawChart);
+        
+        function drawChart() {
+            $.getJSON('collect/collect.json', draw);
+        }
+        
+        function draw(data) {
+            
+            var chars = "abcdefghijklmnopqrstuvwxyz".split('');
+            
+            var table = [['keys', 'equivalent']];
+            for (var i = 0; i < chars.length; i++) {
+                var key1 = chars[i];
+                for (var j = 0; j < chars.length; j++) {
+                    var key2 = chars[j];
+                    var equivs = data[key1][key2];
+                    if (!equivs || equivs.length < 1) {
+                        table.push([(key1.charCodeAt(0) - 97) * 26 + key2.charCodeAt(0) - 97,
+                            NaN]);
+                        continue;
+                    }
+                    for (var k = 0; k < equivs.length; k++) {
+                       table.push([(key1.charCodeAt(0) - 97) * 26 + key2.charCodeAt(0) - 97, equivs[k]]);
+                    }
+                }
+            }
+            var dat = google.visualization.arrayToDataTable(table);
+           
+            var options = {
+                //curveType: "function",
+                chartArea:{left:50,top:50},
+                fontSize: 14,
+                axisTitlesPosition: 'in',
+                pointSize: 2,
+                title: 'keys vs. equivalent comparison - ' + table.length,
+                hAxis: {title: 'keys', minValue: 0, maxValue: 676, gridlines: {color: '#ddd', count: 27}},
+                vAxis: {title: 'equivalent', minValue: 0, maxValue: 500, gridlines: {color: '#eee', count: 6}},
+                legend: 'none'
+            };
+            
+            var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+            chart.draw(dat, options);
+        }
+        
+    </script>
+  </head>
+  <body>
+    <div id="chart_div" style="width: 7200px; height: 500px;"></div>
+  </body>
+</html>
