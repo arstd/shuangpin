@@ -18,7 +18,7 @@ exports.index = function(req, res) {
 //};
 var fs = require('fs');
 var path = require('path');
-var file = 'public/collect/collect_1.json';
+var file = __dirname + '/public/collect/collect_1.json';
 
 exports.collectCommit = function(req, res) {
 
