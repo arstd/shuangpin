@@ -57,3 +57,13 @@ exports.collectCommit = function(req, res) {
     
     res.json('committed and saving...');
 };
+
+exports.collectView = function(req, res) {
+
+    var dataString = fs.readFileSync(file, 'utf8');
+    //data = JSON.parse(dataString);
+
+    
+    res.write(dataString);
+    res.end();
+};
