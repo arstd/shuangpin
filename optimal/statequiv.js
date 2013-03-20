@@ -2,7 +2,7 @@ var fs = require('fs');
 var printf = require('printf');
 
 var collect = 'public/collect/collect.json';
-var statequiv = 'output/statequiv.txt';
+var statequiv = 'optimal/equivalent.txt';
 
 var statData = fs.readFileSync(collect);
 
@@ -88,7 +88,7 @@ for (var i = 1; i < table.length; i++) {
         if (j === 0) {
             txt += table[i][j];
         } else {
-            txt += printf("\t%3s", table[i][j]);
+            txt += printf("\t%3s", ((table[i][j] + 40) / 100).toFixed(1));
         }
     }
     txt += '\n';

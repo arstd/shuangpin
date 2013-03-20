@@ -11,7 +11,7 @@ Please Select:
     6) node public/collect/statequiv.js
 ELERT
 
-read -p 'Select (0):' -t 5 opt
+read -p 'Select (0): ' -t 5 opt
 if [ -z "$opt" ]; then
     opt='0'
 fi

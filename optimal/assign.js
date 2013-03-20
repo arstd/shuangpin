@@ -2,6 +2,8 @@ var fs = require('fs');
 var printf = require('printf');
 var hungary = require('./hungary.js')
 
+var nan = 9e18;
+
 function gotAssEquivs() {
     var assEquivs = {};
     var assEquivsData = fs.readFileSync('output/assequivs.txt','utf8');
@@ -14,7 +16,7 @@ function gotAssEquivs() {
         var fin = row[0];
         assEquivs[fin] = {};
         for (var j = 1; j < row.length; j++) {
-            assEquivs[fin][poses[j]] = +row[j] || 9e18;
+            assEquivs[fin][poses[j]] = +row[j] || nan;
         }
     }
     return assEquivs;
@@ -33,7 +35,6 @@ function gotCombins() {
 }
 
 function gotMatrix(assEquivs, combin, poses) {
-    var X = 9e18;
     var matrix = [];
     for (var i = 0; i < combin.length; i++) {
         matrix[i] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
