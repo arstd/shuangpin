@@ -59,9 +59,9 @@ for (var i = 1; i < chars.length; i++) {
         }
         lowhalf = median - lowwer, uphalf = upper - median;
         if (lowhalf < uphalf) {
-            lowlimit = median - 2 * lowhalf, uplimit = median + 2 * lowhalf;
+            lowlimit = median - 3 * lowhalf, uplimit = median + 3 * lowhalf;
         } else {
-            lowlimit = median - 2 * uphalf, uplimit = median + 2 * uphalf;
+            lowlimit = median - 3 * uphalf, uplimit = median + 3 * uphalf;
         }
         
         while((equivs[p++] < lowlimit));
@@ -79,7 +79,7 @@ for (var j = 0; j < chars.length; j++) {
     if (j === 0) {
         txt += table[0][j];
     } else {
-        txt += printf("\t%-3s", table[0][j]);
+        txt += printf("\t%2s ", table[0][j]);
     }
 }
 txt += '\n';
@@ -88,7 +88,7 @@ for (var i = 1; i < table.length; i++) {
         if (j === 0) {
             txt += table[i][j];
         } else {
-            txt += printf("\t%-3s", table[i][j]);
+            txt += printf("\t%3s", table[i][j]);
         }
     }
     txt += '\n';

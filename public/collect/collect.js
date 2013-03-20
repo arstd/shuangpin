@@ -139,7 +139,7 @@ $(function(){
         var curTime = new Date();
         if (chars.contains(typ.prevChar) && chars.contains(char)) {
             var delta = curTime - typ.prevTime;
-            if (50 < delta && delta < 500) {
+            if (50 < delta && delta < 400) {
                 typ.collect[typ.prevChar][char].push(delta);
                 // console.log(typ.prevChar + '-' + char + '\t' + delta);
             }
