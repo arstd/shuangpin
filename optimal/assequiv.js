@@ -53,7 +53,7 @@ function gotEquivs() {
         var key1st = cols[0].toLowerCase();
         equivs[key1st] = {};
         for (var j = 1; j < cols.length; j++) {
-            equivs[key1st][keys2nd[j]] = +cols[j];
+            equivs[key1st][keys2nd[j]] = (+cols[j]);
         }
     }
     return equivs;

@@ -4,11 +4,7 @@ var idea = {
     a   :"a",   o   :"o",   e   :"e",   i   :"i",   u   :"u",   v   :"v",
 };
 ************************/
-/*
-var idea = 
-{"zh":"u","ch":"i","sh":"v","a":"a","ai":"m","an":"q","ang":"n","ao":"h","e":"e","ei":"g","en":"k","eng":"w","i":"i","ia":"c","ian":"y","iang":"t","iao":"j","ie":"x","in":"s","ing":"f","iong":"r","iu":"p","o":"o","ong":"r","ou":"z","u":"u","ua":"p","uai":"t","uan":"l","uang":"f","ui":"s","un":"d","uo":"o","v":"v","ve":"b"}
-;
-*/
+
 
 /*** Flexible Double Spelling Input Method  自由双拼输入法(ColemakShin 5th) ***/
 var idea =  {

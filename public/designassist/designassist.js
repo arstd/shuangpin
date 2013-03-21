@@ -289,7 +289,7 @@ $(function(){
     
     initialize(idea);
     
-    $('#keyCtrlL').attr('title', 'Click here, try?').toggle(function(){
+    $('#key310').attr('title', 'Click here, try?').toggle(function(){
         var idea = {};
         $('#keyboard .keymain').each(function(index, element){
             if ($(element).find('span:eq(0)').text().match(/[A-Z]/)) {
@@ -308,17 +308,17 @@ $(function(){
             }
         });
         
-        var ideaTxt = 'var idea =  {\n\t', i = 1;
+        var ideaTxt = 'var idea =  {\n    ', i = 1;
         for (var initFinal in idea) {
             ideaTxt += initFinal + '    '.substring(0, 4-initFinal.length) + ':"' + idea[initFinal] + '",'; 
-            if ( i++ % 6 == 0 )  {
-                ideaTxt += '\n\t';
+            if ( i++ % 6 === 0 )  {
+                ideaTxt += '\n    ';
             } 
             else {
-                ideaTxt += '\t';
+                ideaTxt += '    ';
             }
         }
-        ideaTxt = ideaTxt.replace(/,\n?\t$/g, '\n};'); 
+        ideaTxt = ideaTxt.replace(/,\n? {4}$/g, '\n};'); 
 
         $('#idea').val(ideaTxt).show();
         $(this).attr('title', 'Click here, try again?')

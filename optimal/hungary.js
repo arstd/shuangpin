@@ -525,7 +525,7 @@ function testHungary() {
         ]
     ];
     
-    for (var i = 0; i < 14 && matrixes.length; i++) {
+    for (var i = 0; i < 3 && matrixes.length; i++) {
         print(matrixes[i], '原矩阵：');
         
         var solutions = hungary(matrixes[i]);
