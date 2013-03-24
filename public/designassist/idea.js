@@ -1,19 +1,33 @@
-/*** init           ***
+/*** init  ********************************************************************
 var idea = {
     "zh":"u",   "ch":"i",   "sh":"v", 
     a   :"a",   o   :"o",   e   :"e",   i   :"i",   u   :"u",   v   :"v",
 };
+*******************************************************************************/
+/******************************************************************************
+var idea =  {
+    iu  :"q",    eng :"w",    ie  :"f",    in  :"p",    uan :"g",    iao :"j",
+    iang:"l",    uang:"l",    zh  :"u",    u   :"u",    ian :"y",    a   :"a",
+    ou  :"r",    ong :"s",    iong:"s",    ai  :"t",    ing :"d",    uai :"d",
+    an  :"h",    ei  :"n",    e   :"e",    ch  :"i",    i   :"i",    o   :"o",
+    uo  :"o",    ve  :"z",    ia  :"x",    ua  :"x",    ao  :"c",    sh  :"v",
+    v   :"v",    ui  :"v",    un  :"b",    ang :"k",    en  :"m"
+};
 ************************/
-
+/**
+var idea = 
+{"zh":"u","ch":"i","sh":"v","a":"a","ai":"h","an":"w","ang":"n","ao":"z","e":"e","ei":"q","en":"m","eng":"x","i":"i","ia":"c","ian":"y","iang":"t","iao":"j","ie":"b","in":"s","ing":"d","iong":"r","iu":"p","o":"o","ong":"r","ou":"l","u":"u","ua":"t","uai":"p","uan":"f","uang":"y","ui":"s","un":"g","uo":"o","v":"v","ve":"k"}
+;
+**/
 
 /*** Flexible Double Spelling Input Method  自由双拼输入法(ColemakShin 5th) ***/
 var idea =  {
-    iu  :"q",	eng :"w",	ei  :"f",	uan :"p",	uang:"g",	iao :"j",
-	ong :"l",	iong:"l",	zh  :"u",	u   :"u",	ian :"y",	a   :"a",
-	ou  :"r",	ing :"s",	ua  :"s",	en  :"t",	ia  :"t",	ui  :"d",
-	iang:"d",	ai  :"h",	an  :"n",	e   :"e",	ch  :"i",	i   :"i",
-	o   :"o",	uo  :"o",	in  :"z",	ie  :"x",	ve  :"c",	sh  :"v",
-	v   :"v",	uai :"v",	un  :"b",	ao  :"k",	ang :"m"
+    iu  :"q",    eng :"w",    ei  :"f",    uang:"p",    uan :"g",    iao :"j",
+    ong :"l",    iong:"l",    zh  :"u",    u   :"u",    ian :"y",    a   :"a",
+    ou  :"r",    ing :"s",    ua  :"s",    en  :"t",    ia  :"t",    ui  :"d",
+    iang:"d",    ai  :"h",    an  :"n",    e   :"e",    ch  :"i",    i   :"i",
+    o   :"o",    uo  :"o",    in  :"z",    ie  :"x",    ve  :"c",    sh  :"v",
+    v   :"v",    uai :"v",    un  :"b",    ao  :"k",    ang :"m"
 };
 /******************************************************************************/
 
