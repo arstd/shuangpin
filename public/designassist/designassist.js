@@ -292,17 +292,21 @@ $(function(){
     $('#key310').attr('title', 'Click here, try?').toggle(function(){
         var idea = {};
         $('#keyboard .keymain').each(function(index, element){
-            if ($(element).find('span:eq(0)').text().match(/[A-Z]/)) {
+            if ($(element).find('span:eq(0)').text().match(/[:A-Z]/)) {
                 var init = $(element).find("span:eq(1)").text();
                 if (init) {
                     idea[init] = $(element).find('span:eq(0)').text().toLowerCase();
                 }
-                var init = $(element).find("span:eq(5)").text();
+                init = $(element).find("span:eq(5)").text();
                 if (init) {
-                    idea[init] = $(element).find('span:eq(0)').text().toLowerCase();
+                    if ($(element).find("span:eq(4)").text() === ';') {
+                        idea[init] = ';';
+                    } else {
+                        idea[init] = $(element).find('span:eq(0)').text().toLowerCase();
+                    }
                 }
-                var init = $(element).find("span:eq(4)").text();
-                if (init) {
+                init = $(element).find("span:eq(4)").text();
+                if (init && init !== ';') {
                     idea[init] = $(element).find('span:eq(0)').text().toLowerCase();
                 }
             }
@@ -310,7 +314,11 @@ $(function(){
         
         var ideaTxt = 'var idea =  {\n    ', i = 1;
         for (var initFinal in idea) {
-            ideaTxt += initFinal + '    '.substring(0, 4-initFinal.length) + ':"' + idea[initFinal] + '",'; 
+            if (initFinal === ';') {
+                ideaTxt += '";" :"' + idea[initFinal] + '",'; 
+            } else {
+                ideaTxt += initFinal + '    '.substring(0, 4-initFinal.length) + ':"' + idea[initFinal] + '",';
+            }
             if ( i++ % 6 === 0 )  {
                 ideaTxt += '\n    ';
             } 
@@ -368,6 +376,10 @@ function initialize(design){
             
             $('#init' + final).addClass('dragged').next('td').addClass('dragged');
             continue;
+        }
+        
+        if (design[final] === ';') {
+            design[final] = ':';
         }
         
         finalInitCnt[final]['@'] = charPosition[design[final]];
