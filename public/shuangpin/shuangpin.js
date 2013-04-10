@@ -33,7 +33,7 @@ var updateExtern = function () {
   document.body.className = ex ? 'ex' : '';
   if (!ex) {
     l = $('#kb_layout');
-    o = $$('#kb_layout option:not(.exn)');
+    o = $$('#kb_layout option:not(.exn123)');
     for (i = 0; i < o.length; i++) if (o[i].value === l.value) break;
     if (i === o.length) { l.value = o[0].value; updateLayout(); }
   }
