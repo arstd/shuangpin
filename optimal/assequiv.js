@@ -1,7 +1,7 @@
 var fs = require('fs');
 var printf = require('printf');
 
-var initsPos = { zh: 'u', ch: 'i', sh: 'v'};
+var initsPos = { zh: 'v', ch: 'i', sh: 'a'};
 
 function gotFins() {
     var fins = {};

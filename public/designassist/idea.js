@@ -19,7 +19,17 @@ var idea =
 {"zh":"u","ch":"i","sh":"v","a":"a","ai":"h","an":"w","ang":"n","ao":"z","e":"e","ei":"q","en":"m","eng":"x","i":"i","ia":"c","ian":"y","iang":"t","iao":"j","ie":"b","in":"s","ing":"d","iong":"r","iu":"p","o":"o","ong":"r","ou":"l","u":"u","ua":"t","uai":"p","uan":"f","uang":"y","ui":"s","un":"g","uo":"o","v":"v","ve":"k"}
 ;
 **/
-/*** Flexible Double Spelling Input Method  自由双拼输入法(ColemakShin 6th) ***/
+/*** Flexible Shuangpin Input Method  自由双拼输入法(ColemakShin 7th) ***********/
+var idea =  {
+    ang :"w",    ei  :"f",    uan :"p",    iu  :"g",    ve  :"j",    iao :"l",
+    u   :"u",    ian :"y",    uo  :";",    sh  :"a",    a   :"a",    ie  :"r",
+    uang:"r",    in  :"s",    ui  :"s",    ai  :"t",    ing :"d",    uai :"d",
+    an  :"h",    ong :"n",    iong:"n",    e   :"e",    ch  :"i",    i   :"i",
+    o   :"o",    iang:"o",    ou  :"z",    ao  :"x",    ia  :"c",    ua  :"c",
+    zh  :"v",    v   :"v",    un  :"b",    eng :"k",    en  :"m"
+};
+/******************************************************************************/
+/*** Flexible Shuangpin Input Method  自由双拼输入法(ColemakShin 6th) ***********
 var idea =  {
     iu  :"q",    ang :"w",    ei  :"f",    in  :"p",    uan :"g",    iao :"j",
     iang:"l",    zh  :"u",    u   :"u",    ian :"y",    ie  :";",    a   :"a",
@@ -28,7 +38,7 @@ var idea =  {
     uo  :"o",    ou  :"z",    ao  :"x",    ia  :"c",    ua  :"c",    sh  :"v",
     v   :"v",    ui  :"v",    un  :"b",    uang:"k",    en  :"m"
 };
-/******************************************************************************/
+******************************************************************************/
 
 /*** Flexible Double Spelling Input Method  自由双拼输入法(ColemakShin 5th) ***
 var idea =  {
