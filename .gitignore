@@ -1,9 +1,8 @@
 # ignore vi/vim swap file
 *.swp
 *~
-# ignore cloud9 file
-.c9revisions/*
-.settings
+*#
+.*
 
 # ignore output directory
 output/*
