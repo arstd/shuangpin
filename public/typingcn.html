@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Typing</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <meta name="keywords" content="Dvorak,QWERTY,Colemak,Shin,ColemakShin,键盘,布局,打字,双拼,毛毛雨,shangxuejin" />
+        <meta name="author" content="毛毛雨(shangxuejin@gmail.com)" />
+        <link rel="shortcut icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon" />
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css" />
+        <link rel="stylesheet" href="typing/typing.css" />
+    </head>
+    <body>
+	    <input id="handle">
+        <div id="typing-area"><div id="typing"></div></div>
+        <div id="select-area">
+            <select id="select">
+                <option value="------">---Select Text---</option>
+                <option value="spring-blossoms-cn.txt">面朝大海，春暖花开</option>
+            </select>
+            <button id="commit" class="btn btn-primary">Commit</button>
+        </div>
+        <textarea id="text" rows="10" cols="100" placeholder="Please select text..."></textarea>
+        <script type="text/javascript" src="scripts/jquery.min.js"></script>
+        <script type="text/javascript" >
+
+            var walkInterval;
+
+            $('#select').on({
+                'change': function() {
+                    var textFile = this.value;
+                    if (textFile == '------') {
+                        return;
+                    }
+                    $.ajax({
+                        url: '/text/' + textFile,
+                        type: 'get',
+                        dateType: 'text',
+                        success: function(data) {
+                            $('#text').val(data);
+                        }
+                    });
+                    clearInterval(walkInterval);
+                }
+            });
+            $('#commit').on({
+                'click': function() {
+                    var txt = $('#text').val();
+                    txt = txt.replace(/(.)/g, "<span>$1</span>");
+
+                    txt = txt.replace(/span/, 'span class="current"');
+                    $('#typing').html(txt);
+                    walkInterval = setInterval('walk()', 100);
+                }
+            });
+
+            function walk() {
+                 console.log('.');
+                    var chars = $('#handle').val();
+                    if ( chars == '') return;
+                    $('#handle').val('');
+
+                    var curspan = $('#typing .current');
+                    for (var i = 0; i < chars.length; i++) {
+                        if(chars[i] === curspan.text()) {
+                            curspan.removeClass('current wrong').addClass('right');
+                        } else {
+                            curspan.addClass('wrong').removeClass('current');
+                        }
+                        curspan = curspan.next().addClass('current');
+                    }
+                }
+
+
+        </script>
+    </body>
+</html>
