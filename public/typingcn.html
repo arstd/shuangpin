@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
     <head>
-        <title>Typing</title>
+        <title>Typingcn</title>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <meta name="keywords" content="Dvorak,QWERTY,Colemak,Shin,ColemakShin,键盘,布局,打字,双拼,毛毛雨,shangxuejin" />
         <meta name="author" content="毛毛雨(shangxuejin@gmail.com)" />
@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="typing/typing.css" />
     </head>
     <body>
-	    <input id="handle">
+	    <textarea id="handle" style="position: fixed;background: transparent;"></textarea>
         <div id="typing-area"><div id="typing"></div></div>
         <div id="select-area">
             <select id="select">
@@ -40,7 +40,6 @@
                             $('#text').val(data);
                         }
                     });
-                    clearInterval(walkInterval);
                 }
             });
             $('#commit').on({
@@ -50,26 +49,27 @@
 
                     txt = txt.replace(/span/, 'span class="current"');
                     $('#typing').html(txt);
-                    walkInterval = setInterval('walk()', 100);
                 }
             });
-
-            function walk() {
-                 console.log('.');
-                    var chars = $('#handle').val();
-                    if ( chars == '') return;
-                    $('#handle').val('');
+			$('#handle').on({
+			    'textInput': function(evt) {
+			        console.log(evt.originalEvent.data);
+			        var additions = evt.originalEvent.data;
+			       evt.preventDefault();
+			        //this.value = '';
 
                     var curspan = $('#typing .current');
-                    for (var i = 0; i < chars.length; i++) {
-                        if(chars[i] === curspan.text()) {
+                    for (var i = 0; i < additions.length; i++) {
+                        if(additions[i] === curspan.text()) {
                             curspan.removeClass('current wrong').addClass('right');
                         } else {
                             curspan.addClass('wrong').removeClass('current');
                         }
                         curspan = curspan.next().addClass('current');
+						$('#handle').css(curspan.offset());
                     }
                 }
+	          });
 
 
         </script>
