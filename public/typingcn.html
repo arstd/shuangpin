@@ -6,38 +6,106 @@
         <meta name="keywords" content="Dvorak,QWERTY,Colemak,Shin,ColemakShin,键盘,布局,打字,双拼,毛毛雨,shangxuejin" />
         <meta name="author" content="毛毛雨(shangxuejin@gmail.com)" />
         <link rel="shortcut icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon" />
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css" />
         <style type="text/css">
-#typing-area {
-    position: relative;
-    border: 5px solid gray;
+@font-face
+{
+    font-family: "texgyrecursor-bold";
+    src: url('/fonts/texgyrecursorbold.eot');
+    src: local(texgyrecursor-bold), url('/fonts/texgyrecursor-bold.otf') format('opentype');
+}
+.cnzz {
+    position: fixed;
+    bottom: 0;
+    left: 5px;
+}
+
+body {
+    background: lightBlue;
 }
 
 #handle {
-    z-index: 99;
+	position: fixed;
     background: transparent;
-	position: absolute;
-    width: 0;
-    height: 0;
-	top: 0;
-	left: 0;
     padding: 0;
+    color: blue;
+    border: 0;
+    outline: 0;
 }
 
+#stat {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	text-align: center;
+	background: #E8E5E3;
+	font-family: TexGyreCursor-Bold, Courier, Verdana, Arial, Helvetica, sans-serif;
+}
+
+#stat span {
+	color: blue;
+	margin: auto 5px;
+}
+
+
+#typing-area {
+    border: 30px solid #084563;
+    margin: 20px 30px 0;
+
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
 .txt-style {
-    line-heigh: 35px;
+    text-align: left;
+    font-family: TexGyreCursor-Bold, Courier, Verdana, Arial, Helvetica, sans-serif;
+    font-weight: bold;
     font-size: 25px;
-    color: blue;
+
+    color: green;
+    line-height: 35px;
+}
+
+#typing {
+    min-height: 35px;
+	padding: 10px;
+	-moz-box-shadow: 0 0 10px 2px #06C;
+	-webkit-box-shadow: 0 0 10px 2px #06C;
+	box-shadow: 0 0 10px 2px #06C;
+}
+
+
+.typing-focus {
+	border: 4px solid #FF8505;
+}
+
+.typing-blur {
+	border: 4px solid transparent;
 }
 
 .current { background: transparent; }
 .right { color: #999; }
 .wrong { color: red; }
 
+#text, #select-area {
+    margin: 30px 50px 0;
+    background: transparent;
+}
+
+#select {
+    margin-bottom: 0;
+}
+#text {
+    width: auto;
+}
+
         </style>
     </head>
     <body>
         <div id="typing-area">
-          <textarea id="handle" class="txt-style" ></textarea>
+          <input id="handle" class="txt-style" />
           <div id="typing" class="txt-style"></div>
         </div>
         <div id="select-area">
@@ -50,9 +118,10 @@
         <textarea id="text" rows="10" cols="100" placeholder="Please select text..."></textarea>
         <script type="text/javascript" src="scripts/jquery.min.js"></script>
         <script type="text/javascript" >
-
-            var walkInterval;
-
+		     $('#handle').css({
+			     left: $('#typing').offset().left + 9,
+			     top:  $('#typing').offset().top  + 11
+			 });
             $('#select').on({
                 'change': function() {
                     var textFile = this.value;
@@ -69,6 +138,11 @@
                     });
                 }
             });
+			$('#typing-area').on({
+			   'click': function() {
+			        $('#handle').focus();
+			    }
+			 });
             $('#commit').on({
                 'click': function() {
                     var txt = $('#text').val();
@@ -76,36 +150,62 @@
 
                     txt = txt.replace(/span/, 'span class="current"');
                     $('#typing').html(txt);
-					$('#handle').css({
-                        width: $('#typing-area').css('width'),
-                        height: $('#typing-area').css('height')
-                    });
+                    $('#handle').focus();
                 }
             });
+var startTime;
 			$('#handle').on({
 			    'textInput': function(evt) {
-			        console.log(evt.originalEvent.data);
+			       // console.log(evt.originalEvent.data);
 			        var additions = evt.originalEvent.data;
-			       //evt.preventDefault();
+			        evt.preventDefault();
 			        //this.value = '';
 
                     var curspan = $('#typing .current');
+			 if (curspan.prev().length < 1) startTime = new Date();
                     for (var i = 0; i < additions.length; i++) {
                         if(additions[i] === curspan.text()) {
+                            play('right');
                             curspan.removeClass('current wrong').addClass('right');
                         } else {
+                            play('wrong');
                             curspan.addClass('wrong').removeClass('current');
                         }
+			 if (curspan.next().length < 1) {
+                var total = $('#typing span').length;
+			    var right = $('#typing span.right').length;
+                var wrong = $('#typing span.wrong').length;
+                var mins = (new Date() - startTime) / 60 / 1000;
+				alert((total / mins).toFixed() + '字/分，' + total + '字，对' + right + '错' + wrong + '，正确率' + (right / total * 100).toFixed(2) + '%' );
+				return;
+			}
                         curspan = curspan.next().addClass('current');
-					/*	$('#handle').css({
-                            'padding-left': (curspan.offset().left - $('#typing').offset().left) + 'px',
-                            'padding-top': (curspan.offset().left - $('#typing').offset().left) + 'px'
-                            'padding-left': (curspan.offset().left - $('#typing').offset().left) + 'px'
-                        });
-                 */   }
+						$('#handle').css(curspan.offset());
+                    }
                 }
 	          });
-
+function gotPlayFunction() {
+    var sounds = {right: [], wrong: [], 'right-prev': 0, 'wrong-prev': 0};
+    var raudio = new Audio("/sound/type.wav"), waudio = new Audio("/sound/error.wav");
+	raudio.volume = 0.5,  waudio.volume = 0.5;
+    raudio.play(), waudio.play();
+	sounds.right.push(raudio), sounds.wrong.push(waudio);
+    return function(sound) {
+        sounds[sound + '-prev'] = (sounds[sound + '-prev'] + 1) % sounds[sound].length;
+        if (sounds[sound][sounds[sound + '-prev']].ended) {
+            console.log(sounds[sound + '-prev'] + '\t' + sounds[sound].length);
+            sounds[sound][sounds[sound + '-prev']].play();
+        } else {
+            var audio = new Audio(sound === 'right' ? "/sound/type.wav" : "/sound/error.wav");
+            audio.volume = 0.5;
+            audio.play();
+            var sound2 = sounds[sound].slice(0, sounds[sound + '-prev']);
+            sound2.push(audio);
+            sounds[sound] = sound2.concat(sounds[sound].slice(sounds[sound + '-prev'], sounds[sound].length));
+        }
+    };
+}
+var play  = gotPlayFunction();
 
         </script>
     </body>
