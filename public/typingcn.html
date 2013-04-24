@@ -6,13 +6,40 @@
         <meta name="keywords" content="Dvorak,QWERTY,Colemak,Shin,ColemakShin,键盘,布局,打字,双拼,毛毛雨,shangxuejin" />
         <meta name="author" content="毛毛雨(shangxuejin@gmail.com)" />
         <link rel="shortcut icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon" />
-        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css" />
-        <link rel="stylesheet" href="typing/typing.css" />
+        <style type="text/css">
+#typing-area {
+    position: relative;
+    border: 5px solid gray;
+}
+
+#handle {
+    z-index: 99;
+    background: transparent;
+	position: absolute;
+    width: 0;
+    height: 0;
+	top: 0;
+	left: 0;
+    padding: 0;
+}
+
+.txt-style {
+    line-heigh: 35px;
+    font-size: 25px;
+    color: blue;
+}
+
+.current { background: transparent; }
+.right { color: #999; }
+.wrong { color: red; }
+
+        </style>
     </head>
     <body>
-	    <textarea id="handle" style="position: fixed;background: transparent;"></textarea>
-        <div id="typing-area"><div id="typing"></div></div>
+        <div id="typing-area">
+          <textarea id="handle" class="txt-style" ></textarea>
+          <div id="typing" class="txt-style"></div>
+        </div>
         <div id="select-area">
             <select id="select">
                 <option value="------">---Select Text---</option>
@@ -49,13 +76,17 @@
 
                     txt = txt.replace(/span/, 'span class="current"');
                     $('#typing').html(txt);
+					$('#handle').css({
+                        width: $('#typing-area').css('width'),
+                        height: $('#typing-area').css('height')
+                    });
                 }
             });
 			$('#handle').on({
 			    'textInput': function(evt) {
 			        console.log(evt.originalEvent.data);
 			        var additions = evt.originalEvent.data;
-			       evt.preventDefault();
+			       //evt.preventDefault();
 			        //this.value = '';
 
                     var curspan = $('#typing .current');
@@ -66,8 +97,12 @@
                             curspan.addClass('wrong').removeClass('current');
                         }
                         curspan = curspan.next().addClass('current');
-						$('#handle').css(curspan.offset());
-                    }
+					/*	$('#handle').css({
+                            'padding-left': (curspan.offset().left - $('#typing').offset().left) + 'px',
+                            'padding-top': (curspan.offset().left - $('#typing').offset().left) + 'px'
+                            'padding-left': (curspan.offset().left - $('#typing').offset().left) + 'px'
+                        });
+                 */   }
                 }
 	          });
 
