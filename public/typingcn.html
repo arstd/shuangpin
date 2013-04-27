@@ -128,10 +128,6 @@ body {
         <textarea id="text" rows="10" cols="100" placeholder="Please select text..."></textarea>
         <script type="text/javascript" src="scripts/jquery.min.js"></script>
         <script type="text/javascript" >
-		     $('#handle').css({
-			     left: $('#typing').offset().left + 9,
-			     top:  $('#typing').offset().top  + 11
-			 });
             $('#select').on({
                 'change': function() {
                     var textFile = this.value;
@@ -150,7 +146,9 @@ body {
             });
 			$('#typing-area').on({
 			   'click': function() {
-			        $('#handle').focus();
+			        if ($('#typing .current').length > 0) {
+                      $('#handle').focus();
+			        }
 			    }
 			 });
             $('#commit').on({
@@ -160,7 +158,11 @@ body {
 
                     txt = txt.replace(/span/, 'span class="current"');
                     $('#typing').html(txt);
-                    $('#handle').focus();
+                    $('#handle').focus().css({
+			     left: $('#typing').offset().left + 9,
+			     top:  $('#typing').offset().top  + 11
+			 });
+
                 }
             });
 var startTime;
@@ -182,6 +184,8 @@ var startTime;
                             curspan.addClass('wrong').removeClass('current');
                         }
 			 if (curspan.next().length < 1) {
+				 $('#handle').blur();
+
                 var total = $('#typing span').length;
 			    var right = $('#typing span.right').length;
                 var wrong = $('#typing span.wrong').length;
