@@ -9,12 +9,7 @@
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
         <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css" />
         <style type="text/css">
-@font-face
-{
-    font-family: "texgyrecursor-bold";
-    src: url('/fonts/texgyrecursorbold.eot');
-    src: local(texgyrecursor-bold), url('/fonts/texgyrecursor-bold.otf') format('opentype');
-}
+
 .cnzz {
     position: fixed;
     bottom: 0;
@@ -32,6 +27,7 @@ body {
     color: blue;
     border: 0;
     outline: 0;
+    width: 1px;
 }
 
 #stat {
@@ -41,7 +37,7 @@ body {
 	width: 100%;
 	text-align: center;
 	background: #E8E5E3;
-	font-family: TexGyreCursor-Bold, Courier, Verdana, Arial, Helvetica, sans-serif;
+ 	font-family: Arial, Helvetica, sans-serif;
 }
 
 #stat span {
@@ -60,7 +56,7 @@ body {
 }
 .txt-style {
     text-align: left;
-    font-family: TexGyreCursor-Bold, Courier, Verdana, Arial, Helvetica, sans-serif;
+ 	font-family: DejaVu Sans Mono, Lucida Console, Arial, Helvetica, sans-serif;
     font-weight: bold;
     font-size: 25px;
 
@@ -171,7 +167,7 @@ var startTime;
 			       // console.log(evt.originalEvent.data);
 			        var additions = evt.originalEvent.data;
 			        evt.preventDefault();
-			        //this.value = '';
+			        this.value = '';
 
                     var curspan = $('#typing .current');
 			 if (curspan.prev().length < 1) startTime = new Date();
