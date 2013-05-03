@@ -16,7 +16,7 @@ function gotPlayFunction() {
     return function(sound) {
         sounds[sound + '-prev'] = (sounds[sound + '-prev'] + 1) % sounds[sound].length;
         if (sounds[sound][sounds[sound + '-prev']].ended) {
-            sounds[sound][sounds[sound + '-prev']].play(); 
+            sounds[sound][sounds[sound + '-prev']].play();
         } else {
             var audio = new Audio(sound === 'right' ? "/sound/type.wav" : "/sound/error.wav");
             audio.volume = 0.5;
@@ -35,7 +35,7 @@ var typ = {
 		currentCount: $('#currentCount'),
 		rightCount: $('#rightCount'),
 		wrongCount: $('#wrongCount'),
-		backspaceCount: $('#backspaceCount'),			
+		backspaceCount: $('#backspaceCount'),
 		usedTime: $('#usedTime'),
 		speed: $('#speed')
 	},
@@ -45,7 +45,7 @@ var typ = {
     prevTime: null
 };
 
-var chars = "abcdefghijklmnopqrstuvwxyz".split('');
+var chars = "abcdefghijklmnopqrstuvwxyz;;;".split('');
 function initCollect() {
     for (var i = 0; i < chars.length; i++) {
         typ.collect[chars[i]] = {};
@@ -66,7 +66,7 @@ $(function(){
 			text += chars[Math.floor(chars.length * Math.random())];
 			text += ' ';
 		}
-		
+
 		$('#typing').html(text.replace(/\s*\n*$/,'')
 		.replace(/./g, function(m){
             return '<span>' + m + '</span>';
@@ -77,7 +77,7 @@ $(function(){
             clearInterval(typ.timing);
         }
     });
-    
+
     $('#collect').on({
        'click': function() {
             var txt = '';
@@ -92,10 +92,10 @@ $(function(){
                     txt += '\n';
                 }
             }
-                
+
            $('#text').val(txt);
        }
-    }); 
+    });
     $('#commit').on({
        'click': function() {
             $.ajax({
@@ -108,10 +108,10 @@ $(function(){
                     alert(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown){
-                    alert('error ' + textStatus + " " + errorThrown);  
+                    alert('error ' + textStatus + " " + errorThrown);
                 }
             });
-        
+
             initCollect();
        }
     });
@@ -151,9 +151,9 @@ $(function(){
 		switch (event.keyCode) {
 		case 16: return;
 		case 8: return;
-		default: 
+		default:
 			this.value = '';
-			typing(event.keyCode);  
+			typing(event.keyCode);
 			return;
 		}
 	},
@@ -185,7 +185,7 @@ function backspace() {
 		typ.current.removeClass('current right wrong');
 
 		typ.current = typ.current.prev();
-		
+
 		typ.current.addClass('current');
 
 		typ.backspaceCount++;
@@ -196,14 +196,14 @@ function backspace() {
 function typing(keyCode){
 	if (typ.current === null) {
 		startTyping();
-	}	
+	}
 	typ.currentCount++;
 
 	typ.current.removeClass('current right wrong');
 
 	var char = String.fromCharCode(keyCode);
 	if(!event.shiftKey) char = char.toLowerCase();
-    
+
     var requreChar = (typ.current[0].tagName == 'BR' ? ' ' : typ.current.text());
 
 	if (char == requreChar) {
@@ -215,9 +215,9 @@ function typing(keyCode){
 		typ.play('wrong');
 		typ.wrongCount++;
 	}
-	
+
 	typ.current = typ.current.next();
-	
+
 	if (!typ.current.length) {
 		finishTyping();
 	} else {

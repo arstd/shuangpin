@@ -19,7 +19,7 @@ while [ $opt -lt 6 ] || [ $opt -eq 9 ]
 do
     case "$opt" in
         1) node optimal/equivalent.js
-            echo 'Equivalent saved in file output/equivalent.txt.'
+            echo 'Equivalent saved in file optimal/equivalent.txt.'
             ;;
         2) node  optimal/group.js > output/groups.txt
             echo 'Groups saved in file output/groups.txt.'

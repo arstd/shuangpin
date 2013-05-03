@@ -8,7 +8,7 @@ var statData = fs.readFileSync(collect);
 
 var stat = JSON.parse(statData);
 
-var chars = '-abcdefghijklmnopqrstuvwxyz'.split('');
+var chars = '-abcdefghijklmnopqrstuvwxyz;'.split('');
 var table = [chars];
 for (var i = 1; i < chars.length; i++) {
     var row = [chars[i]];
@@ -35,8 +35,8 @@ for (var i = 1; i < chars.length; i++) {
             }
             continue;
         }
-        
-        
+
+
         var lowwer, median, upper, lowhalf, uphalf, lowlimit, uplimit, p = 0, ilowlimit, sum = 0;
         if (equivs.length % 2 === 0) {
             median = (equivs[equivs.length / 2 - 1] + equivs[equivs.length / 2]) / 2;
@@ -63,7 +63,7 @@ for (var i = 1; i < chars.length; i++) {
         } else {
             lowlimit = median - 3 * uphalf, uplimit = median + 3 * uphalf;
         }
-        
+
         while((equivs[p++] < lowlimit));
         ilowlimit = p;
         while(equivs[p] <= uplimit) {
