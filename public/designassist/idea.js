@@ -1,16 +1,13 @@
 /*** init  ********************************************************************
 var idea = {
-    "zh":"u",   "ch":"i",   "sh":"v", 
+    "zh":"u",   "ch":"i",   "sh":"v",
     a   :"a",   o   :"o",   e   :"e",   i   :"i",   u   :"u",   v   :"v",
 };
 *******************************************************************************/
 
 /**
-var idea = {"zh":"u","ch":"i","sh":"v","a":"a","ai":"y","an":"k","ang":"n","ao":"l","e":"e","ei":"q","en":"p","eng":"m","i":"i","ia":"c","ian":"f","iang":"t","iao":"z","ie":"b","in":"s","ing":"d","iong":"h","iu":"g","o":"o","ong":"h","ou":"r","u":"u","ua":"z","uai":"t","uan":"w","uang":"f","ui":"s","un":"x","uo":"o","v":"v","ve":"j"};
-**/
-/**
-{"zh":"u","ch":"i","sh":"v","a":"a","ai":"h","an":"w","ang":"n","ao":"z","e":"e","ei":"q","en":"m","eng":"x","i":"i","ia":"c","ian":"y","iang":"t","iao":"j","ie":"b","in":"s","ing":"d","iong":"r","iu":"p","o":"o","ong":"r","ou":"l","u":"u","ua":"t","uai":"p","uan":"f","uang":"y","ui":"s","un":"g","uo":"o","v":"v","ve":"k"}
-;
+var idea =
+{"zh":"u","ch":"i","sh":"v","a":"a","ai":"l","an":"k","ang":"n","ao":"z","e":"e","ei":"q","en":"p","eng":"m","i":"i","ia":"c","ian":"y","iang":"t","iao":"j","ie":"x","in":"s","ing":"f","iong":"h","iu":"g","o":"o","ong":"h","ou":"r","u":"u","ua":"t","uai":"f","uan":"w","uang":"y","ui":"s","un":"d","uo":"o","v":"v","ve":"b"};
 **/
 
 /*** Flexible Shuangpin Input Method  自由双拼输入法(ColemakShin 7th) ***********/
@@ -171,12 +168,12 @@ var idea = {
 ***************/
 
 /*** lispathon ***
-[声母] 
-# 双拼编码就是它本身的声母不必列出 
-ch=V sh=U zh=I 
-[韵母] 
-# 双拼编码就是它本身的韵母不必列出 
-ai=D an=P ang=H ao=K ei=Z en=T eng=G er=R ia=W ian=N iang=L iao=Y ie=X in=M ing=C iong=S 
+[声母]
+# 双拼编码就是它本身的声母不必列出
+ch=V sh=U zh=I
+[韵母]
+# 双拼编码就是它本身的韵母不必列出
+ai=D an=P ang=H ao=K ei=Z en=T eng=G er=R ia=W ian=N iang=L iao=Y ie=X in=M ing=C iong=S
 iu=Q ng=G ong=S ou=B ua=W uai=C uan=R uang=L ue=F ui=I un=J uo=O
 
 var idea = {
