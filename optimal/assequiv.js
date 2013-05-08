@@ -1,7 +1,7 @@
 var fs = require('fs');
 var printf = require('printf');
 
-var initsPos = { zh: 'v', ch: 'i', sh: 'a'};
+var initsPos = { zh: 'u', ch: 'i', sh: 'v'};
 
 function gotFins() {
     var fins = {};
@@ -11,9 +11,9 @@ function gotFins() {
     // 韵母字典
     for (var i = 1; i < rows.length; i++) {
         var r = rows[i].split(/\s+/);
-        
+
         var init = r[2], fin = r[3];
-        
+
         !fins[fin] && (fins[fin]={});
         fins[fin][init] = +r[4];
     }
@@ -61,7 +61,7 @@ function gotEquivs() {
 
 function gotAssEquiv(fins, consFin, equivs) {
     var assEquiv = [], fin, ikey, key, i, cur, init, key0, equiv;
-    var keys = 'abcdefghijklmnopqrstuvwxyz';
+    var keys = 'abcdefghijklmnopqrstuvwxyz;';
     for (fin in fins) {
     // if (fin !== 'ia' && fin !== 'uang' && fin !== 've' && fin !== 'ie') continue;
         cur = [];
@@ -103,7 +103,7 @@ function gotAssEquiv(fins, consFin, equivs) {
 
 function print(assEquiv) {
     var txt, i, j;
-    assEquiv.unshift('-abcdefghijklmnopqrstuvwxyz'.split(''));
+    assEquiv.unshift('-abcdefghijklmnopqrstuvwxyz;'.split(''));
     for (i = 0; i < assEquiv.length; i++) {
         txt = printf('%-4s', assEquiv[i][0]);
         for (j = 1; j <= 26; j++) {
@@ -114,14 +114,14 @@ function print(assEquiv) {
 }
 
 function go() {
-        
+
     var fins = gotFins();
     //console.log(fins);
     var consFin = gotConsFin(fins);
     // console.log(fins);
     var equivs = gotEquivs();
     //console.log(equivs);
-    
+
     var assEquiv = gotAssEquiv(fins, consFin, equivs);
     print(assEquiv);
 

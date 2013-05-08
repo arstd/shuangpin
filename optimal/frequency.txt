@@ -140,8 +140,8 @@ jiong  jiong  j      iong   6143
 jiu    jiu    j      iu     1661613
 juan   juan   j      uan    75969
 jun    jun    j      un     558882
-jv     jv     j      v      1321100
-jve    jve    j      ve     432269
+ju     ju     j      u      1321100
+jue    jue    j      ue     432269
 ka     ka     k      a      112440
 kai    kai    k      ai     781762
 kan    kan    k      an     603717
@@ -183,7 +183,7 @@ lu     lu     l      u      636664
 luan   luan   l      uan    70106
 lun    lun    l      un     406465
 lv     lv     l      v      470898
-lve    lve    l      ve     80659
+lue    lue    l      ue     80659
 ma     ma     m      a      528172
 mai    mai    m      ai     240412
 man    man    m      an     267752
@@ -226,7 +226,7 @@ nu     nu     n      u      102712
 nuan   nuan   n      uan    17816
 nuo    nuo    n      uo     59988
 nv     nv     n      v      294815
-nve    nve    n      ve     7138
+nue    nue    n      ue     7138
 pa     pa     p      a      118314
 pai    pai    p      ai     329952
 pan    pan    p      an     167764
@@ -256,8 +256,8 @@ qiong  qiong  q      iong   35299
 qiu    qiu    q      iu     451786
 quan   quan   q      uan    1049687
 qun    qun    q      un     141461
-qv     qv     q      v      1506961
-qve    qve    q      ve     421625
+qu     qu     q      u      1506961
+que    que    q      ue     421625
 ran    ran    r      an     615505
 rang   rang   r      ang    191231
 rao    rao    r      ao     43740
@@ -346,8 +346,8 @@ xiong  xiong  x      iong   124129
 xiu    xiu    x      iu     221318
 xuan   xuan   x      uan    350471
 xun    xun    x      un     350632
-xv     xv     x      v      845164
-xve    xve    x      ve     998419
+xu     xu     x      u      845164
+xue    xue    x      ue     998419
 ya     ya     y      a      493298
 yan    yan    y      an     1278355
 yang   yang   y      ang    1011614
@@ -361,8 +361,8 @@ yong   yong   y      ong    935706
 you    you    y      ou     4032007
 yuan   yuan   y      uan    1958432
 yun    yun    y      un     406850
-yv     yv     y      v      2636015
-yve    yve    y      ve     989176
+yu     yu     y      u      2636015
+yue    yue    y      ue     989176
 za     za     z      a      103539
 zai    zai    z      ai     3284695
 zan    zan    z      an     99476
