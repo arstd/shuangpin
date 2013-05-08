@@ -63,8 +63,8 @@ function gotMatrix(fins, equivs) {
             var pos = poses[j], equiv = 0;
             for (init in fins[fin]) {
                 var initPos = initsPos[init] || init;
-                equiv += fins[fin][init] * equivs[initPos][pos];
-// console.log(init + '_' + fin + ':' +  fins[fin][init] + ' - ' +  equivs[initPos][pos]);
+                equiv += fins[fin][init] * Math.sqrt(equivs[initPos][pos]);
+// console.log(init + '_' + fin + ':' +  fins[fin][init] + ' - ' + Math.sqrt(equivs[initPos][pos]));
             }
             ass.push(Math.round(equiv/1e6));
 //console.log(fin + ' - ' + pos + '-----------------' + equiv);
@@ -80,11 +80,11 @@ function gotMatrix(fins, equivs) {
 
 function print(assEquiv) {
     for (var i = 0; i < assEquiv.length; i++) {
-        var txt = printf('%4s', assEquiv[i][0]);
+        var txt = printf('[', assEquiv[i][0]);
         for (var j = 1; j < assEquiv[0].length; j++) {
-            txt += printf(' %6s', assEquiv[i][j]);
+            txt += printf(',%4s', assEquiv[i][j]);
         }
-        console.log(txt.replace(/ $/, ''));
+        console.log(txt + '],');
     }
 }
 
@@ -139,9 +139,10 @@ function go() {
     //console.log(equivs);
 
     var matrix = gotMatrix(fins, equivs);
-    //print(matrix);
+    print(matrix);
 
     var soluts = hungary.hungary(gotCloneMatrix(matrix));
+//console.log(gotCloneMatrix(matrix));
     printOptimal(matrix, soluts);
 
 }
