@@ -63,10 +63,10 @@ function gotMatrix(fins, equivs) {
             var pos = poses[j], equiv = 0;
             for (init in fins[fin]) {
                 var initPos = initsPos[init] || init;
-                equiv += fins[fin][init] * Math.sqrt(equivs[initPos][pos]);
+                equiv += Math.pow(fins[fin][init], 1/2) * Math.pow(equivs[initPos][pos], 1/2);
 // console.log(init + '_' + fin + ':' +  fins[fin][init] + ' - ' + Math.sqrt(equivs[initPos][pos]));
             }
-            ass.push(Math.round(equiv/1e6));
+            ass.push(Math.round(equiv/1e2));
 //console.log(fin + ' - ' + pos + '-----------------' + equiv);
         }
         assEquiv.push(ass);
@@ -80,7 +80,7 @@ function gotMatrix(fins, equivs) {
 
 function print(assEquiv) {
     for (var i = 0; i < assEquiv.length; i++) {
-        var txt = printf('[', assEquiv[i][0]);
+        var txt = printf('[%-4s', assEquiv[i][0]);
         for (var j = 1; j < assEquiv[0].length; j++) {
             txt += printf(',%4s', assEquiv[i][j]);
         }
@@ -105,7 +105,7 @@ function printOptimal(matrix, solutions) {
         idea = {zh: 'u', ch: 'i', sh: 'v', a: 'a', o: 'o', e: 'e', i: 'i', u: 'u', uo: 'o'};
 
     for (n = 0; n < solutions.length; n++) {
-        ttxt = 'Summary: ', total = 0;
+        ttxt = 'Summary: ', total = 0, txt = "";
         console.log('-----------------------------------');
         for (c = 0; c < matrix[0].length; c++) {
             txt += printf('%6s ', matrix[0][c]);
@@ -139,7 +139,7 @@ function go() {
     //console.log(equivs);
 
     var matrix = gotMatrix(fins, equivs);
-    print(matrix);
+    //print(matrix);
 
     var soluts = hungary.hungary(gotCloneMatrix(matrix));
 //console.log(gotCloneMatrix(matrix));

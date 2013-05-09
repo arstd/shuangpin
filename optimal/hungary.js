@@ -1,6 +1,6 @@
 /*******************************************************************************
  * @date: 2013-03-07      @author: shangxuejin@gmail.com
- * 
+ *
  * 指派问题匈牙利解法的主要步骤：
  * 第一步：变换矩阵，使在各行各列都出现0元素
  *  (1) 从系数矩阵的每行元素减去该行的最小元素；
@@ -43,27 +43,27 @@ function hungary(matrix) {
     // 在指派过程中，矩阵会被转换和调整，所以这几里赋值一个矩阵，不改变原来的矩阵
     matrix = matrix.clone();
     var order, nrow = matrix.length, ncol = matrix[0].length;
-        
+
     // 指派问题的匈牙利解法只适用于方阵
     complete(matrix);
     order = matrix.length;
-    
+
     // 转换
     transform(matrix, nrow, ncol);
-    
+
     while(true) {
         // 试指派
         var marks = mark(matrix);
-        
+
         print(matrix, marks, '独立0元素的个数：' + marks[order][order]);
         // 如果独立0元素等于方阵的阶数，问题解决
         if (marks[order][order] === order) {
             return solve(matrix, nrow, ncol);
         }
-        
+
         // 划覆盖0元素的最少直线
         lining(matrix, marks);
-        
+
         print(matrix, marks, '覆盖0元素的最少直线数：' + marks[order + 1][order + 1]);
         // 如果覆盖0元素的最少直线数等于方阵的阶数，问题解决
         if (marks[order + 1][order + 1] === order) {
@@ -77,7 +77,7 @@ function hungary(matrix) {
 
 function complete(matrix) {
     var r, c, nrow = matrix.length, ncol = matrix[0].length;
-    
+
     // 如果行数小于列数，补行成方阵
     for (r = nrow; r < ncol; r++) {
         matrix[r] = [];
@@ -92,7 +92,7 @@ function complete(matrix) {
         }
     }
     print(matrix, '补成方阵：');
-    
+
 }
 
 // 这些0元素中一定存在最优解，对这些0元素递归试指派（可能存在多个解）
@@ -114,7 +114,7 @@ function solve0(matrix, nrow, ncol, col, solutions, solut) {
         solutions.push(solut.clone());
         return;
     }
-    
+
     for (var row = 0; row < nrow; row++) {
         if (solut[row] !== undefined) continue;
         if (matrix[row][col] === 0) {
@@ -138,7 +138,7 @@ function solve0(matrix, nrow, ncol, col, solutions, solut) {
 // 调整，以添加0元素
 function adjust(matrix, marks) {
     var order = matrix.length, r, c, min = 9e18;
-    
+
     // 未划线的元素的最小值
     for (r = 0; r < order; r++) {
         if (marks[r][order + 1] === 3) continue;
@@ -198,7 +198,7 @@ function lining(matrix, marks) {
                 + '同时打对号的列(1)上标记()的行打对号(1)：');
         }
     }
-    
+
     for (r = 0; r < order; r++) {
         if (marks[r][order + 1] !== 2) {
             marks[r][order + 1] = 3;
@@ -228,7 +228,7 @@ function mark(matrix) {
     marks[order][order] = marks[order + 1][order + 1] = 0;
     marks[order][order + 1] = marks[order + 1][order] = '';
     print(matrix, marks, '初始化标记矩阵：');
-    
+
     // 统计各行各列0元素的个数
     for (r = 0; r < order; r++) {
         if (marks[r][order] > -1) continue;
@@ -259,10 +259,10 @@ function mark(matrix) {
         }
         if (nzero === order + 1) nzero = 0;
         print(matrix, marks, '最少0元素的个数：' + nzero);
-    
+
         // 没有可以标记的了
         if (nzero === 0) break;
-        
+
         for (r = 0; r < order; r++) {
             if (marks[r][order] > -1) continue;
             if (nzero === marks[r][order + 1]) {
@@ -329,7 +329,7 @@ function mark(matrix) {
 function transform(matrix, nrow, ncol) {
     var r, c, min;
     // 如果列不足，那么每行必是补充了0，所以每行最小值必为0，无需变换；否则变换
-    if (ncol >= nrow) { 
+    if (ncol >= nrow) {
         lineScanLabel:
         for (r = 0; r < nrow; r++) {
             min = 9e18;
@@ -411,7 +411,7 @@ function print(matrix, marks, message) {
               txt += printf(' %4d ', matrix[r][c]);
           }
           console.log(txt);
-      }  
+      }
     } else {
         for (r = 0; r <= order + 1; r++) {
             txt = '';
@@ -521,7 +521,7 @@ function testHungary() {
             [  435,  434,  430,  434,  463,  447,  445,  453,  424,  489,  455,  451,  459,  440,  421,  431,  447,  459,  429,  459],
             [  381,  389,  371,  377,  418,  452,  405,  474,  422,  515,  480,  378,  382,  400,  380,  372,  419,  458,  427,  436],
             [  676,  685,  668,  737,  775,  659,  645,  680,  619,  713,  655,  711,  777,  743,  676,  709,  792,  692,  630,  771],
-            [  396,  414,  388,  417,  423,  378,  388,  393,  365,  422,  386,  409,  445,  425,  396,  403,  437,  412,  376,  450]  
+            [  396,  414,  388,  417,  423,  378,  388,  393,  365,  422,  386,  409,  445,  425,  396,  403,  437,  412,  376,  450]
         ], [ // 14
 			[ 142, 143, 128, 127, 131, 116, 130, 129, 123, 122, 123, 129, 136, 123, 126, 126, 136, 130, 139, 116, 128, 123],
 			[ 140, 141, 131, 125, 133, 120, 134, 132, 124, 127, 123, 130, 126, 122, 127, 129, 137, 121, 139, 121, 129, 131],
@@ -546,21 +546,21 @@ function testHungary() {
 			[   8,   8,   7,   7,   8,   9,  10,  10,   9,  10,   9,   7,   7,   7,   7,   7,   7,   7,   8,   8,   7,   9]
 		]
     ];
-    
+
     for (var i = 14; i <= 14 && matrixes.length; i++) {
         print(matrixes[i], '原矩阵：');
-        
+
         var solutions = hungary(matrixes[i]);
-        
+
         printOptimal(matrixes[i], solutions);
     }
 }
 
 // warn-不打印指派过程，不休眠; info-只打印指派过程; debug-打印指派过程并休眠
-var level = 'info';
+var level = 'warn';
 // 开始测试
-testHungary();
+//testHungary();
 
-//exports.hungary = hungary;
+exports.hungary = hungary;
 
 1;
