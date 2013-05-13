@@ -1,0 +1,9 @@
+# ignore vi/vim swap file
+*.swp
+*~
+*#
+.*
+
+# ignore output directory
+output/*
+public/collect/collect_*.json
