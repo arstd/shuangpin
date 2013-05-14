@@ -1,186 +1,191 @@
 <!doctype html>
 <html>
-    <head>
-        <title>Typingcn</title>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-        <meta name="keywords" content="Dvorak,QWERTY,Colemak,Shin,ColemakShin,键盘,布局,打字,双拼,毛毛雨,shangxuejin" />
-              <link rel="shortcut icon" href="fav.ico" mce_href="fav.ico" type="image/x-icon" />
-  <meta name="author" content="毛毛雨(shangxuejin@gmail.com)" />
-        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css" />
-        <style type="text/css">
+  <head>
+    <title>Typingcn</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="keywords" content="Dvorak,QWERTY,Colemak,Shin,ColemakShin,键盘,布局,打字,双拼,毛毛雨,shangxuejin" />
+    <link rel="shortcut icon" href="fav.ico" mce_href="fav.ico" type="image/x-icon" />
+    <meta name="author" content="毛毛雨(shangxuejin@gmail.com)" />
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css" />
+    <style type="text/css">
 
-.cnzz {
-    position: fixed;
-    bottom: 0;
-    left: 5px;
-}
+      .cnzz {
+          position: fixed;
+          bottom: 0;
+          left: 5px;
+      }
 
-body {
-    background: lightBlue;
-}
+      body {
+          background: lightBlue;
+      }
 
-#handle {
-	position: fixed;
-    background: transparent;
-    padding: 0;
-    color: blue;
-    border: 0;
-    outline: 0;
-    width: 1px;
-}
+      #handle {
+	      position: fixed;
+          background: transparent;
+          padding: 0;
+          color: blue;
+          border: 0;
+          outline: 0;
+          width: 1px;
+      }
 
-#stat {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	text-align: center;
-	background: #E8E5E3;
- 	font-family: Arial, Helvetica, sans-serif;
-}
+      #stat {
+	      position: fixed;
+	      top: 0;
+	      left: 0;
+	      width: 100%;
+	      text-align: center;
+	      background: #E8E5E3;
+ 	      font-family: Arial, Helvetica, sans-serif;
+      }
 
-#stat span {
-	color: blue;
-	margin: auto 5px;
-}
-
-
-#typing-area {
-    border: 30px solid #084563;
-    margin: 20px 30px 0;
-
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-}
-.txt-style {
-    text-align: left;
- 	font-family: DejaVu Sans Mono, Lucida Console, Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    font-size: 25px;
-
-    color: green;
-    line-height: 35px;
-}
-
-#typing {
-    min-height: 35px;
-	padding: 10px;
-	-moz-box-shadow: 0 0 10px 2px #06C;
-	-webkit-box-shadow: 0 0 10px 2px #06C;
-	box-shadow: 0 0 10px 2px #06C;
-}
+      #stat span {
+	      color: blue;
+	      margin: auto 5px;
+      }
 
 
-.typing-focus {
-	border: 4px solid #FF8505;
-}
+      #typing-area {
+          border: 30px solid #084563;
+          margin: 20px 30px 0;
 
-.typing-blur {
-	border: 4px solid transparent;
-}
+          -webkit-border-radius: 10px;
+          -moz-border-radius: 10px;
+          border-radius: 10px;
+      }
+      .txt-style {
+          text-align: left;
+ 	      font-family: DejaVu Sans Mono, Lucida Console, Arial, Helvetica, sans-serif;
+          font-weight: bold;
+          font-size: 25px;
 
-.current { background: transparent; }
-.right { color: #999; }
-.wrong { color: red; }
+          color: green;
+          line-height: 35px;
+      }
 
-#text, #select-area {
-    margin: 30px 50px 0;
-    background: transparent;
-}
+      #typing {
+          min-height: 35px;
+	      padding: 10px;
+	      -moz-box-shadow: 0 0 10px 2px #06C;
+	      -webkit-box-shadow: 0 0 10px 2px #06C;
+	      box-shadow: 0 0 10px 2px #06C;
 
-#select {
-    margin-bottom: 0;
-}
-#text {
-    width: auto;
-}
+          word-break: break-all;
+      }
 
-        </style>
-    </head>
-    <body>
-        <div id="typing-area">
-          <input id="handle" class="txt-style" />
-          <div id="typing" class="txt-style"></div>
-        </div>
-        <div id="select-area">
-            <select id="select">
-                <option value="------">---Select Text---</option>
-                <option value="ci_1-100.txt">现代小说词频前100</option>
-                <option value="ci_100-200.txt">现代小说词频100-200</option>
-                <option value="ci_200-300.txt">现代小说词频200-300</option>
-                <option value="ci_300-400.txt">现代小说词频300-400</option>
-                <option value="ci_400-500.txt">现代小说词频400-500</option>
-                <option value="ci_500-600.txt">现代小说词频500-600</option>
-                <option value="ci_600-700.txt">现代小说词频600-700</option>
-                <option value="ci_700-800.txt">现代小说词频700-800</option>
-                <option value="ci_800-900.txt">现代小说词频800-900</option>
-                <option value="ci_900-1000.txt">现代小说词频900-1000</option>
-                <option value="spring-blossoms-cn.txt">面朝大海，春暖花开</option>
-            </select>
-            <button id="commit" class="btn btn-primary">Commit</button>
-        </div>
-        <textarea id="text" rows="10" cols="100" placeholder="Please select text..."></textarea>
-        <script type="text/javascript" src="scripts/jquery.min.js"></script>
-        <script type="text/javascript" >
-            $('#select').on({
-                'change': function() {
-                    var textFile = this.value;
-                    if (textFile == '------') {
-                        return;
-                    }
-                    $.ajax({
-                        url: '/text/' + textFile,
-                        type: 'get',
-                        dateType: 'text',
-                        success: function(data) {
-                            $('#text').val(data);
-                        }
-                    });
-                }
-            });
-			$('#typing-area').on({
-			   'click': function() {
-			        if ($('#typing .current').length > 0) {
-                      $('#handle').focus();
-			        }
-			    }
-			 });
-            $('#commit').on({
-                'click': function() {
-                    var txt = $('#text').val();
-                    txt = txt.replace(/(.)/g, "<span>$1</span>");
+      .typing-focus {
+	      border: 4px solid #FF8505;
+      }
 
-                    txt = txt.replace(/span/, 'span class="current"');
-                    $('#typing').html(txt);
-                    $('#handle').focus().css({
-			     left: $('#typing').offset().left + 9,
-			     top:  $('#typing').offset().top  + 11
-			 });
+      .typing-blur {
+	      border: 4px solid transparent;
+      }
 
-                }
-            });
+      .current { background: transparent; }
+      .right { color: #999; }
+      .wrong { color: red; }
+
+      #text, #select-area {
+          margin: 30px 50px 0;
+          background: transparent;
+      }
+
+      #select {
+          margin-bottom: 0;
+      }
+      #text {
+          width: auto;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="typing-area">
+      <input id="handle" class="txt-style" />
+      <div id="typing" class="txt-style"></div>
+    </div>
+    <div id="select-area">
+      <select id="select">
+        <option value="------">---Select Text---</option>
+        <option value="ci_1-100.txt">现代小说词频前100</option>
+        <option value="ci_100-200.txt">现代小说词频100-200</option>
+        <option value="ci_200-300.txt">现代小说词频200-300</option>
+        <option value="ci_300-400.txt">现代小说词频300-400</option>
+        <option value="ci_400-500.txt">现代小说词频400-500</option>
+        <option value="ci_500-600.txt">现代小说词频500-600</option>
+        <option value="ci_600-700.txt">现代小说词频600-700</option>
+        <option value="ci_700-800.txt">现代小说词频700-800</option>
+        <option value="ci_800-900.txt">现代小说词频800-900</option>
+        <option value="ci_900-1000.txt">现代小说词频900-1000</option>
+        <option value="spring-blossoms-cn.txt">面朝大海，春暖花开</option>
+      </select>
+      <button id="commit" class="btn btn-primary">Commit</button>
+    </div>
+    <textarea id="text" rows="10" cols="100" placeholder="Please select text..."></textarea>
+    <script type="text/javascript" src="scripts/jquery.min.js"></script>
+    <script type="text/javascript" >
+
+$('#select').on({
+    'change': function() {
+        var textFile = this.value;
+        if (textFile == '------') {
+            return;
+        }
+        $.ajax({
+            url: '/text/' + textFile,
+            type: 'get',
+            dateType: 'text',
+            success: function(data) {
+                $('#text').val(data);
+            }
+        });
+    }
+});
+$('#typing-area').on({
+	'click': function() {
+	    if ($('#typing .current').length > 0) {
+            $('#handle').focus();
+	    }
+	}
+});
+$('#commit').on({
+    'click': function() {
+        var txt = $('#text').val();
+        // alert(txt);
+        txt = txt.replace(/([^\n])/g, "<span>$1</span>");
+        txt = txt.replace(/\n/g, '<br/>');
+        txt = txt.replace(/span/, 'span class="current"');
+        // alert(txt);
+        $('#typing').html(txt);
+        $('#handle').focus().css({
+	        left: $('#typing').offset().left + 9,
+	        top:  $('#typing').offset().top  + 11
+	    });
+
+    }
+});
 var startTime;
-			$('#handle').on({
-			    'textInput': function(evt) {
-			       // console.log(evt.originalEvent.data);
-			        var additions = evt.originalEvent.data;
-			        evt.preventDefault();
-			        this.value = '';
+$('#handle').on({
+	'textInput': function(evt) {
+	    // console.log(evt.originalEvent.data);
+	    var additions = evt.originalEvent.data;
+	    evt.preventDefault();
+	    this.value = '';
 
-                    var curspan = $('#typing .current');
-			 if (curspan.prev().length < 1) startTime = new Date();
-                    for (var i = 0; i < additions.length; i++) {
-                        if(additions[i] === curspan.text()) {
-                            play('right');
-                            curspan.removeClass('current wrong').addClass('right');
-                        } else {
-                            play('wrong');
-                            curspan.addClass('wrong').removeClass('current');
-                        }
-			 if (curspan.next().length < 1) {
-				 $('#handle').blur();
+        var curspan = $('#typing .current');
+	    if (curspan.prev().length < 1) startTime = new Date();
+        for (var i = 0; i < additions.length; i++) {
+            if(additions[i] === curspan.text()) {
+                play('right');
+                curspan.removeClass('current wrong').addClass('right');
+            } else {
+                play('wrong');
+                curspan.addClass('wrong').removeClass('current');
+            }
+            if (curspan.next().is('br')) curspan = curspan.next();
+			if (curspan.next().length < 1) {
+				$('#handle').blur();
 
                 var total = $('#typing span').length;
 			    var right = $('#typing span.right').length;
@@ -189,11 +194,11 @@ var startTime;
 				alert((total / mins).toFixed() + '字/分，' + total + '字，对' + right + '错' + wrong + '，正确率' + (right / total * 100).toFixed(2) + '%' );
 				return;
 			}
-                        curspan = curspan.next().addClass('current');
-						$('#handle').css(curspan.offset());
-                    }
-                }
-	          });
+            curspan = curspan.next().addClass('current');
+			$('#handle').css(curspan.offset());
+        }
+    }
+});
 function gotPlayFunction() {
     var sounds = {right: [], wrong: [], 'right-prev': 0, 'wrong-prev': 0};
     var raudio = new Audio("/sound/type.wav"), waudio = new Audio("/sound/error.wav");
@@ -216,7 +221,6 @@ function gotPlayFunction() {
     };
 }
 var play  = gotPlayFunction();
-
-        </script>
-    </body>
+    </script>
+  </body>
 </html>
